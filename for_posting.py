@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-import book_data
-
 def get_html(url) :
     html = ""
     resp = requests.get(url)
@@ -12,25 +10,24 @@ def get_html(url) :
 
     return html
 
-
 def crawl_korean_novel_page() :
     pages = []
-    books = book_data.book_data()
 
     c = get_html('https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%ED%8A%B8%20%EB%85%B8%EB%B2%A8/%EC%8B%A0%EA%B0%84%20%EB%AA%A9%EB%A1%9D')
 
 
     soup = BeautifulSoup(c)
 
-    for td in soup('td') :
-        for a in td('a') :
-            print(a.get_text())
+    for td in soup('td') : # td 안의
+        for a in td('a') : # a 태그 중에서
+            if ('class' in a.attrs # a가 class 속성을 가지고 있고
+                and 'wiki-link-internal' in a['class'] # class가 'wiki-link-internal'이다
+                and a.get_text()[-1] == '월') : # 그리고 안에 들어있는 내용이 '월'로 끝날 때
 
-            if ('class' in a.attrs
-                and 'wiki-link-internal' in a['class']
-                and a.get_text()[-1] == '월') :
-                print("page added")
+                print("page {0} added".format(a['href']))
                 pages.append('https://namu.wiki' + a['href'])
+
+    print(pages)
 
     ignore_word = [
         '최근 변경',
@@ -62,28 +59,26 @@ def crawl_korean_novel_page() :
 
         soup = BeautifulSoup(c)
 
-        date = ""
-
         need_japan_check = False
         for h2 in soup.find_all("h2"):
-            if h2.get_text() == "1. 대한민국[편집]":
+            if h2.get_text() == "1. 대한민국[편집]" :
                 need_japan_check = True
                 break
 
-        for td in soup('td') :
-            for st in td('strong') :
-                date = st.get_text().strip()
-
-                if not (date in ignore_word):
-                    date = date.split('/')[1]
-
-                    #print(date)
-                    #print()
-
-        for div in soup('div') :
+        for div in soup('div') : # 페이지에 있는 div 태그 중에서
 
             if ('class' in div.attrs and
-                'wiki-inner-content' in div['class']) :
+                'wiki-inner-content' in div['class']) : # class가 'wiki-inner-content'인 아이(본문)
+
+                for td in soup('td'):
+                    for st in td('strong'):
+                        date = st.get_text().strip()
+
+                        if not (date in ignore_word):
+                            date = date.split('/')[1]
+
+                            print(date)
+                            print()
 
                 for li in div('li') :
 
@@ -95,7 +90,7 @@ def crawl_korean_novel_page() :
                                 for sibling in parent.previous_siblings:
                                     if sibling.name == 'h2':
                                         if sibling.get_text() != '1. 대한민국[편집]':
-                                            #print('일본 체크 {0}'.format(sibling.get_text()))
+                                            print('일본 체크 {0}'.format(sibling.get_text()))
                                             japan_check = True
                                             break
 
@@ -118,13 +113,12 @@ def crawl_korean_novel_page() :
                         if book_title[-1] == '권' :
                             book_title = book_title.split('권')[0]
 
-                        books.add_by_date_title(date, book_title)
-
-
-        print("{0} 크롤링 종료".format(date))
+                        print(book_title) # 여기에 수행할 동작 넣기
 
 
 
-        print()
 
-    return books
+
+
+if __name__ == "__main__" :
+    crawl_korean_novel_page()
