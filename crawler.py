@@ -15,7 +15,7 @@ def get_html(url) :
 
 def crawl_korean_novel_page() :
     pages = []
-    books = book_data.book_data()
+    books = book_data.book_storer()
 
     c = get_html('https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%ED%8A%B8%20%EB%85%B8%EB%B2%A8/%EC%8B%A0%EA%B0%84%20%EB%AA%A9%EB%A1%9D')
 
