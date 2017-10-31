@@ -2,8 +2,31 @@ from collections import defaultdict
 from urllib import parse, request
 from bs4 import BeautifulSoup
 import json
+import pathlib
 
 import crawler
+
+def list_to_json(list):
+    out_str = "["
+    for val in list:
+        out_str += ('"' + val.__str__() + '"')
+        out_str += ", "
+
+    out_str = out_str[:-2]
+    out_str += "]"
+    return out_str
+
+def listdict_to_json(dict) :
+    out_str = "{"
+    for key in dict.keys() :
+        out_str += ('"' + key.__str__() + '"')
+        out_str += ": "
+        out_str += list_to_json(dict[key])
+        out_str += ", "
+
+    out_str = out_str[:-2]
+    out_str += "}"
+    return out_str
 
 
 class book_storer:
@@ -11,11 +34,42 @@ class book_storer:
         self.date_to_titles = defaultdict(list)
         self.title_list = list()
 
+        self.import_data()
+
+    def import_data(self) :
+        title_p = pathlib.Path('book_title.json')
+        if title_p.exists() :
+            title_json = title_p.read_text('utf-8')
+            self.title_list = json.loads(title_json)
+
+        dic_p = pathlib.Path('date_to_titles.json')
+        if dic_p.exists() :
+            dic_json = dic_p.read_text('utf-8')
+            self.date_to_titles = json.loads(dic_json)
+
+
     def add_by_date_title(self, date, title):
         self.date_to_titles[date].append(title)
         self.title_list.append(title)
 
         self.title_list = sorted(self.title_list)
+
+    def export_data(self) :
+        title_p = pathlib.Path('book_title.json')
+        str_data = self.title_list.__str__()
+        str_data = str_data[:88] + str_data[88:].replace("'", '"')\
+            .replace('μ"', "μ'").replace('"서민 샘플"', "'서민 샘플'")\
+            .replace('"유가오"', "'유가오'").replace('"나"', "'나'")
+        title_p.write_text(list_to_json(self.title_list), encoding='utf-8')
+
+        dic_p = pathlib.Path('date_to_titles.json')
+        str_data = self.date_to_titles.__str__()
+        str_data = str_data[27:].replace("'", '"').replace('μ"', "μ'")\
+            .replace('"유가오"', "'유가오'").replace('"아오이"', "'아오이'")\
+            .replace('"오보로즈키요"', "'오보로즈키요'").replace('"스에츠무하나"', "'스에츠무하나'")\
+            .replace('"나"', "'나'")
+        dic_p.write_text(listdict_to_json(self.date_to_titles), encoding='utf-8')
+
 
 
 class book_data:
