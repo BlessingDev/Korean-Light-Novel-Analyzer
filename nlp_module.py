@@ -1,6 +1,7 @@
-import konlpy
+from konlpy.tag import Twitter
 
 def natural_proccess_sentence(sentence) :
-    result = konlpy.tag.Twitter.pos(sentence)
+    twitter = Twitter()
+    result = twitter.pos(phrase=sentence)
 
     return result

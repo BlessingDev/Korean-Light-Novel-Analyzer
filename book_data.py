@@ -107,9 +107,20 @@ class book_storer:
 
 
 class book_data:
+    def __init__(self) :
+        self.ori_title = ""
+        self.title = ""
+        self.author = ""
+        self.translator = ""
+        self.image_url = ""
+        self.publisher = ""
+        self.isbn = ""
+
     def from_title(self, title) :
         self.ori_title = title
         self.error_code = 0
+
+        print("'{}'을 검색함".format(title))
 
         client_id = "EiPxhHox870abSfDvZBR"
         client_pw = "RqJncUd4p1"
@@ -130,7 +141,6 @@ class book_data:
 
         res_code = response.getcode()
 
-        print("{} 검색됨".format(title))
 
         if (res_code == 200):
             response_body = response.read()
