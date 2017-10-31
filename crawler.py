@@ -5,7 +5,12 @@ import book_data
 
 def get_html(url) :
     html = ""
-    resp = requests.get(url)
+    resp = ""
+    try:
+        resp = requests.get(url)
+    except:
+        print("URL {}에 접속 불가".format(url))
+        return None
 
     if resp.status_code == 200 :
         html = resp.text
@@ -13,7 +18,7 @@ def get_html(url) :
     return html
 
 
-def crawl_korean_novel_page() :
+def crawl_whole_korean_novel() :
     pages = []
     books = book_data.book_storer()
 
