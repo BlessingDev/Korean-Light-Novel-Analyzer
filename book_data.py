@@ -26,6 +26,7 @@ def book_to_json(book) :
     book_dict["translator"] = book.translator
     book_dict["image_url"] = book.image_url
     book_dict["publisher"] = book.publisher
+    book_dict["description"] = book.description
     book_dict["isbn"] = book.isbn
 
     return dict_to_json(book_dict, lambda x : '"' + x.__str__() + '"')
@@ -44,7 +45,6 @@ def dict_to_json(dict, func) :
     return out_str
 
 def data_to_json(data) :
-    print(data)
     if type(data) is str :
         return '"' + data + '"'
     elif type(data) is book_data :
@@ -53,7 +53,7 @@ def data_to_json(data) :
         return list_to_json(data, data_to_json)
     else :
         print("type은 {}".format(type(data)))
-        return ""
+        return '""'
 
 
 class book_storer:
@@ -72,13 +72,13 @@ class book_storer:
 
         title_p = pathlib.Path('book_title.json')
         if title_p.exists() :
-            title_json = title_p.read_text('utf-8')
+            title_json = title_p.read_text('utf-16')
             self.title_list = json.loads(title_json)
 
 
         dic_p = pathlib.Path('date_to_titles.json')
         if dic_p.exists() :
-            dic_json = dic_p.read_text('utf-8')
+            dic_json = dic_p.read_text('utf-16')
             self.date_to_titles = json.loads(dic_json)
 
 
@@ -91,16 +91,16 @@ class book_storer:
 
     def export_data(self) :
         title_p = pathlib.Path('book_title.json')
-        title_p.write_text(list_to_json(self.title_list, data_to_json), encoding='utf-8')
+        title_p.write_text(list_to_json(self.title_list, data_to_json), encoding='utf-16')
 
         dic_p = pathlib.Path('date_to_titles.json')
-        dic_p.write_text(dict_to_json(self.date_to_titles, data_to_json), encoding='utf-8')
+        dic_p.write_text(dict_to_json(self.date_to_titles, data_to_json), encoding='utf-16')
 
         book_p = pathlib.Path('book_data.json')
-        book_p.write_text(list_to_json(self.book_list, data_to_json))
+        book_p.write_text(list_to_json(self.book_list, data_to_json), encoding='utf-16')
 
         dic_p = pathlib.Path('date_to_book.json')
-        dic_p.write_text(dict_to_json(self.date_to_book, data_to_json))
+        dic_p.write_text(dict_to_json(self.date_to_book, data_to_json), encoding='utf-16')
 
 
 
@@ -115,6 +115,7 @@ class book_data:
         self.image_url = ""
         self.publisher = ""
         self.isbn = ""
+        self.description = ""
 
     def from_title(self, title) :
         self.ori_title = title
@@ -162,7 +163,8 @@ class book_data:
                 self.crawl_description(link)
 
                 self.title = self.title.replace('<b>', '').replace('</b>', '')
-
+                self.title.replace('\ufeff', '')
+                self.image_url.replace('\ufeff', '')
                 print("검색된 책 제목: {}".format(self.title))
             else :
                 self.error_code = 2
@@ -182,6 +184,7 @@ class book_data:
         self.image_url = dict["image_url"]
         self.isbn = dict["isbn"]
         self.publisher = dict["publisher"]
+        self.description = dict["discription"]
 
         return self
 

@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2281741-9911-402f-af11-b2dc4ab8f624" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Korean-Light-Novel-Analyzer.iml" afterPath="$PROJECT_DIR$/.idea/Korean-Light-Novel-Analyzer.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/book_data.json" afterPath="$PROJECT_DIR$/book_data.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/book_data.py" afterPath="$PROJECT_DIR$/book_data.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nlp_module.py" afterPath="$PROJECT_DIR$/nlp_module.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/book_title.json" afterPath="$PROJECT_DIR$/book_title.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/date_to_book.json" afterPath="$PROJECT_DIR$/date_to_book.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/date_to_titles.json" afterPath="$PROJECT_DIR$/date_to_titles.json" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,11 +23,21 @@
           <file leaf-file-name="book_data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/book_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="918">
-                  <caret line="60" column="36" lean-forward="false" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+                <state relative-caret-position="396">
+                  <caret line="25" column="43" lean-forward="true" selection-start-line="25" selection-start-column="43" selection-end-line="25" selection-end-column="43" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="book_data.json" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/book_data.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="922" lean-forward="true" selection-start-line="0" selection-start-column="922" selection-end-line="0" selection-end-column="922" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -46,14 +56,24 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-          <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="420">
-                  <caret line="53" column="43" lean-forward="false" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+                <state relative-caret-position="252">
+                  <caret line="14" column="16" lean-forward="false" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
                   <folding>
                     <element signature="e#0#37#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="date_to_book.json" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/date_to_book.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="378">
+                  <caret line="0" column="2625" lean-forward="false" selection-start-line="0" selection-start-column="2625" selection-end-line="0" selection-end-column="2625" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -82,16 +102,16 @@
       <list>
         <option value="$PROJECT_DIR$/for_posting.py" />
         <option value="$PROJECT_DIR$/date_to_titles.json" />
-        <option value="$PROJECT_DIR$/book_title.json" />
         <option value="$PROJECT_DIR$/crawler.py" />
-        <option value="$PROJECT_DIR$/book_data.py" />
         <option value="$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/konlpy/tag/_hannanum.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/nlp_module.py" />
+        <option value="$PROJECT_DIR$/book_title.json" />
+        <option value="$PROJECT_DIR$/book_data.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="y" value="1" />
     <option name="width" value="1932" />
@@ -115,7 +135,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -128,6 +147,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -208,12 +228,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1098" extended-state="7" />
+    <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -240,6 +261,34 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/book_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="972">
+          <caret line="60" column="36" lean-forward="false" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nlp_module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/book_data.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3852">
@@ -272,9 +321,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-          <folding>
-            <element signature="e#44#83#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -282,9 +328,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -302,9 +345,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -332,9 +372,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -362,9 +399,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1566">
           <caret line="90" column="27" lean-forward="false" selection-start-line="90" selection-start-column="27" selection-end-line="90" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -392,9 +426,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1674">
           <caret line="94" column="41" lean-forward="true" selection-start-line="81" selection-start-column="24" selection-end-line="94" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -423,20 +454,6 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/json/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/book_data.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="1" lean-forward="true" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/book_title.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="88" lean-forward="false" selection-start-line="0" selection-start-column="88" selection-end-line="0" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/date_to_titles.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -444,20 +461,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/date_to_book.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="1" lean-forward="true" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/crawler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -465,29 +472,32 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
           <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-          <folding>
-            <element signature="e#44#83#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/book_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="60" column="36" lean-forward="false" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+        <state relative-caret-position="396">
+          <caret line="25" column="43" lean-forward="true" selection-start-line="25" selection-start-column="43" selection-end-line="25" selection-end-column="43" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/book_title.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="53" column="43" lean-forward="false" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-16258">
+          <caret line="0" column="25323" lean-forward="false" selection-start-line="0" selection-start-column="25323" selection-end-line="0" selection-end-column="25323" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/book_data.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="922" lean-forward="true" selection-start-line="0" selection-start-column="922" selection-end-line="0" selection-end-column="922" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -495,6 +505,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="16" lean-forward="false" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/date_to_book.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="0" column="2625" lean-forward="false" selection-start-line="0" selection-start-column="2625" selection-end-line="0" selection-end-column="2625" />
           <folding />
         </state>
       </provider>
