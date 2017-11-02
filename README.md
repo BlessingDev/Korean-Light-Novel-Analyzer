@@ -10,5 +10,5 @@ I'm going to add bayesian classifier for light novels' genre.
 And clustering based on genre, description, title, author, etc.
 
 
-This software is using BeautifulSoup4, requests, urllib, KoNLPY modules
-This software follows GNU GPL v.3
+This software is using BeautifulSoup4, requests, urllib, KoNLPY modules.
+This software follows GNU GPL v3.
