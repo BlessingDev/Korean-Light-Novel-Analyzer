@@ -5,7 +5,7 @@ import json
 import pathlib
 import datetime
 
-import crawler
+import crawler, nlp_module
 
 def list_to_json(list, func):
     out_str = "["
@@ -30,8 +30,9 @@ def book_to_json(book) :
     book_dict["description"] = book.description.replace('"', "'").replace('\n', '')
     book_dict["isbn"] = book.isbn
     book_dict["error_code"] = book.error_code
+    book_dict["search_accuracy"] = book.search_accuracy
 
-    return dict_to_json(book_dict, lambda x : '"' + x.__str__() + '"')
+    return dict_to_json(book_dict, data_to_json)
 
 def dict_to_json(dict, func) :
     out_str = "{"
@@ -53,6 +54,8 @@ def data_to_json(data) :
         return book_to_json(data)
     elif type(data) is list :
         return list_to_json(data, data_to_json)
+    elif type(data) is int or type(data) is float :
+        return data.__str__()
     else :
         print("type은 {}".format(type(data)))
         return '""'
@@ -123,7 +126,9 @@ class book_storer:
     def get_ordinary_book(self) :
         return [x for x in self.book_list if x.error_code == 0]
 
-
+    def renew_accuracy(self) :
+        for book in self.get_ordinary_book() :
+            book.search_accuracy = nlp_module.search_accsuracy_examine(book)
 
 
 
@@ -139,12 +144,9 @@ class book_data:
         self.description = ""
         self.pubdate = ""
         self.error_code = 0
+        self.search_accuracy = 0.0
 
-    def from_title(self, title) :
-        self.ori_title = title
-
-        print("'{}'을 검색함".format(title))
-
+    def search_for_book(self, title) :
         client_id = "EiPxhHox870abSfDvZBR"
         client_pw = "RqJncUd4p1"
         enc_text = parse.quote(title)
@@ -154,50 +156,105 @@ class book_data:
         req.add_header("X-Naver-Client-Id", client_id)
         req.add_header("X-Naver-Client-Secret", client_pw)
 
-        response = None
         try:
             response = request.urlopen(req)
         except:
             print("책 제목 {} 검색 불가".format(title))
             self.error_code = 1
-            return self
+            return None
 
         res_code = response.getcode()
-
+        print("{}을 검색함".format(title))
+        self.ori_title = title
 
         if (res_code == 200):
             response_body = response.read()
 
             book_dict = json.loads(response_body.decode('utf-8'))
 
-            if (len(book_dict['items']) > 1) :
-                item = book_dict['items'][0]
+            if (len(book_dict['items']) > 1):
+                highest_accuracy = 0.0
+                highest_i = 0
+                i = 0
+                while self.search_accuracy <= 0.8 and\
+                    i < len(book_dict['items']) :
+                    item = book_dict['items'][i]
 
-                self.title = item['title']
-                self.image_url = item['image']
-                self.author = item['author']
-                self.publisher = item['publisher']
-                self.isbn = item['isbn']
-                self.pubdate = item['pubdate']
-                self.description = ''
-                self.translator = ''
+                    self.title = item['title']
+                    self.title = self.title.replace('<b>', '').replace('</b>', '')
+                    print("{} 검색됨".format(self.title))
+                    self.search_accuracy = nlp_module.search_accsuracy_examine(self)
+                    print('정확도: {}'.format(self.search_accuracy))
+                    if self.search_accuracy > highest_accuracy :
+                        highest_accuracy = self.search_accuracy
+                        highest_i = i
+                        print("{} {}".format(highest_accuracy, highest_i))
 
-                link = item['link']
-                self.crawl_description(link)
+                    i += 1
 
-                self.title = self.title.replace('<b>', '').replace('</b>', '')
-                self.title.replace('\ufeff', '')
-                self.image_url.replace('\ufeff', '')
-                print("검색된 책 제목: {}".format(self.title))
+                if highest_accuracy >= 0.6 :
+                    self.search_accuracy = highest_accuracy
+                    return book_dict['items'][highest_i]
+                else :
+                    self.search_accuracy = 0.0
+                    return None
             else :
+                print("{}에 대한 검색 결과 없음".format(title))
                 self.error_code = 2
-                print("책 제목 {0}에 대한 검색 결과가 없음".format(title))
+                self.search_accuracy = 0.0
+                return None
 
+    def from_title(self, title) :
+        self.ori_title = title
 
-        else:
-            self.error_code = res_code
-            print("error code: {0}".format(res_code))
+        print("최초 검색어 '{}'".format(title))
 
+        item = self.search_for_book(title)
+
+        if (item is not None) :
+            self.title = item['title']
+            self.image_url = item['image']
+            self.author = item['author']
+            self.publisher = item['publisher']
+            self.isbn = item['isbn']
+            self.pubdate = item['pubdate']
+            self.description = ''
+            self.translator = ''
+
+            link = item['link']
+            self.crawl_description(link)
+
+            self.title = self.title.replace('<b>', '').replace('</b>', '')
+            self.title.replace('\ufeff', '')
+            self.image_url.replace('\ufeff', '')
+            print("검색된 책 제목: {}".format(self.title))
+        else :
+            titles = nlp_module.make_alterative_search_set(title)
+            for temp in titles :
+                item = self.search_for_book(temp)
+
+                if not (item is None):
+                    self.image_url = item['image']
+                    self.author = item['author']
+                    self.publisher = item['publisher']
+                    self.isbn = item['isbn']
+                    self.pubdate = item['pubdate']
+                    self.description = ''
+                    self.translator = ''
+
+                    link = item['link']
+                    self.crawl_description(link)
+
+                    self.title = self.title.replace('<b>', '').replace('</b>', '')
+                    self.title.replace('\ufeff', '')
+                    self.image_url.replace('\ufeff', '')
+                    print("검색된 책 제목: {}".format(self.title))
+
+            if self.search_accuracy == 0 :
+                self.error_code = 2
+                print("책 제목 {0}에 대한 검색 결과가 전혀 없음".format(title))
+
+        self.ori_title = title
         return self
 
     def from_json_dict(self, dict) :
@@ -210,16 +267,18 @@ class book_data:
         self.publisher = dict["publisher"]
         self.description = dict["description"]
         self.error_code = int(dict["error_code"])
+        self.search_accuracy = dict["search_accuracy"]
 
         return self
 
     def __str__(self):
         rex = 'title: {}\n' \
+              'ori title: {}\n' \
               'author: {}\n' \
               'translator: {}\n' \
               'publisher: {}\n' \
               'description: {}' \
-            .format(self.title, self.author, self.translator, self.publisher, self.description)
+            .format(self.title, self.ori_title, self.author, self.translator, self.publisher, self.description)
 
         return rex
 

@@ -9,9 +9,8 @@ def show_menu() :
     print("1. 데이터 전체 크롤")
     print("2. 제목 보기")
     print("3. 책 정보 보기")
-    print("4. 검색 정확도 검사")
+    print("4. 정확도 특정 범위의 책 보기")
     print("5. 프로그램 종료")
-    print("6. error_code 시각화")
     print("--------------------------------------")
 
 
@@ -34,11 +33,24 @@ if __name__ == '__main__' :
             index = int(input("몇 번째 인덱스의 책을 볼까요? "))
             print(storer.book_list[index].__str__())
         elif choice == '4':
-            visualization.show_search_accuracy(storer)
+            start = float(input("시작범위(1.0-0.0) "))
+            end = float(input("종료범위(1.0-0.0) "))
+
+            i = 0;
+            for book in storer.book_list :
+                i += 1
+                if book.search_accuracy >= start and \
+                    book.search_accuracy <= end :
+                    print("index: {}".format(i))
+                    print(book.__str__())
+                    print(book.search_accuracy)
+                    print()
 
         elif choice == '5' :
             print("프로그램을 종료합니다")
             storer.export_data()
             open_program = False
         elif choice == '6' :
+            visualization.show_search_accuracy(storer)
+        elif choice == '7' :
             visualization.show_error_code(storer.get_error_codes())
