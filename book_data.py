@@ -3,6 +3,7 @@ from urllib import parse, request
 from bs4 import BeautifulSoup
 import json
 import pathlib
+import datetime
 
 import crawler
 
@@ -26,8 +27,9 @@ def book_to_json(book) :
     book_dict["translator"] = book.translator
     book_dict["image_url"] = book.image_url
     book_dict["publisher"] = book.publisher
-    book_dict["description"] = book.description
+    book_dict["description"] = book.description.replace('"', "'").replace('\n', '')
     book_dict["isbn"] = book.isbn
+    book_dict["error_code"] = book.error_code
 
     return dict_to_json(book_dict, lambda x : '"' + x.__str__() + '"')
 
@@ -58,49 +60,68 @@ def data_to_json(data) :
 
 class book_storer:
     def __init__(self):
-        self.date_to_titles = defaultdict(list)
-        self.title_list = list()
-
         self.book_list = list()
         self.date_to_book = defaultdict(list)
 
-        self.import_data()
-
     def import_data(self) :
-        self.title_list = list()
-        self.date_to_titles = defaultdict(list)
+        self.book_list = list()
+        self.date_to_book = defaultdict(list)
 
-        title_p = pathlib.Path('book_title.json')
-        if title_p.exists() :
-            title_json = title_p.read_text('utf-16')
-            self.title_list = json.loads(title_json)
+        book_path = pathlib.Path('book_data.json')
+        if book_path.exists() :
+            temp = book_path.read_text(encoding='utf-16')
+            book_list = json.loads(temp, strict=False)
 
+            for book in book_list :
+                #print(type(book))
+                new_book = book_data()
+                new_book.from_json_dict(book)
+                self.book_list.append(new_book)
 
-        dic_p = pathlib.Path('date_to_titles.json')
-        if dic_p.exists() :
-            dic_json = dic_p.read_text('utf-16')
-            self.date_to_titles = json.loads(dic_json)
+        book_path = pathlib.Path('date_to_book.json')
+        if book_path.exists() :
+            temp = book_path.read_text(encoding='utf-16')
+            book_dict = json.loads(temp, strict=False)
 
+            for key in book_dict.keys():
+                new_list = list()
+                book_list = book_dict[key]
+                for book in book_list :
+                    #print(type(book))
+                    new_book = book_data()
+                    new_book.from_json_dict(book)
+                    new_list.append(new_book)
 
+                self.date_to_book[key] = new_list
 
-    def add_by_date_title(self, date, title):
-        self.date_to_titles[date].append(title)
-        self.title_list.append(title)
+    def add_by_tl_td(self, title_list, title_to_date):
+        self.date_to_book = defaultdict(list)
 
-        self.title_list = sorted(self.title_list)
+        for title in title_list :
+            book = book_data()
+            book.from_title(title)
+            self.book_list.append(book)
+            self.date_to_book[title_to_date[book.ori_title]].append(book)
 
     def export_data(self) :
-        title_p = pathlib.Path('book_title.json')
-        title_p.write_text(list_to_json(self.title_list, data_to_json), encoding='utf-16')
-
-        dic_p = pathlib.Path('date_to_titles.json')
-        dic_p.write_text(dict_to_json(self.date_to_titles, data_to_json), encoding='utf-16')
-
         book_p = pathlib.Path('book_data.json')
         book_p.write_text(list_to_json(self.book_list, data_to_json), encoding='utf-16')
 
         dic_p = pathlib.Path('date_to_book.json')
         dic_p.write_text(dict_to_json(self.date_to_book, data_to_json), encoding='utf-16')
+
+    def get_title_list(self) :
+        return [x.title for x in self.book_list]
+
+    def get_error_codes(self) :
+        return [x.error_code for x in self.book_list]
+
+    def add_book(self, book) :
+        self.book_list.append(book)
+        self.date_to_book[book.get_pub_year_month()].append(book)
+
+    def get_ordinary_book(self) :
+        return [x for x in self.book_list if x.error_code == 0]
 
 
 
@@ -116,10 +137,11 @@ class book_data:
         self.publisher = ""
         self.isbn = ""
         self.description = ""
+        self.pubdate = ""
+        self.error_code = 0
 
     def from_title(self, title) :
         self.ori_title = title
-        self.error_code = 0
 
         print("'{}'을 검색함".format(title))
 
@@ -156,6 +178,7 @@ class book_data:
                 self.author = item['author']
                 self.publisher = item['publisher']
                 self.isbn = item['isbn']
+                self.pubdate = item['pubdate']
                 self.description = ''
                 self.translator = ''
 
@@ -172,6 +195,7 @@ class book_data:
 
 
         else:
+            self.error_code = res_code
             print("error code: {0}".format(res_code))
 
         return self
@@ -184,7 +208,8 @@ class book_data:
         self.image_url = dict["image_url"]
         self.isbn = dict["isbn"]
         self.publisher = dict["publisher"]
-        self.description = dict["discription"]
+        self.description = dict["description"]
+        self.error_code = int(dict["error_code"])
 
         return self
 
@@ -201,18 +226,29 @@ class book_data:
     def crawl_description(self, link):
         c = crawler.get_html(link)
 
-        if not (c is None) :
-            soup = BeautifulSoup(c)
+        i = 0
+        while c is None :
+            i += 1
+            c = crawler.get_html(link)
+            print("{}회 재시도".format(i))
 
-            for div in soup('div'):
-                if 'class' in div.attrs and \
-                        'book_info_inner' in div['class'] :
-                    for em in div('em'):
-                        if em.get_text() == '역자':
-                            #print('역자 있음')
-                            self.translator = em.next_sibling.next_sibling.get_text()
+        soup = BeautifulSoup(c)
 
-                elif 'id' in div.attrs and \
-                        (div['id'] == 'bookIntroContent' or div['id'] == 'pubReviewContent') :
-                    #print('description 있음')
-                    self.description = div('p')[0].get_text()
+        for div in soup('div'):
+            if 'class' in div.attrs and \
+                    'book_info_inner' in div['class'] :
+                for em in div('em'):
+                    if em.get_text() == '역자':
+                        #print('역자 있음')
+                        self.translator = em.next_sibling.next_sibling.get_text()
+
+            elif 'id' in div.attrs and \
+                    (div['id'] == 'bookIntroContent' or div['id'] == 'pubReviewContent') :
+                #print('description 있음')
+                self.description = div('p')[0].get_text()
+
+                self.description = (self.description.replace('\n', '').replace('\r', ''))
+
+    def get_pub_year_month(self) :
+        temp_date = datetime.datetime.strptime(self.pubdate, '%Y%m%d')
+        return (temp_date.year.__str__() + "년 " + temp_date.month.__str__() + "월")

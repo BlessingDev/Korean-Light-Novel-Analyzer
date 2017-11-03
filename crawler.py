@@ -21,6 +21,8 @@ def get_html(url) :
 def crawl_whole_korean_novel() :
     pages = []
     books = book_data.book_storer()
+    title_list = list()
+    title_to_date = dict()
 
     c = get_html('https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%ED%8A%B8%20%EB%85%B8%EB%B2%A8/%EC%8B%A0%EA%B0%84%20%EB%AA%A9%EB%A1%9D')
 
@@ -64,6 +66,12 @@ def crawl_whole_korean_novel() :
 
     for page in pages :
         c = get_html(page)
+
+        i = 0
+        while c is None :
+            i += 1
+            c = get_html(page)
+            print("{}회 재시도".format(i))
 
         soup = BeautifulSoup(c)
 
@@ -123,7 +131,8 @@ def crawl_whole_korean_novel() :
                         if book_title[-1] == '권' :
                             book_title = book_title.split('권')[0]
 
-                        books.add_by_date_title(date, book_title)
+                        title_list.append(book_title)
+                        title_to_date[book_title] = date
 
 
         print("{0} 크롤링 종료".format(date))
@@ -131,5 +140,7 @@ def crawl_whole_korean_novel() :
 
 
         print()
+
+    books.add_by_tl_td(title_list, title_to_date)
 
     return books
