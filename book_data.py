@@ -1,9 +1,7 @@
 from collections import defaultdict
 from urllib import parse, request
 from bs4 import BeautifulSoup
-import json
-import pathlib
-import datetime
+import json, pathlib, datetime, random
 
 import crawler, nlp_module
 
@@ -31,6 +29,7 @@ def book_to_json(book) :
     book_dict["isbn"] = book.isbn
     book_dict["error_code"] = book.error_code
     book_dict["search_accuracy"] = book.search_accuracy
+    book_dict["searched_title"] = book.searched_title
 
     return dict_to_json(book_dict, data_to_json)
 
@@ -56,6 +55,8 @@ def data_to_json(data) :
         return list_to_json(data, data_to_json)
     elif type(data) is int or type(data) is float :
         return data.__str__()
+    elif type(data) is dict :
+        return dict_to_json(data, data_to_json)
     else :
         print("type은 {}".format(type(data)))
         return '""'
@@ -65,6 +66,7 @@ class book_storer:
     def __init__(self):
         self.book_list = list()
         self.date_to_book = defaultdict(list)
+        self.training_set = None
 
     def import_data(self) :
         self.book_list = list()
@@ -97,6 +99,18 @@ class book_storer:
 
                 self.date_to_book[key] = new_list
 
+        tra_path = pathlib.Path("baseyan_set.json")
+        if tra_path.exists() :
+            temp = tra_path.read_text(encoding='utf-16')
+            book_dict = json.loads(temp, strict=False)
+
+            for dic in book_dict :
+                new_book = book_data()
+                new_book.from_json_dict(dic["book"])
+                dic["book"] = new_book
+
+            self.training_set = book_dict
+
     def add_by_tl_td(self, title_list, title_to_date):
         self.date_to_book = defaultdict(list)
 
@@ -112,6 +126,9 @@ class book_storer:
 
         dic_p = pathlib.Path('date_to_book.json')
         dic_p.write_text(dict_to_json(self.date_to_book, data_to_json), encoding='utf-16')
+
+        ran_p = pathlib.Path('baseyan_set.json')
+        ran_p.write_text(list_to_json(self.random_set, data_to_json), encoding='utf-16')
 
     def get_title_list(self) :
         return [x.title for x in self.book_list]
@@ -130,11 +147,19 @@ class book_storer:
         for book in self.get_ordinary_book() :
             book.search_accuracy = nlp_module.search_accsuracy_examine(book)
 
+    def make_random_set(self, num) :
+        ordinary_set = [{'book':x, 'genre':[]} for x in self.get_ordinary_book() if x.search_accuracy >= 0.6]
+        if num < len(ordinary_set) :
+            self.random_set = random.sample(ordinary_set, num)
+
+        return self.random_set
+
 
 
 class book_data:
     def __init__(self) :
         self.ori_title = ""
+        self.searched_title = ""
         self.title = ""
         self.author = ""
         self.translator = ""
@@ -146,17 +171,21 @@ class book_data:
         self.error_code = 0
         self.search_accuracy = 0.0
 
-    def search_for_book(self, title) :
+    def search_for_book(self, title, category = True) :
+        self.searched_title = title
         client_id = "EiPxhHox870abSfDvZBR"
         client_pw = "RqJncUd4p1"
         enc_text = parse.quote(title)
 
-        url = "https://openapi.naver.com/v1/search/book.json?query=" + enc_text + "&display=10&start=1"
+        url = "https://openapi.naver.com/v1/search/book_adv.json?d_titl=" + enc_text
+        if category :
+            url += "&d_catg=100040050"
         req = request.Request(url)
         req.add_header("X-Naver-Client-Id", client_id)
         req.add_header("X-Naver-Client-Secret", client_pw)
 
         try:
+            print("{} requested".format(url))
             response = request.urlopen(req)
         except:
             print("책 제목 {} 검색 불가".format(title))
@@ -169,10 +198,10 @@ class book_data:
 
         if (res_code == 200):
             response_body = response.read()
-
+            print(response_body.decode('utf-8'))
             book_dict = json.loads(response_body.decode('utf-8'))
 
-            if (len(book_dict['items']) > 1):
+            if (len(book_dict['items']) >= 1):
                 highest_accuracy = 0.0
                 highest_i = 0
                 i = 0
@@ -230,6 +259,7 @@ class book_data:
             print("검색된 책 제목: {}".format(self.title))
         else :
             titles = nlp_module.make_alterative_search_set(title)
+            print("alternative set made {}".format(titles))
             for temp in titles :
                 item = self.search_for_book(temp)
 
@@ -250,9 +280,32 @@ class book_data:
                     self.image_url.replace('\ufeff', '')
                     print("검색된 책 제목: {}".format(self.title))
 
+                    if self.search_accuracy >= 0.8 :
+                        break
+
             if self.search_accuracy == 0 :
-                self.error_code = 2
-                print("책 제목 {0}에 대한 검색 결과가 전혀 없음".format(title))
+                item = self.search_for_book(self.ori_title, category=False)
+
+                if not (item is None):
+                    self.image_url = item['image']
+                    self.author = item['author']
+                    self.publisher = item['publisher']
+                    self.isbn = item['isbn']
+                    self.pubdate = item['pubdate']
+                    self.description = ''
+                    self.translator = ''
+
+                    link = item['link']
+                    self.crawl_description(link)
+
+                    self.title = self.title.replace('<b>', '').replace('</b>', '')
+                    self.title.replace('\ufeff', '')
+                    self.image_url.replace('\ufeff', '')
+                    print("검색된 책 제목: {}".format(self.title))
+
+                if self.search_accuracy == 0:
+                    self.error_code = 2
+                    print("책 제목 {0}에 대한 검색 결과가 전혀 없음".format(title))
 
         self.ori_title = title
         return self

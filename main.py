@@ -51,6 +51,10 @@ if __name__ == '__main__' :
             storer.export_data()
             open_program = False
         elif choice == '6' :
-            visualization.show_search_accuracy(storer)
+            visualization.show_search_accuracy(storer, renew=False)
         elif choice == '7' :
             visualization.show_error_code(storer.get_error_codes())
+        elif choice == '8' :
+            for i in range(len(storer.training_set)) :
+                print("제목: {0} / 태그(장르): {1}".\
+                      format(storer.training_set[i]["book"].title, storer.training_set[i]["genre"]))
