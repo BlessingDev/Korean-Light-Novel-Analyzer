@@ -36,7 +36,7 @@ if __name__ == '__main__' :
             start = float(input("시작범위(1.0-0.0) "))
             end = float(input("종료범위(1.0-0.0) "))
 
-            i = 0;
+            i = 0
             for book in storer.book_list :
                 i += 1
                 if book.search_accuracy >= start and \
