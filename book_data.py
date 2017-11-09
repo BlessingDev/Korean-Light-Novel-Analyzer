@@ -1,65 +1,9 @@
 from collections import defaultdict
 from urllib import parse, request
 from bs4 import BeautifulSoup
-import json, pathlib, datetime, random
+import json, pathlib, datetime, random, json_file
 
 import crawler, nlp_module
-
-def list_to_json(list, func):
-    out_str = "["
-    for val in list:
-        out_str += func(val)
-        out_str += ", "
-
-    if len(out_str) > 2:
-        out_str = out_str[:-2]
-
-    out_str += "]"
-    return out_str
-
-def book_to_json(book) :
-    book_dict = dict()
-    book_dict["title"] = book.title
-    book_dict["ori title"] = book.ori_title
-    book_dict["author"] = book.author
-    book_dict["translator"] = book.translator
-    book_dict["image_url"] = book.image_url
-    book_dict["publisher"] = book.publisher
-    book_dict["description"] = book.description.replace('"', "'").replace('\n', '')
-    book_dict["isbn"] = book.isbn
-    book_dict["error_code"] = book.error_code
-    book_dict["search_accuracy"] = book.search_accuracy
-    book_dict["searched_title"] = book.searched_title
-
-    return dict_to_json(book_dict, data_to_json)
-
-def dict_to_json(dict, func) :
-    out_str = "{"
-    for key in dict.keys() :
-        out_str += ('"' + key.__str__() + '"')
-        out_str += ": "
-        out_str += func(dict[key])
-        out_str += ", "
-    if len(out_str) > 2:
-        out_str = out_str[:-2]
-
-    out_str += "}"
-    return out_str
-
-def data_to_json(data) :
-    if type(data) is str :
-        return '"' + data + '"'
-    elif type(data) is book_data :
-        return book_to_json(data)
-    elif type(data) is list :
-        return list_to_json(data, data_to_json)
-    elif type(data) is int or type(data) is float :
-        return data.__str__()
-    elif type(data) is dict :
-        return dict_to_json(data, data_to_json)
-    else :
-        print("type은 {}".format(type(data)))
-        return '""'
 
 
 class book_storer:
@@ -122,13 +66,13 @@ class book_storer:
 
     def export_data(self) :
         book_p = pathlib.Path('book_data.json')
-        book_p.write_text(list_to_json(self.book_list, data_to_json), encoding='utf-16')
+        book_p.write_text(json_file.list_to_json(self.book_list, json_file.data_to_json), encoding='utf-16')
 
         dic_p = pathlib.Path('date_to_book.json')
-        dic_p.write_text(dict_to_json(self.date_to_book, data_to_json), encoding='utf-16')
+        dic_p.write_text(json_file.dict_to_json(self.date_to_book, json_file.data_to_json), encoding='utf-16')
 
-        ran_p = pathlib.Path('baseyan_set.json')
-        ran_p.write_text(list_to_json(self.random_set, data_to_json), encoding='utf-16')
+        #ran_p = pathlib.Path('baseyan_set.json')
+        #ran_p.write_text(json_file.list_to_json(self.random_set, json_file.data_to_json), encoding='utf-16')
 
     def get_title_list(self) :
         return [x.title for x in self.book_list]

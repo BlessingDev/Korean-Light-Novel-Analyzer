@@ -1,4 +1,4 @@
-import book_data, crawler, nlp_module, visualization
+import book_data, crawler, visualization, GenreClassifier
 
 #books = crawler.crawl_korean_novel_page()
 
@@ -17,6 +17,8 @@ def show_menu() :
 if __name__ == '__main__' :
     open_program = True
     storer = book_data.book_storer()
+    g = GenreClassifier.GenreClassifier()
+    g.import_data()
     storer.import_data()
 
     while(open_program) :
@@ -49,12 +51,22 @@ if __name__ == '__main__' :
         elif choice == '5' :
             print("프로그램을 종료합니다")
             storer.export_data()
+            g.export_data()
             open_program = False
         elif choice == '6' :
             visualization.show_search_accuracy(storer, renew=False)
         elif choice == '7' :
-            visualization.show_error_code(storer.get_error_codes())
+            usable_set = [{"book" : t_set["book"], "genre" : t_set["genre"]} for t_set in storer.training_set
+                     if len(t_set["genre"]) > 0]
+
+            g.train(usable_set)
         elif choice == '8' :
-            for i in range(len(storer.training_set)) :
-                print("제목: {0} / 태그(장르): {1}".\
-                      format(storer.training_set[i]["book"].title, storer.training_set[i]["genre"]))
+            index = int(input("보고 싶은 책의 인덱스 : "))
+
+            usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
+                          if len(t_set["genre"]) > 0]
+
+            book = usable_set[index]["book"]
+            print(book.__str__())
+            #print([genre for genre, prob in g.classify(book) if prob > 0.3])
+            print(g.classify(book))
