@@ -11,10 +11,13 @@ def show_menu() :
     print("3. 책 정보 보기")
     print("4. 정확도 특정 범위의 책 보기")
     print("5. 프로그램 종료")
+    print("6. 검색 정확도 시각화")
+    print("7. 장르 분류기 학습")
+    print("8. 장르 자동 분류")
     print("--------------------------------------")
 
 
-if __name__ == '__main__' :
+if __name__ == "__main__" :
     open_program = True
     storer = book_data.book_storer()
     g = GenreClassifier.GenreClassifier()
@@ -63,10 +66,7 @@ if __name__ == '__main__' :
         elif choice == '8' :
             index = int(input("보고 싶은 책의 인덱스 : "))
 
-            usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
-                          if len(t_set["genre"]) > 0]
-
-            book = usable_set[index]["book"]
+            book = storer.get_ordinary_book()[index]
             print(book.__str__())
             #print([genre for genre, prob in g.classify(book) if prob > 0.3])
             print(g.classify(book))

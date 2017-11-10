@@ -105,8 +105,8 @@ class GenreClassifier :
             prob =  prob * 1.0e56
             smoothed_list.append((genre, prob / self.genre_list[genre] ** 32))
 
-        print(prob_list)
-        return smoothed_list
+        #print(prob_list)
+        return prob_list
 
     def export_data(self) :
         dic_p = pathlib.Path('word_prob.json')
