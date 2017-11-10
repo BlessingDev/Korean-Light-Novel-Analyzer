@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib import parse, request
+import json
+import pathlib
 
 def get_html(url) :
     html = ""
@@ -142,7 +144,65 @@ def search_book_by_title(title) :
 
         print("body " + response_body.decode('utf-8')) # 내용을 출력
 
+def data_to_json(data) :
+    if type(data) is str :
+        return '"' + data + '"'
+    elif type(data) is list :
+        return list_to_json(data, data_to_json)
+    elif type(data) is int or type(data) is float :
+        return data.__str__()
+    elif type(data) is dict :
+        return dict_to_json(data, data_to_json)
+    else :
+        print("type은 {}".format(type(data)))
+        return '""'
 
+def list_to_json(list, func):
+    out_str = "["
+    for val in list:
+        out_str += func(val)
+        out_str += ", "
+
+    if len(out_str) > 2:
+        out_str = out_str[:-2]
+
+    out_str += "]"
+    return out_str
+
+def dict_to_json(dict, func) :
+    out_str = "{"
+    for key in dict.keys() :
+        out_str += ('"' + key.__str__() + '"')
+        out_str += ": "
+        out_str += func(dict[key])
+        out_str += ", "
+    if len(out_str) > 2:
+        out_str = out_str[:-2]
+
+    out_str += "}"
+    return out_str
+
+
+def parse_json() :
+    data = '{"이름":"테스트", \
+    "나이":25, "셩별":"여",  \
+    "주소":"서울특별시 양천구 목동", "특기":["농구", "도술"], \
+    "가족관계": {"#": 2, "아버지": "홍판서", "어머니": "춘섬"}, \
+    "회사": "경기 수원시 팔달구 우만동"}'
+
+    json_data = json.loads(data) # json 데이터를 파싱
+
+    #print(type(json_data))
+    #print(json_data)
+
+    #file = pathlib.Path('example.json')
+    #file.write_text(dict_to_json(json_data, data_to_json), encoding='utf-8')
+
+    file = pathlib.Path('example.json')
+    file_text = file.read_text(encoding='utf-8')
+    json_data = json.loads(file_text)
+
+    print(json_data)
 
 if __name__ == "__main__" :
-    search_book_by_title("기생여친 사나 1") # 책 제목을 전달
+    parse_json()

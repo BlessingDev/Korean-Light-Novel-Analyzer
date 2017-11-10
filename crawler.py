@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-import book_data
+import book_data, nlp_module
 
 def get_html(url) :
     html = ""
@@ -131,8 +131,10 @@ def crawl_whole_korean_novel() :
                         if book_title[-1] == '권' :
                             book_title = book_title.split('권')[0]
 
-                        title_list.append(book_title)
-                        title_to_date[book_title] = date
+                        book_title = nlp_module.preprocess_title(book_title)
+                        title_list.extend(book_title)
+                        for x in book_title :
+                            title_to_date[x] = date
 
 
         print("{0} 크롤링 종료".format(date))

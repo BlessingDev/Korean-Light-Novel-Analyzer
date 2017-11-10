@@ -1,8 +1,6 @@
 from matplotlib import pyplot as plt
 from collections import Counter
 
-import nlp_module
-
 def show_error_code(error_list) :
     error_count = Counter(error_list)
 
@@ -18,10 +16,14 @@ def show_error_code(error_list) :
     plt.xticks([i + 0.1 for i, _ in enumerate(error_count.keys())], ["error_code:{}".format(x) for x in error_count.keys()])
     plt.show()
 
-def show_search_accuracy(storer) :
+def show_search_accuracy(storer, renew = False) :
+
+    if renew :
+        storer.renew_accuracy()
+
     result_list= list()
     for book in storer.get_ordinary_book() :
-        result_list.append(nlp_module.search_accsuracy_examine(book))
+        result_list.append(book.search_accuracy)
 
     def devide_range(pro) :
         if pro >= 0.8 :
