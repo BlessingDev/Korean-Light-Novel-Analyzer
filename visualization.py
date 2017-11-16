@@ -1,5 +1,13 @@
 from matplotlib import pyplot as plt
-from collections import Counter
+import matplotlib.font_manager as fm
+import matplotlib
+from collections import Counter, defaultdict
+
+import GenreClassifier
+
+font_location = "NanumGothic.ttf"
+font_name = fm.FontProperties(fname = font_location).get_name()
+matplotlib.rc('font', family=font_name)
 
 def show_error_code(error_list) :
     error_count = Counter(error_list)
@@ -44,9 +52,43 @@ def show_search_accuracy(storer, renew = False) :
     xs = [i + 0.1 for i, _ in enumerate(histogram.keys())]
 
     plt.bar(xs, [x[1] for x in histogram.items()])
-    plt.ylabel("# of accuracy")
+    plt.ylabel("정확도")
     plt.xlabel("accuracy range")
 
     plt.xticks([i + 0.1 for i, _ in enumerate(histogram.keys())],
                ["range:{}".format(x) for x in histogram.keys()])
     plt.show()
+
+
+
+class WordFrequencyVisualizer :
+    def __init__(self) :
+        self.counts = None
+
+    def initialize(self, training_set) :
+        if self.counts is None :
+            self.counts = GenreClassifier.count_words(training_set)
+
+    def show_genre_word_frequency(self, train_set, show_genre, n=20):
+        self.initialize(train_set)
+        num_dic = defaultdict(list)
+
+        for word in self.counts.keys():
+            for genre in self.counts[word].keys():
+                num_dic[genre].append((word, self.counts[word][genre]))
+
+        if show_genre in num_dic.keys() :
+            num_dic[show_genre].sort(key=lambda x: x[1], reverse = True)
+            print(num_dic[show_genre])
+
+            xs = [i + 0.1 for i in range(n)]
+
+            plt.title("{} 장르의 단어별 개수 상위 {}개".format(show_genre, n))
+            plt.bar(xs, [round(x[1], 2) for x in num_dic[show_genre][:20]])
+            plt.ylabel("단어의 개수")
+            plt.xlabel("단어")
+
+            plt.xticks(xs, [x[0] for x in num_dic[show_genre][:20]])
+            plt.show()
+        else :
+            print("{} 장르는 없음".format(show_genre))

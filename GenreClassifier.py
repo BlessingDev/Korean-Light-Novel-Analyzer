@@ -12,7 +12,17 @@ def tokenize(sentences) :
         'novel',
         'j',
         'l',
-        'nt'
+        'nt',
+        '노',
+        '라이트',
+        '시리즈',
+        '이야기',
+        '제',
+        '세계',
+        '노',
+        '일본',
+        '의',
+        '벨'
     ]
 
     for chunk in sen_nlp :
@@ -20,6 +30,8 @@ def tokenize(sentences) :
             word = chunk[0].lower()
             if not (word in ignore_word) :
                 result.append(word)
+            else :
+                print("{} 안에 금지 단어가 들어 있음".format(sentences))
 
     return set(result)
 

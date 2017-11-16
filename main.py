@@ -21,6 +21,7 @@ if __name__ == "__main__" :
     open_program = True
     storer = book_data.book_storer()
     g = GenreClassifier.GenreClassifier()
+    v = visualization.WordFrequencyVisualizer()
     g.import_data()
     storer.import_data()
 
@@ -62,11 +63,6 @@ if __name__ == "__main__" :
             usable_set = [{"book" : t_set["book"], "genre" : t_set["genre"]} for t_set in storer.training_set
                      if len(t_set["genre"]) > 0]
 
-            g.train(usable_set)
-        elif choice == '8' :
-            index = int(input("보고 싶은 책의 인덱스 : "))
-
-            book = storer.get_ordinary_book()[index]
-            print(book.__str__())
-            #print([genre for genre, prob in g.classify(book) if prob > 0.3])
-            print(g.classify(book))
+            print(g.genre_list)
+            genre = input("보고싶은 장르 ")
+            v.show_genre_word_frequency(usable_set, genre)
