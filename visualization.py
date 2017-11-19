@@ -3,7 +3,7 @@ import matplotlib.font_manager as fm
 import matplotlib
 from collections import Counter, defaultdict
 
-import GenreClassifier
+import GenreClassifier, paretochart
 
 font_location = "NanumGothic.ttf"
 font_name = fm.FontProperties(fname = font_location).get_name()
@@ -92,3 +92,19 @@ class WordFrequencyVisualizer :
             plt.show()
         else :
             print("{} 장르는 없음".format(show_genre))
+
+def word_count_pareto(training_set, k = 0.9) :
+    num_counts = GenreClassifier.count_word_num(training_set)
+
+    print(num_counts)
+
+    datas = [x[1] for x in num_counts]
+    labels = [x[0] for x in num_counts]
+
+    fig, axes = plt.subplots(1, 1)
+
+    paretochart.pareto(datas, labels, axes = axes, limit = k, line_args=('g', ))
+    plt.title("단어 개수로 본 파레토 그램 limit={}".format(k), fontsize = 10)
+
+    fig.canvas.set_window_title('Word Count Pareto')
+    plt.show()

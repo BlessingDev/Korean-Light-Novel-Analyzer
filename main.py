@@ -1,3 +1,5 @@
+import random
+
 import book_data, crawler, visualization, GenreClassifier
 
 #books = crawler.crawl_korean_novel_page()
@@ -16,13 +18,19 @@ def show_menu() :
     print("8. 장르 자동 분류")
     print("--------------------------------------")
 
+def split_data(li, rate) :
+
+    border = int(round(len(li) * rate, 0))
+    print(border)
+    return li[:border], li[border:]
+
 
 if __name__ == "__main__" :
     open_program = True
     storer = book_data.book_storer()
-    g = GenreClassifier.GenreClassifier()
     v = visualization.WordFrequencyVisualizer()
-    g.import_data()
+    bg = GenreClassifier.bayes_GenreClassifier()
+    bg.import_data()
     storer.import_data()
 
     while(open_program) :
@@ -55,7 +63,6 @@ if __name__ == "__main__" :
         elif choice == '5' :
             print("프로그램을 종료합니다")
             storer.export_data()
-            g.export_data()
             open_program = False
         elif choice == '6' :
             visualization.show_search_accuracy(storer, renew=False)
@@ -63,6 +70,22 @@ if __name__ == "__main__" :
             usable_set = [{"book" : t_set["book"], "genre" : t_set["genre"]} for t_set in storer.training_set
                      if len(t_set["genre"]) > 0]
 
-            print(g.genre_list)
-            genre = input("보고싶은 장르 ")
-            v.show_genre_word_frequency(usable_set, genre)
+            visualization.word_count_pareto(usable_set, k=0.7)
+        elif choice == '8' :
+            g = GenreClassifier.neuron_classifier(input_size=1391, num_hidden=500, output_size=len(bg.genre_list.keys()))
+
+            usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
+                          if len(t_set["genre"]) > 0]
+            random.shuffle(usable_set)
+
+            train_data, test_data = split_data(usable_set, 0.9)
+            print(train_data)
+            print(test_data)
+
+            g.train_with_book(train_data, bg.genre_list, n=1000)
+
+            for test in test_data :
+                genre_prob = g.classify(test["book"])
+
+                print(genre_prob)
+                print(test["genre"])
