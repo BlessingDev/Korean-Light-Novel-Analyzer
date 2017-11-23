@@ -1,4 +1,8 @@
 from collections import defaultdict
+import pycuda.driver as cuda
+import pycuda.autoinit
+from pycuda.compiler import SourceModule
+import numpy
 import math, pathlib, json, random
 
 import nlp_module, json_file
@@ -234,7 +238,9 @@ def dot(x, y) :
 
 class neuron :
     def __init__(self, weights) :
-        self.weights = weights
+        self.weights = []
+        for data in weights :
+            self.weights.append(numpy.float64(data))
 
     def output(self, input) :
         return sigmoid(dot(self.weights, input))
@@ -267,6 +273,25 @@ class neuron_classifier :
     def feed_forward(self, input_vector) :
         outputs = []
 
+        template = """
+        #include <cmath>
+        
+        #define VECTOR_LEN $Vecotr_Len
+        
+        __device__ void dot(float* A, float* B, float* o)
+        {
+            *(o) += A[threadId.x] * B[threadId.x];
+        }
+        
+        __device__ float sigmoid(float* A, float* B, int* len)
+        {
+            
+        }
+        
+        """
+
+
+        # 이 for문은 최적화 가능
         for layer in self.neuron_layers :
             input_with_bias = input_vector + [1]
             output = [nr.output(input_with_bias) for nr in layer]
@@ -283,6 +308,7 @@ class neuron_classifier :
         output_deltas = [output * (output - 1) * (output - target)
                          for output, target in zip(outputs, targets)]
 
+        # 이 for문은 최적화 가능
         for i, output_neuron in enumerate(self.neuron_layers[-1]) :
             # i번째 출력층에 대해
             for j, hidden_output in enumerate(hidden_outputs) :
