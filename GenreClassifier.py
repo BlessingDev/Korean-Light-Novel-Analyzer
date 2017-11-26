@@ -1,8 +1,8 @@
 from collections import defaultdict
-import pycuda.driver as cuda
-import pycuda.autoinit
-from pycuda.compiler import SourceModule
 import numpy
+import pycuda.autoinit
+import pycuda.driver as cuda
+from pycuda.compiler import SourceModule
 import math, pathlib, json, random
 
 import nlp_module, json_file
@@ -255,6 +255,7 @@ class neuron_classifier :
         random.seed()
 
         self.input_size = input_size
+        self.hidden_size = num_hidden
         self.genre_num = output_size
 
         hidden_layer = [neuron([random.random() for _ in range(input_size + 1)])
@@ -268,59 +269,216 @@ class neuron_classifier :
             output_layer
         ]
 
+        template = """
+        #include <math.h>
+        
+        __global__ void sigmoid(float* c, const float* i)
+        {
+            int idx = threadIdx.x;
+    
+            float val = i[idx];
+            c[idx] = 1 / (1 + exp(-val));
+        }
+
+        __global__ void MultiplyNeuron(const float* inputVector, const float* weights, float* out)
+        {
+            int neuronIdx = blockIdx.x * (blockDim.x);
+            const float* curWeights = (weights + neuronIdx);
+            float* curOut = (out + neuronIdx);
+            
+            curOut[threadIdx.x] = inputVector[threadIdx.x] * curWeights[threadIdx.x];
+        }
+        
+        __global__ void DotNeuron(const float* multied, float* out, const int inputSize)
+        {
+            const float* curMul = (multied + (threadIdx.x * inputSize));
+        
+            out[threadIdx.x] = 0;
+            for (int i = 0; i < inputSize; i += 1)
+            {
+                out[threadIdx.x] += curMul[i];
+            }
+        }
+        
+        __global__ void OutputDeltas(const float* outputs, const float* targets, float* out)
+        {
+            int idx = threadIdx.x;
+        
+            out[idx] = outputs[idx] * (1 - outputs[idx]) * (outputs[idx] - targets[idx]);
+        }
+        
+        __global__ void AdjustNeuron(float* weights, const float* deltas, const float* befInput)
+        {
+            int i = blockIdx.x;
+            int j = threadIdx.x;
+            float* curWeghts = (weights + (blockDim.x * blockIdx.x));
+        
+            curWeghts[j] -= deltas[i] * befInput[j];
+        
+        }
+        
+        __global__ void	WeightsSet(const float* weights, float* out)
+        {
+            int weightIdx = (blockDim.x  * threadIdx.x);
+            const float* curWeight = (weights + weightIdx);
+        
+            int outIdx = (gridDim.x * blockIdx.x);
+            float* curOut = (out + outIdx);
+        
+            curOut[threadIdx.x] = curWeight[blockIdx.x];
+        }
+        
+        __global__ void HiddenDeltas(const float* outputs, const float* deltas, float* out)
+        {
+            int idx = threadIdx.x;
+        
+            out[idx] = outputs[idx] * (1 - outputs[idx]) * deltas[idx];
+        }
+        """
+
+        self.cuda_func = SourceModule(template)
+
         print("neuron_classifier __init__")
 
     def feed_forward(self, input_vector) :
         outputs = []
 
-        template = """
-        #include <cmath>
-        
-        #define VECTOR_LEN $Vecotr_Len
-        
-        __device__ void dot(float* A, float* B, float* o)
-        {
-            *(o) += A[threadId.x] * B[threadId.x];
-        }
-        
-        __device__ float sigmoid(float* A, float* B, int* len)
-        {
-            
-        }
-        
-        """
+        multiply_neuron = self.cuda_func.get_function("MultiplyNeuron")
+        dot_neuron = self.cuda_func.get_function("DotNeuron")
+        d_sigmoid = self.cuda_func.get_function("sigmoid")
 
+        input_size = [self.input_size, self.hidden_size]
+        output_size = [self.hidden_size, self.genre_num]
 
+        i = 0
         # 이 for문은 최적화 가능
         for layer in self.neuron_layers :
-            input_with_bias = input_vector + [1]
-            output = [nr.output(input_with_bias) for nr in layer]
-            outputs.append(output)
+            cur_input_size = input_size[i]
+            cur_output_size = output_size[i]
 
-            input_vector = output
+            input_with_bias = input_vector + [1]
+
+            weights = [nr.weights[i]
+                      for nr in layer
+                      for i in range(len(nr.weights))]
+            d_weights = numpy.asarray(weights, numpy.float32)
+            d_input_with_bias = numpy.asarray(input_with_bias, numpy.float32)
+
+            d_out = numpy.asarray([0 for _ in range(len(weights))], numpy.float32)
+
+            multiply_neuron(cuda.In(d_input_with_bias), cuda.In(d_weights), cuda.Out(d_out),
+                            grid = (cur_output_size, 1, 1), block = (cur_input_size + 1, 1, 1))
+
+            d_multi = d_out
+            d_out = numpy.asarray([0 for _ in range(cur_output_size)], numpy.float32)
+            d_input_size = numpy.int32(cur_input_size + 1)
+
+            dot_neuron(cuda.In(d_multi), cuda.Out(d_out), d_input_size, block = (cur_output_size, 1, 1))
+
+            d_dot = d_out
+            d_out = numpy.asarray([0 for _ in range(cur_output_size)], numpy.float32)
+
+            d_sigmoid(cuda.Out(d_out), cuda.In(d_dot), block = (cur_output_size, 1, 1))
+
+            out = d_out.tolist()
+
+            outputs.append(out)
+            input_vector = out
+            #print(out)
+            i += 1
 
         return outputs
 
     def backpropagate(self, input_vector, targets) :
 
+        output_deltas = self.cuda_func.get_function("OutputDeltas")
+        adjust_neuron = self.cuda_func.get_function("AdjustNeuron")
+        weight_set = self.cuda_func.get_function("WeightsSet")
+        multiply_neuron = self.cuda_func.get_function("MultiplyNeuron")
+        dot_neuron = self.cuda_func.get_function("DotNeuron")
+        hidden_deltas = self.cuda_func.get_function("HiddenDeltas")
+
         hidden_outputs, outputs = self.feed_forward(input_vector)
 
-        output_deltas = [output * (output - 1) * (output - target)
-                         for output, target in zip(outputs, targets)]
+        d_out = numpy.asarray([0 for _ in range(self.genre_num)], numpy.float32)
+        d_input = numpy.asarray(outputs, numpy.float32)
+        d_weight = numpy.asarray(targets, numpy.float32)
 
-        # 이 for문은 최적화 가능
-        for i, output_neuron in enumerate(self.neuron_layers[-1]) :
-            # i번째 출력층에 대해
-            for j, hidden_output in enumerate(hidden_outputs) :
-                output_neuron.weights[j] -= output_deltas[i] * hidden_output
+        output_deltas(cuda.In(d_input), cuda.In(d_weight), cuda.Out(d_out),
+                        block = (self.genre_num, 1, 1))
 
-        hidden_deltas = [hidden_output * (1 - hidden_output) *
-                         dot(output_deltas, [n.weights[i] for n in self.neuron_layers[-1]])
-                         for i, hidden_output in enumerate(hidden_outputs)]
+        weights = []
+        for i in range(self.genre_num) :
+            weights.extend(self.neuron_layers[1][i].weights)
 
-        for i, hidden_neuron in enumerate(self.neuron_layers[0]) :
-            for j, input in enumerate(input_vector + [1]) :
-                hidden_neuron.weights[j] -= hidden_deltas[i] * input
+        input_with_bias = hidden_outputs + [1]
+
+        d_output_deltas = d_out
+        d_weight = numpy.asarray(weights, numpy.float32)
+        d_bef_input = numpy.asarray(input_with_bias, numpy.float32)
+
+        adjust_neuron(cuda.InOut(d_weight), cuda.In(d_output_deltas), cuda.In(d_bef_input),
+                      grid = (self.genre_num, 1, 1), block = (self.hidden_size + 1, 1, 1))
+
+        weights = d_weight.tolist()
+
+        # 수정된 weight를 원래 weight에 대입
+        for i in range(self.genre_num) :
+            #print(weights[i * (self.hidden_size + 1) : (i + 1) * (self.hidden_size + 1)])
+            self.neuron_layers[0][i].weights = weights[i * (self.hidden_size + 1) : (i + 1) * (self.hidden_size + 1)]
+
+        weights = []
+        for i in range(self.input_size) :
+            cur_weight = self.neuron_layers[0][i].weights
+            weights.extend(cur_weight[:-1])
+
+        d_weight = numpy.asarray(weights, numpy.float32)
+        d_out = numpy.asarray([0 for _ in range(self.genre_num * self.hidden_size)], numpy.float32)
+
+        weight_set(cuda.In(d_weight), cuda.Out(d_out),
+                   grid = (self.hidden_size, 1, 1), block = (self.genre_num, 1, 1))
+
+
+        d_weight = d_out
+        d_input = d_output_deltas
+        d_out = numpy.asarray([0 for _ in range(self.genre_num * self.hidden_size)], numpy.float32)
+
+        multiply_neuron(cuda.In(d_input), cuda.In(d_weight), cuda.Out(d_out),
+                        grid = (self.hidden_size, 1, 1), block = (self.genre_num, 1, 1))
+
+        d_weight = d_out
+        d_out = numpy.asarray([0 for _ in range(self.hidden_size)])
+        d_size = numpy.int32(self.genre_num)
+
+        dot_neuron(cuda.In(d_weight), cuda.Out(d_out), d_size,
+                   block = (self.hidden_size, 1, 1))
+
+        d_weight = numpy.asarray(hidden_outputs, numpy.float32)
+        d_input = d_out
+        d_out = numpy.asarray([0 for _ in range(self.hidden_size)], numpy.float32)
+
+        hidden_deltas(cuda.In(d_weight), cuda.In(d_input), cuda.Out(d_out),
+                      block = (self.hidden_size, 1, 1))
+
+        # hidden node에 대한 수정된 weight 구하기
+        weights = []
+        for i in range(self.hidden_size) :
+            weights.extend(self.neuron_layers[0][i].weights)
+
+        input_with_bias = input_vector + [1]
+
+        d_weight = numpy.asarray(weights, numpy.float32)
+        d_input = d_out # hidden delta를 대입
+        d_bef_input = numpy.asarray(input_with_bias, numpy.float32)
+
+        adjust_neuron(cuda.InOut(d_weight), cuda.In(d_input), cuda.In(d_bef_input),
+                      grid = (self.hidden_size, 1, 1), block = (self.input_size + 1, 1, 1))
+
+        weights = d_weight.tolist()
+
+        for i in range(self.hidden_size) :
+            self.neuron_layers[0][i].weights = weights[i * (self.input_size + 1) : (i + 1) * (self.input_size + 1)]
+
 
     def adjust_train_set(self, training_set) :
         inputs = []
@@ -376,6 +534,13 @@ class neuron_classifier :
 
         print("train succeed")
         print(self.neuron_layers)
+
+    def train(self, training_set, target_set, n = 10000) :
+        for i in range(n) :
+            for input_vector, target_vector in zip(training_set, target_set) :
+                self.backpropagate(input_vector, target_vector)
+            print("train cycle {} finished".format(i))
+
 
     def classify(self, book) :
         '''

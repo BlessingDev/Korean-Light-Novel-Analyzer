@@ -65,14 +65,16 @@ if __name__ == "__main__" :
             storer.export_data()
             open_program = False
         elif choice == '6' :
-            visualization.show_search_accuracy(storer, renew=False)
+            visualization.book_published_by_month(storer)
         elif choice == '7' :
             usable_set = [{"book" : t_set["book"], "genre" : t_set["genre"]} for t_set in storer.training_set
                      if len(t_set["genre"]) > 0]
 
             visualization.word_count_pareto(usable_set, k=0.7)
         elif choice == '8' :
-            g = GenreClassifier.neuron_classifier(input_size=1391, num_hidden=500, output_size=len(bg.genre_list.keys()))
+            g = GenreClassifier.neuron_classifier(input_size=511, num_hidden=300, output_size=len(bg.genre_list.keys()))
+
+            g.feed_forward([])
 
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
@@ -89,3 +91,24 @@ if __name__ == "__main__" :
 
                 print(genre_prob)
                 print(test["genre"])
+        elif choice == '9':
+            crawler.crawl_certain_time('2012년 7월', '2012년 7월', storer)
+
+        elif choice == '10' :
+            g = GenreClassifier.neuron_classifier(input_size = 2, num_hidden = 2, output_size=1)
+
+            input_vectors = [[0, 0], [1, 1], [1, 0], [0, 1]]
+            target_vectors = [[0], [0], [1], [1]]
+
+            while(True):
+                choice = input("1. 결과보기 2. 학습 3. 종료")
+
+                if choice == '1' :
+                    choice = input("index ")
+                    choice = int(choice) % 4
+
+                    print("{}: {}".format(input_vectors[choice], g.feed_forward(input_vectors[choice])))
+                elif choice == '2' :
+                    g.train(input_vectors, target_vectors)
+                elif choice == '3' :
+                    break
