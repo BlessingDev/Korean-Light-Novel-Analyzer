@@ -384,7 +384,7 @@ class neuron_classifier :
         weights_path.write_text(json_file.list_to_json(weights, json_file.data_to_json),
                                 'utf-8')
 
-        network_info = pathlib.Path('netwrok_info.json')
+        network_info = pathlib.Path('network_info.json')
         network_info.write_text(json_file.list_to_json(
             [self.input_size, self.hidden_size, self.genre_num], json_file.data_to_json),
             encoding='utf-8')
@@ -397,6 +397,43 @@ class neuron_classifier :
         genretoindex_dic_path.write_text(json_file.dict_to_json(self.genretoindex_dic,
                                                                 json_file.data_to_json),
                                          encoding='utf-8')
+
+    def import_data(self) :
+        info = pathlib.Path('network_info.json')
+        if info.exists() :
+            info_list = json.loads(info.read_text('utf-8'), strict=False)
+            self.input_size = info_list[0]
+            self.hidden_size = info_list[1]
+            self.genre_num = info_list[2]
+        else :
+            print('network_info.json does not exist')
+
+        weights = pathlib.Path('weights.json')
+        if weights.exists() :
+            weight_list = json.loads(weights.read_text('utf-8'), strict=False)
+            weight_length = [self.input_size + 1, self.hidden_size + 1]
+            node_size = [self.hidden_size, self.genre_num]
+            layers = [list() for _ in range(2)]
+            for i in range(2) :
+                for j in range(node_size[i]) :
+                    layers[i].append(neuron(weight_list[i][j * weight_length[i]:(j + 1) * weight_length[i]]))
+
+            self.neuron_layers = layers
+        else :
+            print('weights.json does not exist')
+
+        wordtoindex = pathlib.Path('wordtoindex.json')
+        if wordtoindex.exists() :
+            self.wordtoindex_dic = json.loads(wordtoindex.read_text('utf-8'), strict=False)
+        else :
+            print('wordtoindex.json does not exist')
+
+        genretoindex = pathlib.Path('genretoindex.json')
+        if genretoindex.exists() :
+            self.genretoindex_dic = json.loads(genretoindex.read_text('utf-8'), strict=False)
+        else :
+            print('genretoindex.json does not exist')
+
 
 
     def feed_forward(self, input_vector) :
@@ -723,7 +760,16 @@ class neuron_classifier :
 
         return inputs, targets
 
-    def train_with_book(self, trainig_set, genre_list, n = 10000, error = 0.0001) :
+    def train_with_book(self, trainig_set, n = 10000, error = 0.0001) :
+        genre_list = [genre for item in trainig_set
+                       for genre in item["genre"]]
+        genre_list = set(genre_list)
+
+        self.genre_num = len(genre_list)
+        output_layer = [neuron([random.random() * 2 - 1 for _ in range(self.hidden_size + 1)])
+                        for _ in range(self.genre_num)]
+        self.neuron_layers[1] = output_layer
+
         print(genre_list)
         num_counts = count_word_num(trainig_set)
         num_counts.sort(key=lambda x : x[1], reverse=True)
@@ -735,7 +781,7 @@ class neuron_classifier :
         for i in range(self.input_size) :
             self.wordtoindex_dic[num_counts[i][0]] = i
 
-        for i, genre in enumerate(list(genre_list.keys())) :
+        for i, genre in enumerate(list(genre_list)) :
             self.genretoindex_dic[genre] = i
 
         inputs, targets = self.adjust_train_set(trainig_set)

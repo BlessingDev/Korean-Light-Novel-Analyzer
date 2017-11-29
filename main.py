@@ -29,10 +29,9 @@ if __name__ == "__main__" :
     open_program = True
     storer = book_data.book_storer()
     v = visualization.WordFrequencyVisualizer()
-    bg = GenreClassifier.bayes_GenreClassifier()
-    bg.import_data()
     storer.import_data()
-    g = None
+    g = GenreClassifier.neuron_classifier(1, 1, 1)
+    g.import_data()
 
     while(open_program) :
         show_menu()
@@ -75,9 +74,7 @@ if __name__ == "__main__" :
 
             visualization.word_count_pareto(usable_set, k=0.5)
         elif choice == '8' :
-            g = GenreClassifier.neuron_classifier(input_size=511, num_hidden=300, output_size=len(bg.genre_list.keys()))
-
-            g.feed_forward([])
+            g = GenreClassifier.neuron_classifier(511, 300, 1)
 
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
@@ -87,7 +84,7 @@ if __name__ == "__main__" :
             print(train_data)
             print(test_data)
 
-            g.train_with_book(train_data, bg.genre_list, n=5000, error = 5)
+            g.train_with_book(train_data, n=5000, error = 5)
 
             for test in test_data :
                 genre_prob = g.classify(test["book"])
@@ -134,4 +131,4 @@ if __name__ == "__main__" :
             else :
                 print("g is None")
         elif choice == '12' :
-            print("new choice")
+            storer.classify_book_genre(g)

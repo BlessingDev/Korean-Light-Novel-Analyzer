@@ -13,14 +13,35 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+          <file leaf-file-name="visualization.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/visualization.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="717">
+                  <caret line="105" column="18" lean-forward="true" selection-start-line="105" selection-start-column="18" selection-end-line="105" selection-end-column="18" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="book_data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/book_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-360">
-                  <caret line="36" column="27" lean-forward="true" selection-start-line="36" selection-start-column="27" selection-end-line="36" selection-end-column="27" />
+                <state relative-caret-position="435">
+                  <caret line="101" column="29" lean-forward="true" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
+                    <element signature="e#6708#9539#0" expanded="false" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="book_data.json" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/book_data.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1800">
+                  <caret line="0" column="6734" lean-forward="false" selection-start-line="0" selection-start-column="6731" selection-end-line="0" selection-end-column="6734" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -28,17 +49,19 @@
           <file leaf-file-name="json_file.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/json_file.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="0" column="15" lean-forward="false" selection-start-line="0" selection-start-column="15" selection-end-line="0" selection-end-column="15" />
-                  <folding />
+                <state relative-caret-position="313">
+                  <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+                  <folding>
+                    <element signature="e#0#16#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="test_relu.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="test_relu.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/test_relu.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="540">
+                <state relative-caret-position="374">
                   <caret line="36" column="12" lean-forward="false" selection-start-line="36" selection-start-column="12" selection-end-line="36" selection-end-column="12" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
@@ -50,8 +73,8 @@
           <file leaf-file-name="baseyan_set.json" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/baseyan_set.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="0" column="288205" lean-forward="false" selection-start-line="0" selection-start-column="288205" selection-end-line="0" selection-end-column="288205" />
+                <state relative-caret-position="808">
+                  <caret line="0" column="292932" lean-forward="false" selection-start-line="0" selection-start-column="292928" selection-end-line="0" selection-end-column="292932" />
                   <folding />
                 </state>
               </provider>
@@ -96,22 +119,31 @@
           <file leaf-file-name="GenreClassifier.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/GenreClassifier.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="134">
-                  <caret line="400" column="0" lean-forward="true" selection-start-line="400" selection-start-column="0" selection-end-line="400" selection-end-column="0" />
+                <state relative-caret-position="334">
+                  <caret line="432" column="0" lean-forward="false" selection-start-line="432" selection-start-column="0" selection-end-line="432" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
                     <element signature="e#238#1835#0" expanded="false" />
                     <element signature="e#5606#5887#0" expanded="false" />
                     <element signature="e#6579#10100#0" expanded="false" />
-                    <element signature="e#11440#13173#0" expanded="false" />
-                    <element signature="e#13249#17108#0" expanded="false" />
-                    <element signature="e#17166#18851#0" expanded="false" />
-                    <element signature="e#18931#23425#0" expanded="false" />
-                    <element signature="e#23482#24400#0" expanded="false" />
-                    <element signature="e#24494#25131#0" expanded="false" />
-                    <element signature="e#25216#25986#0" expanded="false" />
-                    <element signature="e#26076#26849#0" expanded="false" />
+                    <element signature="e#12954#14687#0" expanded="false" />
+                    <element signature="e#14763#18622#0" expanded="false" />
+                    <element signature="e#18680#20365#0" expanded="false" />
+                    <element signature="e#20445#24939#0" expanded="false" />
+                    <element signature="e#24996#25914#0" expanded="false" />
+                    <element signature="e#27090#27860#0" expanded="false" />
+                    <element signature="e#27950#28723#0" expanded="false" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="genretoindex.json" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/genretoindex.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -119,8 +151,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="296">
-                  <caret line="67" column="31" lean-forward="false" selection-start-line="67" selection-start-column="31" selection-end-line="67" selection-end-column="31" />
+                <state relative-caret-position="194">
+                  <caret line="33" column="4" lean-forward="true" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
                   <folding>
                     <element signature="e#0#13#0" expanded="true" />
                   </folding>
@@ -151,6 +183,9 @@
       <find>*</find>
       <find>sm</find>
       <find>print</find>
+      <find>성장물</find>
+      <find>아기고양이</find>
+      <find>TS</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -166,17 +201,17 @@
         <option value="$PROJECT_DIR$/for_posting.py" />
         <option value="$PROJECT_DIR$/nlp_module.py" />
         <option value="$PROJECT_DIR$/naive_bayes_classifier.py" />
-        <option value="$PROJECT_DIR$/json_file.py" />
-        <option value="$PROJECT_DIR$/book_data.py" />
         <option value="$PROJECT_DIR$/build.py" />
         <option value="$PROJECT_DIR$/word_prob.json" />
-        <option value="$PROJECT_DIR$/baseyan_set.json" />
         <option value="$PROJECT_DIR$/paretochart.py" />
         <option value="$PROJECT_DIR$/visualization.py" />
         <option value="$PROJECT_DIR$/crawler.py" />
         <option value="C:/Program Files/Python36/Lib/site-packages/pycuda/compiler.py" />
         <option value="$PROJECT_DIR$/test_relu.py" />
+        <option value="$PROJECT_DIR$/baseyan_set.json" />
         <option value="$PROJECT_DIR$/GenreClassifier.py" />
+        <option value="$PROJECT_DIR$/book_data.py" />
+        <option value="$PROJECT_DIR$/json_file.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -339,10 +374,10 @@
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32952183" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32952183" sideWeight="0.50208336" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32952183" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -378,7 +413,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="67" />
+      <option name="time" value="73" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -389,42 +424,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/nlp_module.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/book_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3852">
-          <caret line="214" column="48" lean-forward="false" selection-start-line="214" selection-start-column="48" selection-end-line="214" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nlp_module.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="26" lean-forward="false" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/konlpy/tag/_hannanum.py" />
     <entry file="file://$PROJECT_DIR$/crawler.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -439,6 +438,7 @@
           <caret line="45" column="16" lean-forward="false" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#6708#9539#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -456,6 +456,7 @@
           <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#6708#9539#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -493,6 +494,7 @@
           <caret line="78" column="36" lean-forward="false" selection-start-line="78" selection-start-column="36" selection-end-line="78" selection-end-column="36" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#6708#9539#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -510,6 +512,7 @@
           <caret line="12" column="49" lean-forward="false" selection-start-line="12" selection-start-column="49" selection-end-line="12" selection-end-column="49" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#6708#9539#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -561,13 +564,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/book_data.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="0" column="2743" lean-forward="false" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="2743" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/naive_bayes_classifier.py" />
     <entry file="file://$PROJECT_DIR$/for_posting.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -585,13 +581,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/word_prob.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="0" column="178510" lean-forward="false" selection-start-line="0" selection-start-column="178510" selection-end-line="0" selection-end-column="178510" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../Dealing With Data/matrix.py" />
     <entry file="file://$PROJECT_DIR$/../Dealing With Data/vector.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/paretochart/__init__.py" />
@@ -606,14 +595,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="31" lean-forward="false" selection-start-line="0" selection-start-column="31" selection-end-line="0" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/baseyan_set.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="288205" lean-forward="false" selection-start-line="0" selection-start-column="288205" selection-end-line="0" selection-end-column="288205" />
           <folding />
         </state>
       </provider>
@@ -649,24 +630,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/json_file.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="15" lean-forward="false" selection-start-line="0" selection-start-column="15" selection-end-line="0" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/book_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-360">
-          <caret line="36" column="27" lean-forward="true" selection-start-line="36" selection-start-column="27" selection-end-line="36" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2017.2/system/python_stubs/-1120166012/numpy/core/multiarray.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
@@ -693,7 +656,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_relu.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
+        <state relative-caret-position="374">
           <caret line="36" column="12" lean-forward="false" selection-start-line="36" selection-start-column="12" selection-end-line="36" selection-end-column="12" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -701,44 +664,118 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/visualization.py">
+    <entry file="file://$PROJECT_DIR$/netwrok_info.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
-          <caret line="105" column="18" lean-forward="true" selection-start-line="105" selection-start-column="18" selection-end-line="105" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#36#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/baseyan_set.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="808">
+          <caret line="0" column="292932" lean-forward="false" selection-start-line="0" selection-start-column="292928" selection-end-line="0" selection-end-column="292932" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wordtoindex.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/word_prob.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="0" column="178510" lean-forward="false" selection-start-line="0" selection-start-column="178510" selection-end-line="0" selection-end-column="178510" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/weights.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7665">
+          <caret line="0" column="1859" lean-forward="true" selection-start-line="0" selection-start-column="1859" selection-end-line="0" selection-end-column="1859" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/genretoindex.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GenreClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="400" column="0" lean-forward="true" selection-start-line="400" selection-start-column="0" selection-end-line="400" selection-end-column="0" />
+        <state relative-caret-position="334">
+          <caret line="432" column="0" lean-forward="false" selection-start-line="432" selection-start-column="0" selection-end-line="432" selection-end-column="0" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
             <element signature="e#238#1835#0" expanded="false" />
             <element signature="e#5606#5887#0" expanded="false" />
             <element signature="e#6579#10100#0" expanded="false" />
-            <element signature="e#11440#13173#0" expanded="false" />
-            <element signature="e#13249#17108#0" expanded="false" />
-            <element signature="e#17166#18851#0" expanded="false" />
-            <element signature="e#18931#23425#0" expanded="false" />
-            <element signature="e#23482#24400#0" expanded="false" />
-            <element signature="e#24494#25131#0" expanded="false" />
-            <element signature="e#25216#25986#0" expanded="false" />
-            <element signature="e#26076#26849#0" expanded="false" />
+            <element signature="e#12954#14687#0" expanded="false" />
+            <element signature="e#14763#18622#0" expanded="false" />
+            <element signature="e#18680#20365#0" expanded="false" />
+            <element signature="e#20445#24939#0" expanded="false" />
+            <element signature="e#24996#25914#0" expanded="false" />
+            <element signature="e#27090#27860#0" expanded="false" />
+            <element signature="e#27950#28723#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="67" column="31" lean-forward="false" selection-start-line="67" selection-start-column="31" selection-end-line="67" selection-end-column="31" />
+        <state relative-caret-position="194">
+          <caret line="33" column="4" lean-forward="true" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/json_file.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualization.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="717">
+          <caret line="105" column="18" lean-forward="true" selection-start-line="105" selection-start-column="18" selection-end-line="105" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/book_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="101" column="29" lean-forward="true" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#6708#9539#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/book_data.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1800">
+          <caret line="0" column="6734" lean-forward="false" selection-start-line="0" selection-start-column="6731" selection-end-line="0" selection-end-column="6734" />
+          <folding />
         </state>
       </provider>
     </entry>

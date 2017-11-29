@@ -1,4 +1,5 @@
 import book_data
+import numpy
 
 def list_to_json(list, func):
     out_str = "["
@@ -25,6 +26,7 @@ def book_to_json(book) :
     book_dict["error_code"] = book.error_code
     book_dict["search_accuracy"] = book.search_accuracy
     book_dict["searched_title"] = book.searched_title
+    book_dict["genre"] = book.genre
 
     return dict_to_json(book_dict, data_to_json)
 
@@ -52,6 +54,8 @@ def data_to_json(data) :
         return data.__str__()
     elif type(data) is dict :
         return dict_to_json(data, data_to_json)
+    elif type(data) is numpy.float64 :
+        return data.__str__()
     else :
         print("type은 {}".format(type(data)))
         return '""'
