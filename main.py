@@ -64,6 +64,8 @@ if __name__ == "__main__" :
         elif choice == '5' :
             print("프로그램을 종료합니다")
             storer.export_data()
+            if(g is not None) :
+                g.export_data()
             open_program = False
         elif choice == '6' :
             visualization.book_published_by_month(storer)
@@ -131,3 +133,5 @@ if __name__ == "__main__" :
                 print(genre_prob)
             else :
                 print("g is None")
+        elif choice == '12' :
+            print("new choice")

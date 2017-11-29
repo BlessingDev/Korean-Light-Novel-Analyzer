@@ -230,12 +230,6 @@ class bayes_GenreClassifier :
             temp = book_path.read_text(encoding='utf-16')
             self.genre_list = json.loads(temp, strict=False)
 
-def sigmoid(t) :
-    return 1 / (1 + math.exp(-t))
-
-def dot(x, y) :
-    return sum([x_i * y_i for x_i, y_i in zip(x, y)])
-
 class neuron :
     def __init__(self, weights) :
         self.weights = []
@@ -378,6 +372,32 @@ class neuron_classifier :
         self.cuda_func = SourceModule(template)
 
         print("neuron_classifier __init__")
+
+    def export_data(self) :
+        weights = [[], []]
+        for neuron in self.neuron_layers[0] :
+            weights[0].extend(neuron.weights)
+        for neuron in self.neuron_layers[1] :
+            weights[1].extend(neuron.weights)
+
+        weights_path = pathlib.Path('weights.json')
+        weights_path.write_text(json_file.list_to_json(weights, json_file.data_to_json),
+                                'utf-8')
+
+        network_info = pathlib.Path('netwrok_info.json')
+        network_info.write_text(json_file.list_to_json(
+            [self.input_size, self.hidden_size, self.genre_num], json_file.data_to_json),
+            encoding='utf-8')
+
+        wordtoindex_dic_path = pathlib.Path('wordtoindex.json')
+        wordtoindex_dic_path.write_text(json_file.dict_to_json(self.wordtoindex_dic, json_file.data_to_json),
+                                        encoding='utf-8')
+
+        genretoindex_dic_path = pathlib.Path('genretoindex.json')
+        genretoindex_dic_path.write_text(json_file.dict_to_json(self.genretoindex_dic,
+                                                                json_file.data_to_json),
+                                         encoding='utf-8')
+
 
     def feed_forward(self, input_vector) :
         outputs = []
