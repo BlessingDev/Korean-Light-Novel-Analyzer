@@ -29,9 +29,9 @@ if __name__ == "__main__" :
     open_program = True
     storer = book_data.book_storer()
     v = visualization.WordFrequencyVisualizer()
-    bg = GenreClassifier.bayes_GenreClassifier()
-    bg.import_data()
     storer.import_data()
+    g = GenreClassifier.neuron_classifier(1, 1, 1)
+    g.import_data()
 
     while(open_program) :
         show_menu()
@@ -63,16 +63,18 @@ if __name__ == "__main__" :
         elif choice == '5' :
             print("프로그램을 종료합니다")
             storer.export_data()
+            if(g is not None) :
+                g.export_data()
             open_program = False
         elif choice == '6' :
-            visualization.show_search_accuracy(storer, renew=False)
+            visualization.book_published_by_month(storer)
         elif choice == '7' :
             usable_set = [{"book" : t_set["book"], "genre" : t_set["genre"]} for t_set in storer.training_set
                      if len(t_set["genre"]) > 0]
 
-            visualization.word_count_pareto(usable_set, k=0.7)
+            visualization.word_count_pareto(usable_set, k=0.5)
         elif choice == '8' :
-            g = GenreClassifier.neuron_classifier(input_size=1391, num_hidden=500, output_size=len(bg.genre_list.keys()))
+            g = GenreClassifier.neuron_classifier(511, 300, 1)
 
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
@@ -82,10 +84,51 @@ if __name__ == "__main__" :
             print(train_data)
             print(test_data)
 
-            g.train_with_book(train_data, bg.genre_list, n=1000)
+            g.train_with_book(train_data, n=5000, error = 5)
 
             for test in test_data :
                 genre_prob = g.classify(test["book"])
 
                 print(genre_prob)
                 print(test["genre"])
+        elif choice == '9':
+            crawler.crawl_certain_time('2012년 7월', '2012년 7월', storer)
+
+        elif choice == '10' :
+            g = GenreClassifier.neuron_classifier(input_size = 2, num_hidden = 30, output_size=1)
+
+            input_vectors = [[0, 0], [1, 1], [1, 0], [0, 1]]
+            target_vectors = [[0], [0], [1], [1]]
+
+            while(True):
+                choice = input("1. 결과보기 2. 학습 3. 종료")
+
+                if choice == '1' :
+                    results = [g.feed_forward_relu(input_vectors[i]) for i in range(4)]
+
+                    print("{}: {}".format(input_vectors[0], results[0][-1]))
+                    print("{}: {}".format(input_vectors[1], results[1][-1]))
+                    print("{}: {}".format(input_vectors[2], results[2][-1]))
+                    print("{}: {}".format(input_vectors[3], results[3][-1]))
+
+                    deviation = sum([(result[-1][0] - target_vectors[i][0])**2 for i, result in enumerate(results)])
+                    print("deviation is {}".format(deviation))
+                    print()
+                elif choice == '2' :
+                    g.train_relu(input_vectors, target_vectors)
+                elif choice == '3' :
+                    break
+        elif choice == '11' :
+            if g is not None :
+                ordinary_books = storer.get_ordinary_book()
+
+                book_idx = input("장르를 분류하고 싶은 책의 인덱스 입력 ")
+                book_idx = int(book_idx)
+                book_idx = book_idx % len(ordinary_books)
+
+                genre_prob = g.classify(ordinary_books[book_idx])
+                print(genre_prob)
+            else :
+                print("g is None")
+        elif choice == '12' :
+            storer.classify_book_genre(g)

@@ -18,26 +18,48 @@ def get_html(url) :
     return html
 
 
-def crawl_whole_korean_novel() :
-    pages = []
-    books = book_data.book_storer()
-    title_list = list()
-    title_to_date = dict()
+def crawl_entire_novel_page() :
+    pages = {}
 
-    c = get_html('https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%ED%8A%B8%20%EB%85%B8%EB%B2%A8/%EC%8B%A0%EA%B0%84%20%EB%AA%A9%EB%A1%9D')
-
+    c = get_html(
+        'https://namu.wiki/w/%EB%9D%BC%EC%9D%B4%ED%8A%B8%20%EB%85%B8%EB%B2%A8/%EC%8B%A0%EA%B0%84%20%EB%AA%A9%EB%A1%9D')
 
     soup = BeautifulSoup(c)
 
-    for td in soup('td') :
-        for a in td('a') :
-            print(a.get_text())
-
+    for td in soup('td'):
+        for a in td('a'):
             if ('class' in a.attrs
                 and 'wiki-link-internal' in a['class']
-                and a.get_text()[-1] == '월') :
-                print("page added")
-                pages.append('https://namu.wiki' + a['href'])
+                and a.get_text()[-1] == '월'):
+
+                date = ""
+                for parent in a.parents :
+                    if parent.name == 'div' and\
+                        'class' in parent.attrs and\
+                        'wiki-heading-content' in parent['class'] :
+
+                        for sibling in parent.previous_siblings :
+                            if sibling.name == 'h2' :
+                                for sa in sibling('a') :
+                                    if 'title' in sa.attrs :
+                                        date = sa.get_text()
+                                        date += " "
+                                        break
+
+                            if date != "" :
+                                break
+
+                    if date != "" :
+                        break
+
+                date += a.get_text()
+
+                pages[date] = ('https://namu.wiki' + a['href'])
+
+    return pages
+
+def crawl_certain_date_novel(url, date) :
+    title_list = list()
 
     ignore_word = [
         '최근 변경',
@@ -64,85 +86,110 @@ def crawl_whole_korean_novel() :
         '라이트 노벨/신간 목록'
     ]
 
-    for page in pages :
-        c = get_html(page)
+    c = get_html(url)
 
-        i = 0
-        while c is None :
-            i += 1
-            c = get_html(page)
-            print("{}회 재시도".format(i))
+    i = 0
+    while c is None:
+        i += 1
+        c = get_html(url)
+        print("{}회 재시도".format(i))
 
-        soup = BeautifulSoup(c)
+    soup = BeautifulSoup(c)
 
-        date = ""
+    need_japan_check = False
+    for h2 in soup.find_all("h2"):
+        if h2.get_text() == "1. 대한민국[편집]":
+            need_japan_check = True
+            break
 
-        need_japan_check = False
-        for h2 in soup.find_all("h2"):
-            if h2.get_text() == "1. 대한민국[편집]":
-                need_japan_check = True
-                break
+    for div in soup('div'):
 
-        for td in soup('td') :
-            for st in td('strong') :
-                date = st.get_text().strip()
+        if ('class' in div.attrs and
+                    'wiki-inner-content' in div['class']):
 
-                if not (date in ignore_word):
-                    date = date.split('/')[1]
+            for li in div('li'):
 
-                    #print(date)
-                    #print()
+                if need_japan_check:
+                    japan_check = False
 
-        for div in soup('div') :
+                    for parent in li.parents:
+                        if parent.name == "ul":
+                            for sibling in parent.previous_siblings:
+                                if sibling.name == 'h2':
+                                    if sibling.get_text() != '1. 대한민국[편집]':
+                                        # print('일본 체크 {0}'.format(sibling.get_text()))
+                                        japan_check = True
+                                        break
 
-            if ('class' in div.attrs and
-                'wiki-inner-content' in div['class']) :
+                    if japan_check:
+                        break
 
-                for li in div('li') :
+                book_title = li.get_text().strip()
 
-                    if need_japan_check :
-                        japan_check = False
+                if book_title != "" and (not (book_title in ignore_word)):
+                    if '[' in book_title:
+                        list_a = book_title.split('[')
 
-                        for parent in li.parents:
-                            if parent.name == "ul":
-                                for sibling in parent.previous_siblings:
-                                    if sibling.name == 'h2':
-                                        if sibling.get_text() != '1. 대한민국[편집]':
-                                            #print('일본 체크 {0}'.format(sibling.get_text()))
-                                            japan_check = True
-                                            break
+                        book_title = list_a[0]
 
-                        if japan_check:
-                            break
+                    if '(' in book_title:
+                        list_a = book_title.split('(')
 
-                    book_title = li.get_text().strip()
+                        book_title = list_a[0]
 
-                    if book_title != "" and (not (book_title in ignore_word)) :
-                        if '[' in book_title :
-                            list_a = book_title.split('[')
+                    if book_title[-1] == '권':
+                        book_title = book_title.split('권')[0]
 
-                            book_title = list_a[0]
+                    book_title = nlp_module.preprocess_title(book_title)
+                    title_list.extend(book_title)
 
-                        if '(' in book_title :
-                            list_a = book_title.split('(')
+    print("{0} 크롤링 종료".format(date))
 
-                            book_title = list_a[0]
+    return title_list
 
-                        if book_title[-1] == '권' :
-                            book_title = book_title.split('권')[0]
+def crawl_whole_korean_novel() :
+    books = book_data.book_storer()
+    title_list = list()
+    title_to_date = dict()
 
-                        book_title = nlp_module.preprocess_title(book_title)
-                        title_list.extend(book_title)
-                        for x in book_title :
-                            title_to_date[x] = date
+    page_dic = crawl_entire_novel_page()
 
-
-        print("{0} 크롤링 종료".format(date))
-
-
-
-        print()
+    for date in page_dic.keys() :
+        certain_list = crawl_certain_date_novel(page_dic[date], date)
+        title_list.extend(certain_list)
+        title_to_date[date] = certain_list
 
     books.add_by_tl_td(title_list, title_to_date)
 
     return books
+
+def crawl_certain_time(start_time, end_time, book_storer) :
+    pages = []
+    page_dic = crawl_entire_novel_page()
+
+    if start_time in page_dic.keys() and\
+        end_time in page_dic.keys() :
+
+
+        if start_time == end_time :
+            pages.extend(crawl_certain_date_novel(page_dic[start_time], start_time))
+        else:
+            start_year = int(start_time.split('년')[0])
+            start_month = int(start_time.split()[1].split('월')[0])
+
+            end_year = int(end_time.split('년')[0])
+            end_month = int(end_time.split()[1].split('월')[0])
+            if (start_year == end_year and start_month <= end_month) or\
+                start_year < end_year :
+                for date in page_dic.keys() :
+                    cur_year = int(date.split('년')[0])
+                    cur_month = int(date.split()[1].split('월')[0])
+
+                    if (cur_year > start_year and cur_year < end_year) or\
+                        (cur_year == start_year and cur_year == end_year and
+                        cur_month >= start_month and cur_month <= end_month) or\
+                        (cur_year == start_year and cur_month >= start_month) or\
+                        (cur_year == end_year and cur_month <= end_month) :
+                        pages.extend(crawl_certain_date_novel(page_dic[date], date))
+
+    print(pages)

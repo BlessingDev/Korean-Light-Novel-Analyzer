@@ -98,6 +98,19 @@ class book_storer:
 
         return self.random_set
 
+    def classify_book_genre(self, g) :
+        for book in self.book_list :
+            genres = []
+            if book.error_code == 0 :
+                genre_prob = g.classify(book)
+
+                for genre, prob in genre_prob :
+                    if prob >= 0.0005 :
+                        genres.append(genre)
+
+                book.genre = genres
+                print(genres)
+
 
 
 class book_data:
@@ -114,6 +127,7 @@ class book_data:
         self.pubdate = ""
         self.error_code = 0
         self.search_accuracy = 0.0
+        self.genre = []
 
     def search_for_book(self, title, category = True) :
         self.searched_title = title
@@ -265,6 +279,7 @@ class book_data:
         self.description = dict["description"]
         self.error_code = int(dict["error_code"])
         self.search_accuracy = dict["search_accuracy"]
+        #self.genre = dict["genre"]
 
         return self
 

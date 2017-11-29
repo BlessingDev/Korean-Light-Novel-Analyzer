@@ -108,3 +108,16 @@ def word_count_pareto(training_set, k = 0.9) :
 
     fig.canvas.set_window_title('Word Count Pareto')
     plt.show()
+
+def book_published_by_month(storer) :
+    num_per_date = [len(storer.date_to_book[x]) for x in storer.date_to_book.keys()]
+
+    xs = [i + 0.1 for i, _ in enumerate(storer.date_to_book.keys())]
+
+    plt.bar(xs, num_per_date)
+    plt.ylabel("권수")
+    plt.xlabel("년-월")
+
+    plt.xticks([i + 0.1 for i, _ in enumerate(storer.date_to_book.keys())],
+               [x for x in storer.date_to_book.keys()])
+    plt.show()
