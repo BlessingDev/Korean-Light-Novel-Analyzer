@@ -279,7 +279,9 @@ class book_data:
         self.description = dict["description"]
         self.error_code = int(dict["error_code"])
         self.search_accuracy = dict["search_accuracy"]
-        #self.genre = dict["genre"]
+
+        if 'genre' in dict.keys() :
+            self.genre = dict['genre']
 
         return self
 

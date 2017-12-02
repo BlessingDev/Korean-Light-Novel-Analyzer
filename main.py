@@ -1,6 +1,6 @@
 import random
 
-import book_data, crawler, visualization, GenreClassifier
+import book_data, crawler, visualization, GenreClassifier, book_cluster
 
 #books = crawler.crawl_korean_novel_page()
 
@@ -24,6 +24,52 @@ def split_data(li, rate) :
     print(border)
     return li[:border], li[border:]
 
+def classify_genre(g, storer) :
+    if g is not None:
+        ordinary_books = storer.get_ordinary_book()
+
+        book_idx = input("장르를 분류하고 싶은 책의 인덱스 입력 ")
+        book_idx = int(book_idx)
+        book_idx = book_idx % len(ordinary_books)
+
+        genre_prob = g.classify(ordinary_books[book_idx])
+        print(genre_prob)
+    else:
+        print("g is None")
+
+def networktest() :
+    g = GenreClassifier.neuron_classifier(input_size=2, num_hidden=30, output_size=1)
+
+    input_vectors = [[0, 0], [1, 1], [1, 0], [0, 1]]
+    target_vectors = [[0], [0], [1], [1]]
+
+    while (True):
+        choice = input("1. 결과보기 2. 학습 3. 종료")
+
+        if choice == '1':
+            results = [g.feed_forward_relu(input_vectors[i]) for i in range(4)]
+
+            print("{}: {}".format(input_vectors[0], results[0][-1]))
+            print("{}: {}".format(input_vectors[1], results[1][-1]))
+            print("{}: {}".format(input_vectors[2], results[2][-1]))
+            print("{}: {}".format(input_vectors[3], results[3][-1]))
+
+            deviation = sum([(result[-1][0] - target_vectors[i][0]) ** 2 for i, result in enumerate(results)])
+            print("deviation is {}".format(deviation))
+            print()
+        elif choice == '2':
+            g.train_relu(input_vectors, target_vectors)
+        elif choice == '3':
+            break
+
+def cluster_book(bc, storer) :
+    bc.set_real_dist(storer.get_ordinary_book())
+    print("dist 구하기 종료")
+    bc.scaledown()
+    print("2D 투영 종료")
+
+    bc.visualize()
+    print("이미지 출력 종료")
 
 if __name__ == "__main__" :
     open_program = True
@@ -32,6 +78,7 @@ if __name__ == "__main__" :
     storer.import_data()
     g = GenreClassifier.neuron_classifier(1, 1, 1)
     g.import_data()
+    bc = book_cluster.BookCluster()
 
     while(open_program) :
         show_menu()
@@ -95,40 +142,9 @@ if __name__ == "__main__" :
             crawler.crawl_certain_time('2012년 7월', '2012년 7월', storer)
 
         elif choice == '10' :
-            g = GenreClassifier.neuron_classifier(input_size = 2, num_hidden = 30, output_size=1)
+            cluster_book(bc, storer)
 
-            input_vectors = [[0, 0], [1, 1], [1, 0], [0, 1]]
-            target_vectors = [[0], [0], [1], [1]]
-
-            while(True):
-                choice = input("1. 결과보기 2. 학습 3. 종료")
-
-                if choice == '1' :
-                    results = [g.feed_forward_relu(input_vectors[i]) for i in range(4)]
-
-                    print("{}: {}".format(input_vectors[0], results[0][-1]))
-                    print("{}: {}".format(input_vectors[1], results[1][-1]))
-                    print("{}: {}".format(input_vectors[2], results[2][-1]))
-                    print("{}: {}".format(input_vectors[3], results[3][-1]))
-
-                    deviation = sum([(result[-1][0] - target_vectors[i][0])**2 for i, result in enumerate(results)])
-                    print("deviation is {}".format(deviation))
-                    print()
-                elif choice == '2' :
-                    g.train_relu(input_vectors, target_vectors)
-                elif choice == '3' :
-                    break
         elif choice == '11' :
-            if g is not None :
-                ordinary_books = storer.get_ordinary_book()
-
-                book_idx = input("장르를 분류하고 싶은 책의 인덱스 입력 ")
-                book_idx = int(book_idx)
-                book_idx = book_idx % len(ordinary_books)
-
-                genre_prob = g.classify(ordinary_books[book_idx])
-                print(genre_prob)
-            else :
-                print("g is None")
+            classify_genre(g, storer)
         elif choice == '12' :
             storer.classify_book_genre(g)

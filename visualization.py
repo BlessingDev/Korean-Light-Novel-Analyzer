@@ -2,10 +2,13 @@ from matplotlib import pyplot as plt
 import matplotlib.font_manager as fm
 import matplotlib
 from collections import Counter, defaultdict
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
+
 
 import GenreClassifier, paretochart
 
-font_location = "NanumGothic.ttf"
+font_location = "HANDotum.ttf"
 font_name = fm.FontProperties(fname = font_location).get_name()
 matplotlib.rc('font', family=font_name)
 
@@ -114,10 +117,38 @@ def book_published_by_month(storer) :
 
     xs = [i + 0.1 for i, _ in enumerate(storer.date_to_book.keys())]
 
-    plt.bar(xs, num_per_date)
-    plt.ylabel("권수")
-    plt.xlabel("년-월")
+    ind = np.arange(len(num_per_date)) * 2
+    width = 0.7
 
-    plt.xticks([i + 0.1 for i, _ in enumerate(storer.date_to_book.keys())],
-               [x for x in storer.date_to_book.keys()])
+    fig, ax = plt.subplots(figsize = (16, 4), dpi = 100)
+    rects1 = ax.bar(ind, num_per_date, width, color='b', align = 'edge')
+
+    ax.set_title("라이트 노벨 월별 출간 권수 변화")
+    ax.set_ylabel("권수")
+    ax.set_xlabel("20OO년\nOO월")
+    ax.set_xticks(ind + width / 2)
+
+    date_list = [x.split()[0][2:] + "\n" + x.split()[1]
+                 for x in storer.date_to_book.keys()]
+    ax.set_xticklabels(date_list, size = 'small')
+
     plt.show()
+
+def draw2d(data, labels, imagerate = 1000, jpeg = 'mds2d.jpg') :
+
+    font = ImageFont.truetype('HANDotum.ttf', size=15)
+
+    xlist = [data[i][0] for i in range(len(data))]
+    ylist = [data[i][1] for i in range(len(data))]
+
+    xlen = max(xlist) - min(xlist)
+    ylen = max(ylist) - min(ylist)
+
+    img = Image.new('RGB', (int(xlen) * imagerate, int(ylen) * imagerate), (255, 255, 255))
+    draw = ImageDraw.Draw(img)
+
+    for i in range(len(data)) :
+        x = (data[i][0] + xlen / 2) * imagerate
+        y = (data[i][1] + ylen / 2) * imagerate
+        draw.text((x, y), "\"" + labels[i] + "\"", (0, 0, 0), font = font)
+    img.save(jpeg, 'JPEG')
