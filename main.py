@@ -1,6 +1,6 @@
 import random
 
-import book_data, crawler, visualization, GenreClassifier, book_cluster
+import book_data, crawler, visualization, GenreClassifier, book_cluster, book_searcher
 
 #books = crawler.crawl_korean_novel_page()
 
@@ -65,11 +65,35 @@ def networktest() :
 def cluster_book(bc, storer) :
     bc.set_real_dist(storer.get_ordinary_book())
     print("dist 구하기 종료")
-    bc.scaledown()
+    bc.scaledown(rate=0.0001, trainn = 5000)
     print("2D 투영 종료")
 
     bc.visualize()
     print("이미지 출력 종료")
+
+def book_search(bs, storer, n=10) :
+    title = input("검색할 책의 제목을 적어주세요 ")
+
+    searchedlist = bs.search_book_by_title(title, n=n)
+
+    booklist = storer.get_ordinary_book()
+
+    # GUI로 변경시에 이 부분을 함수로 만들어 리스트로 보여주게 할 것
+    print(["{} : {}회 등장".format(booklist[i].title, n) for i, n in searchedlist])
+
+    idx = input("선택할 책 인덱스(0~{}) ".format(n - 1))
+    idx = int(idx)
+
+    return (searchedlist[idx][0], booklist[searchedlist[idx][0]])
+
+def get_close_book(bc, bs, storer) :
+    idx, book = book_search(bs, storer)
+
+    closelist = bc.get_close_books(idx)
+    booklist = storer.get_ordinary_book()
+
+    if closelist is not None :
+        print([(booklist[i].title, dist) for i, dist in closelist])
 
 if __name__ == "__main__" :
     open_program = True
@@ -79,6 +103,8 @@ if __name__ == "__main__" :
     g = GenreClassifier.neuron_classifier(1, 1, 1)
     g.import_data()
     bc = book_cluster.BookCluster()
+    bs = book_searcher.BookSearcher()
+    bs.init_word_index(storer.get_ordinary_book())
 
     while(open_program) :
         show_menu()
@@ -139,12 +165,14 @@ if __name__ == "__main__" :
                 print(genre_prob)
                 print(test["genre"])
         elif choice == '9':
-            crawler.crawl_certain_time('2012년 7월', '2012년 7월', storer)
+            i, book = book_search(bs, storer, n=20)
+            print("idx = " + i.__str__())
+            print(book.__str__())
 
         elif choice == '10' :
             cluster_book(bc, storer)
 
         elif choice == '11' :
-            classify_genre(g, storer)
+            get_close_book(bc, bs, storer)
         elif choice == '12' :
             storer.classify_book_genre(g)

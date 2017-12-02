@@ -1,10 +1,10 @@
-import random, math
+import random, math, pathlib, json_file
 
 import visualization
 
 def distance_book(book1, book2) :
     '''
-    가까울 수록 0에 가깝고 멀수록 1에 가깝다.
+
     :param book1:
     :param book2:
     :return:
@@ -21,7 +21,7 @@ def distance_book(book1, book2) :
     genre_distance += abs(len(book1.genre) - len(book2.genre))
 
     author_distance = 0 # 작가 거리
-    author_weight = 3   # 작가 가중치
+    author_weight = 5   # 작가 가중치
 
     if book1.author != book2.author :
         author_distance += 1
@@ -29,7 +29,16 @@ def distance_book(book1, book2) :
     maxdis = (len(book1.genre) + len(book2.genre)
               + abs(len(book1.genre) - len(book2.genre))) * genre_weight + author_weight
 
-    return 0.1 + genre_distance * genre_weight + author_distance * author_weight
+    dis = genre_distance * genre_weight + author_distance * author_weight
+    if dis == 0 and book1 is not book2:
+        print("dis is 0")
+        print(book1.title)
+        print(book1.genre)
+        print(book2.title)
+        print(book2.genre)
+        dis = 0.1
+
+    return dis / maxdis
 
 class BookCluster :
     def __init__(self):
@@ -58,12 +67,12 @@ class BookCluster :
             dist_list = self.real_dist[book_idx]
             dist_list_idx = [(i, dist) for i, dist in enumerate(dist_list)]
 
-            return sorted(dist_list_idx, key = lambda x : x[1], reverse = True)[:n]
+            return sorted(dist_list_idx, key = lambda x : x[1])[1:n + 1]
         else :
             print("거리가 계산되지 않음")
             return None
 
-    def scaledown(self, rate=0.01):
+    def scaledown(self, trainn = 1000, rate=0.01):
         n = self.data_size
         realdist = self.real_dist
 
@@ -74,7 +83,7 @@ class BookCluster :
         fakedist = [[0.0 for j in range(n)] for i in range(n)]
 
         lasterror = None
-        for m in range(0, 1000):
+        for m in range(0, trainn):
             # 투영된 거리를 구함
             for i in range(n):
                 for j in range(n):
@@ -96,7 +105,7 @@ class BookCluster :
                     grad[k][1] += ((loc[k][1] - loc[j][1]) / fakedist[j][k]) * errorterm
 
                     totalerror += abs(errorterm)
-                print("totalerror = " + totalerror.__str__())
+            print("totalerror = " + totalerror.__str__())
 
             if lasterror and lasterror < totalerror: break
             lasterror = totalerror
@@ -108,5 +117,9 @@ class BookCluster :
         self.coords = loc
         return loc
 
+    def export_data(self) :
+        coordpath = pathlib.Path('coordinates.json')
+        
+
     def visualize(self) :
-        visualization.draw2d(self.coords, self.title_list, imagerate=200, jpeg = 'book_relavant.jpg')
+        visualization.draw2d(self.coords, self.title_list, imagerate=1000, jpeg = 'book_relavant.jpg')

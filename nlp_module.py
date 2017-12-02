@@ -1,6 +1,6 @@
 from konlpy.tag import Kkma, Twitter
 
-def natural_proccess_sentence(sentence) :
+def pos_Twitter(sentence) :
     nlp = Twitter()
     result = nlp.pos(phrase=sentence)
 
@@ -11,10 +11,6 @@ def pos_Kkma(sentence) :
     result = nlp.pos(sentence)
 
     return result
-
-
-def title_distinguisher(title) :
-    result = natural_proccess_sentence(title)
 
 def get_accuracy(title_list, ori_list) :
 
@@ -66,8 +62,8 @@ def get_accuracy(title_list, ori_list) :
     return rate
 
 def search_accsuracy_examine(book) :
-    ori_nlp = natural_proccess_sentence(book.ori_title)
-    title_nlp = natural_proccess_sentence(book.title)
+    ori_nlp = pos_Twitter(book.ori_title)
+    title_nlp = pos_Twitter(book.title)
 
     title_list = list()
     ori_list = list()

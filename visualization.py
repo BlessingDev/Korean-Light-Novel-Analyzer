@@ -148,7 +148,7 @@ def draw2d(data, labels, imagerate = 1000, jpeg = 'mds2d.jpg') :
     draw = ImageDraw.Draw(img)
 
     for i in range(len(data)) :
-        x = (data[i][0] + xlen / 2) * imagerate
-        y = (data[i][1] + ylen / 2) * imagerate
+        x = (data[i][0] + abs(min(xlist))) * imagerate
+        y = (data[i][1] + abs(min(ylist))) * imagerate
         draw.text((x, y), "\"" + labels[i] + "\"", (0, 0, 0), font = font)
     img.save(jpeg, 'JPEG')
