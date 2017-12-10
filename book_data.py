@@ -19,7 +19,7 @@ class book_storer:
         book_path = pathlib.Path('book_data.json')
         if book_path.exists() :
             temp = book_path.read_text(encoding='utf-16')
-            book_list = json.loads(temp, strict=False)
+            book_list = json.loads(temp, encoding='utf-16', strict=False)
 
             for book in book_list :
                 #print(type(book))
@@ -30,7 +30,7 @@ class book_storer:
         book_path = pathlib.Path('date_to_book.json')
         if book_path.exists() :
             temp = book_path.read_text(encoding='utf-16')
-            book_dict = json.loads(temp, strict=False)
+            book_dict = json.loads(temp, encoding='utf-16', strict=False)
 
             for key in book_dict.keys():
                 new_list = list()
@@ -58,7 +58,9 @@ class book_storer:
     def add_by_tl_td(self, title_list, title_to_date):
         self.date_to_book = defaultdict(list)
 
-        for title in title_list :
+        for idx in range(len(title_list)) :
+            title = title_list[idx]
+            print("{}/{}".format(idx, len(title_list)))
             book = book_data()
             book.from_title(title)
             self.book_list.append(book)
@@ -76,6 +78,9 @@ class book_storer:
 
     def get_title_list(self) :
         return [x.title for x in self.book_list]
+
+    def get_orititle_list(self) :
+        return [x.ori_title for x in self.book_list]
 
     def get_error_codes(self) :
         return [x.error_code for x in self.book_list]
@@ -101,7 +106,7 @@ class book_storer:
     def classify_book_genre(self, g) :
         for book in self.book_list :
             genres = []
-            if book.error_code == 0 :
+            if book.error_code == 0 and book.genre == []:
                 genre_prob = g.classify(book)
 
                 for genre, prob in genre_prob :
@@ -111,6 +116,67 @@ class book_storer:
                 book.genre = genres
                 print(genres)
 
+    def download_images(self) :
+        for book in self.get_ordinary_book() :
+            iconpath = 'images\\' + book.title + '_icon.' +\
+                                book.image_url.split('.')[-1].split('?')[0]
+
+
+            ignore_word = [
+                '?',
+                '/',
+                ':'
+            ]
+            for word in ignore_word :
+                iconpath = iconpath.replace(word, '')
+
+            if pathlib.Path(iconpath).exists() :
+                print(book.title + " 이미 받아짐")
+                continue
+
+            try:
+                request.urlretrieve(book.image_url, iconpath)
+                print(book.title + ' icon 다운로드됨')
+            except:
+                print(book.title + " icon 다운로드에 Error")
+
+            imagepath = 'images\\' + book.title + '_image.' +\
+                                book.image_url.split('.')[-1].split('?')[0]
+            for word in ignore_word :
+                imagepath = imagepath.replace(word, '')
+
+            try:
+                request.urlretrieve(book.image_url.split('?')[0], imagepath)
+                print(book.title + ' image 다운로드됨')
+            except:
+                print(book.title + " image 다운로드에 Error")
+
+    def add_books_by_title(self, bookdate) :
+        titlelist = self.get_orititle_list()
+
+        for idx in range(len(bookdate)) :
+            btlist = bookdate[idx][1]
+            dt = bookdate[idx][0]
+            for bt in btlist :
+                if bt in titlelist :
+                    print('{}가 갱신됨'.format(bt))
+                    bidx = titlelist.index(bt)
+                    b = book_data()
+                    b.from_title(bt)
+                    self.book_list[bidx] = b
+
+                    dtitle = [x.ori_title for x in self.date_to_book[dt]]
+                    if bt in dtitle :
+                        bdidx = dtitle.index(bt)
+                        self.date_to_book[dt][bdidx] = self.book_list[bidx]
+                    else :
+                        print('왜 {}는 책 리스트에는 있는데 {} 출판 책 리스트에는 없는거지?'.format(bt, dt))
+                        self.date_to_book[dt].append(self.book_list[bidx])
+                else :
+                    b = book_data()
+                    b.from_title(bt)
+                    self.book_list.append(b)
+                    self.date_to_book[dt].append(b)
 
 
 class book_data:
@@ -179,7 +245,7 @@ class book_data:
 
                     i += 1
 
-                if highest_accuracy >= 0.6 :
+                if highest_accuracy >= 0.3 :
                     self.search_accuracy = highest_accuracy
                     return book_dict['items'][highest_i]
                 else :
@@ -191,6 +257,23 @@ class book_data:
                 self.search_accuracy = 0.0
                 return None
 
+    def get_data_from_searched_item(self, book_item) :
+        self.title = book_item['title']
+        self.image_url = book_item['image']
+        self.author = book_item['author']
+        self.publisher = book_item['publisher']
+        self.isbn = book_item['isbn']
+        self.pubdate = book_item['pubdate']
+        self.description = ''
+        self.translator = ''
+
+        link = book_item['link']
+        self.crawl_description(link)
+
+        self.title = self.title.replace('<b>', '').replace('</b>', '')
+
+        print("검색된 책 제목: {}".format(self.title))
+
     def from_title(self, title) :
         self.ori_title = title
 
@@ -199,22 +282,7 @@ class book_data:
         item = self.search_for_book(title)
 
         if (item is not None) :
-            self.title = item['title']
-            self.image_url = item['image']
-            self.author = item['author']
-            self.publisher = item['publisher']
-            self.isbn = item['isbn']
-            self.pubdate = item['pubdate']
-            self.description = ''
-            self.translator = ''
-
-            link = item['link']
-            self.crawl_description(link)
-
-            self.title = self.title.replace('<b>', '').replace('</b>', '')
-            self.title.replace('\ufeff', '')
-            self.image_url.replace('\ufeff', '')
-            print("검색된 책 제목: {}".format(self.title))
+            self.get_data_from_searched_item(item)
         else :
             titles = nlp_module.make_alterative_search_set(title)
             print("alternative set made {}".format(titles))
@@ -222,21 +290,7 @@ class book_data:
                 item = self.search_for_book(temp)
 
                 if not (item is None):
-                    self.image_url = item['image']
-                    self.author = item['author']
-                    self.publisher = item['publisher']
-                    self.isbn = item['isbn']
-                    self.pubdate = item['pubdate']
-                    self.description = ''
-                    self.translator = ''
-
-                    link = item['link']
-                    self.crawl_description(link)
-
-                    self.title = self.title.replace('<b>', '').replace('</b>', '')
-                    self.title.replace('\ufeff', '')
-                    self.image_url.replace('\ufeff', '')
-                    print("검색된 책 제목: {}".format(self.title))
+                    self.get_data_from_searched_item(item)
 
                     if self.search_accuracy >= 0.8 :
                         break
@@ -245,21 +299,7 @@ class book_data:
                 item = self.search_for_book(self.ori_title, category=False)
 
                 if not (item is None):
-                    self.image_url = item['image']
-                    self.author = item['author']
-                    self.publisher = item['publisher']
-                    self.isbn = item['isbn']
-                    self.pubdate = item['pubdate']
-                    self.description = ''
-                    self.translator = ''
-
-                    link = item['link']
-                    self.crawl_description(link)
-
-                    self.title = self.title.replace('<b>', '').replace('</b>', '')
-                    self.title.replace('\ufeff', '')
-                    self.image_url.replace('\ufeff', '')
-                    print("검색된 책 제목: {}".format(self.title))
+                    self.get_data_from_searched_item(item)
 
                 if self.search_accuracy == 0:
                     self.error_code = 2
@@ -282,6 +322,8 @@ class book_data:
 
         if 'genre' in dict.keys() :
             self.genre = dict['genre']
+        if 'pubdate' in dict.keys() :
+            self.pubdate = dict['pubdate']
 
         return self
 
@@ -325,3 +367,31 @@ class book_data:
     def get_pub_year_month(self) :
         temp_date = datetime.datetime.strptime(self.pubdate, '%Y%m%d')
         return (temp_date.year.__str__() + "년 " + temp_date.month.__str__() + "월")
+
+    def get_image_dir(self) :
+        path = 'images\\' + self.title + '_image.' +\
+                                self.image_url.split('.')[-1].split('?')[0]
+
+        ignore_word = [
+            '?',
+            '/',
+            ':'
+        ]
+        for word in ignore_word:
+            path = path.replace(word, '')
+
+        return path
+
+    def get_icon_dir(self) :
+        path = 'images\\' + self.title + '_icon.' + \
+               self.image_url.split('.')[-1].split('?')[0]
+
+        ignore_word = [
+            '?',
+            '/',
+            ':'
+        ]
+        for word in ignore_word:
+            path = path.replace(word, '')
+
+        return path

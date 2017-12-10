@@ -58,7 +58,7 @@ def crawl_entire_novel_page() :
 
     return pages
 
-def crawl_certain_date_novel(url, date) :
+def crawl_certain_month_novel(url, date) :
     title_list = list()
 
     ignore_word = [
@@ -113,11 +113,13 @@ def crawl_certain_date_novel(url, date) :
                     japan_check = False
 
                     for parent in li.parents:
-                        if parent.name == "ul":
+                        if (parent.name == "div" and 'class' in parent.attrs and \
+                                'wiki-heading-content' in parent['class']) or \
+                                parent.name == 'ul':
                             for sibling in parent.previous_siblings:
                                 if sibling.name == 'h2':
                                     if sibling.get_text() != '1. 대한민국[편집]':
-                                        # print('일본 체크 {0}'.format(sibling.get_text()))
+                                        print('일본 체크 {0}'.format(sibling.get_text()))
                                         japan_check = True
                                         break
 
@@ -140,7 +142,7 @@ def crawl_certain_date_novel(url, date) :
                     if book_title[-1] == '권':
                         book_title = book_title.split('권')[0]
 
-                    book_title = nlp_module.preprocess_title(book_title)
+                    book_title = [book_title]
                     title_list.extend(book_title)
 
     print("{0} 크롤링 종료".format(date))
@@ -155,16 +157,17 @@ def crawl_whole_korean_novel() :
     page_dic = crawl_entire_novel_page()
 
     for date in page_dic.keys() :
-        certain_list = crawl_certain_date_novel(page_dic[date], date)
+        certain_list = crawl_certain_month_novel(page_dic[date], date)
         title_list.extend(certain_list)
-        title_to_date[date] = certain_list
+        for title in certain_list :
+            title_to_date[title] = date
 
     books.add_by_tl_td(title_list, title_to_date)
 
     return books
 
-def crawl_certain_time(start_time, end_time, book_storer) :
-    pages = []
+def crawl_certain_period(start_time, end_time, book_storer) :
+    books = []
     page_dic = crawl_entire_novel_page()
 
     if start_time in page_dic.keys() and\
@@ -172,7 +175,7 @@ def crawl_certain_time(start_time, end_time, book_storer) :
 
 
         if start_time == end_time :
-            pages.extend(crawl_certain_date_novel(page_dic[start_time], start_time))
+            books.extend(crawl_certain_month_novel(page_dic[start_time], start_time))
         else:
             start_year = int(start_time.split('년')[0])
             start_month = int(start_time.split()[1].split('월')[0])
@@ -190,6 +193,20 @@ def crawl_certain_time(start_time, end_time, book_storer) :
                         cur_month >= start_month and cur_month <= end_month) or\
                         (cur_year == start_year and cur_month >= start_month) or\
                         (cur_year == end_year and cur_month <= end_month) :
-                        pages.extend(crawl_certain_date_novel(page_dic[date], date))
+                        books.extend(crawl_certain_month_novel(page_dic[date], date))
 
-    print(pages)
+    print(books)
+    return books
+
+def crawl_selected_month(ym_list, page_dic = None) :
+    if page_dic is None :
+        page_dic = crawl_entire_novel_page()
+    books = []
+
+    for ym in ym_list :
+        if ym in page_dic.keys() :
+            books.append((ym, crawl_certain_month_novel(page_dic[ym], ym)))
+        else :
+            print("{} no such year-month".format(ym))
+
+    return books

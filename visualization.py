@@ -1,9 +1,11 @@
 from matplotlib import pyplot as plt
 import matplotlib.font_manager as fm
+import matplotlib.patches as mpatches
 import matplotlib
 from collections import Counter, defaultdict
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
+import datetime
 
 
 import GenreClassifier, paretochart
@@ -53,7 +55,13 @@ def show_search_accuracy(storer, renew = False) :
     print("items: {}".format(histogram.items()))
 
     xs = [i + 0.1 for i, _ in enumerate(histogram.keys())]
+    range1patch = mpatches.Patch(label = 'range1: 0.8~1.0')
+    range2patch = mpatches.Patch(label = 'range2: 0.6~0.8')
+    range3patch = mpatches.Patch(label = 'range3: 0.4~0.6')
+    range4patch = mpatches.Patch(label = 'range4: 0.4~0.2')
+    range5patch = mpatches.Patch(label = 'range5: 0.0~0.2')
 
+    plt.legend(handles = [range1patch, range2patch, range3patch, range4patch, range5patch])
     plt.bar(xs, [x[1] for x in histogram.items()])
     plt.ylabel("정확도")
     plt.xlabel("accuracy range")
@@ -85,6 +93,7 @@ class WordFrequencyVisualizer :
             print(num_dic[show_genre])
 
             xs = [i + 0.1 for i in range(n)]
+            plt.figure(figsize = (12, 4), dpi = 100)
 
             plt.title("{} 장르의 단어별 개수 상위 {}개".format(show_genre, n))
             plt.bar(xs, [round(x[1], 2) for x in num_dic[show_genre][:20]])
@@ -113,14 +122,19 @@ def word_count_pareto(training_set, k = 0.9) :
     plt.show()
 
 def book_published_by_month(storer) :
-    num_per_date = [len(storer.date_to_book[x]) for x in storer.date_to_book.keys()]
+    num_per_date = [(datetime.datetime.strptime(x, '%Y년 %m월'), len(storer.date_to_book[x])) for x in storer.date_to_book.keys()]
+
+    num_per_date = sorted(num_per_date, key=lambda x : x[0])
+
+    dates = ["{}년 {}월".format(x[0].year, x[0].month) for x in num_per_date]
+    num_per_date = [x[1] for x in num_per_date]
 
     xs = [i + 0.1 for i, _ in enumerate(storer.date_to_book.keys())]
 
     ind = np.arange(len(num_per_date)) * 2
     width = 0.7
 
-    fig, ax = plt.subplots(figsize = (16, 4), dpi = 100)
+    fig, ax = plt.subplots(figsize = (16, 8), dpi = 100)
     rects1 = ax.bar(ind, num_per_date, width, color='b', align = 'edge')
 
     ax.set_title("라이트 노벨 월별 출간 권수 변화")
@@ -129,7 +143,7 @@ def book_published_by_month(storer) :
     ax.set_xticks(ind + width / 2)
 
     date_list = [x.split()[0][2:] + "\n" + x.split()[1]
-                 for x in storer.date_to_book.keys()]
+                 for x in dates]
     ax.set_xticklabels(date_list, size = 'small')
 
     plt.show()
@@ -144,11 +158,23 @@ def draw2d(data, labels, imagerate = 1000, jpeg = 'mds2d.jpg') :
     xlen = max(xlist) - min(xlist)
     ylen = max(ylist) - min(ylist)
 
+    xadd = - min(xlist)
+    yadd = - min(ylist)
+
+    xrate = (int(xlen) * imagerate - imagerate / 100) / (max(xlist) + xadd)
+    yrate = (int(ylen) * imagerate - imagerate / 100) / (max(ylist) + yadd)
+
+    xadd += imagerate / 200 / xrate
+    yadd += imagerate / 200 / yrate
+
+    coordrate = min(xrate, yrate)
+
     img = Image.new('RGB', (int(xlen) * imagerate, int(ylen) * imagerate), (255, 255, 255))
     draw = ImageDraw.Draw(img)
 
     for i in range(len(data)) :
-        x = (data[i][0] + xlen / 2) * imagerate
-        y = (data[i][1] + ylen / 2) * imagerate
+        x = (data[i][0] + xadd) * coordrate
+        y = (data[i][1] + yadd) * coordrate
+        print("{} at ({}, {})".format(labels[i], x, y))
         draw.text((x, y), "\"" + labels[i] + "\"", (0, 0, 0), font = font)
     img.save(jpeg, 'JPEG')
