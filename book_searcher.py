@@ -1,6 +1,7 @@
 from collections import defaultdict, Counter
+import json, pathlib
 
-import nlp_module
+import nlp_module, json_file
 
 class BookSearcher :
     def __init__(self) :
@@ -43,3 +44,12 @@ class BookSearcher :
         sortedlist = sorted(counted_list.items(), key=lambda x : x[1], reverse=True)
 
         return sortedlist[:n]
+
+    def export_data(self) :
+        wtipath = pathlib.Path('wordtoindex_searcher.json')
+        wtipath.write_text(json_file.dict_to_json(self.wordtobookindex, json_file.data_to_json), encoding='utf-8')
+
+    def import_data(self) :
+        wtipath = pathlib.Path('wordtoindex_searcher.json')
+        if wtipath.exists() :
+            self.wordtobookindex = json.loads(wtipath.read_text('utf-8'), encoding='utf-8', strict=False)

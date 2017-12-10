@@ -1,9 +1,10 @@
-import random, math, pathlib, json_file
+import random, math, pathlib, json
 
-import visualization
+import visualization, json_file
 
 def distance_book(book1, book2) :
     '''
+    거리를 0~1 사이의 실수로 돌려주는 함수
 
     :param book1:
     :param book2:
@@ -41,18 +42,19 @@ def distance_book(book1, book2) :
     return dis / maxdis
 
 class BookCluster :
+    '''
+    책 사이의 거리에 관련된 데이터를 관리하는 클래스
+    '''
     def __init__(self):
         self.data_size = 0
         self.coords = None
         self.real_dist = None
-        self.title_list = None
 
     def set_real_dist(self, book_set) :
         self.data_size = len(book_set)
 
         self.real_dist = [[distance_book(book_set[i], book_set[j]) for j in range(self.data_size)]
                          for i in range(0, self.data_size)]
-        self.title_list = [book.title for book in book_set]
 
     def get_close_books(self, book_idx, n = 10):
         '''
@@ -119,7 +121,20 @@ class BookCluster :
 
     def export_data(self) :
         coordpath = pathlib.Path('coordinates.json')
-        
+        coordpath.write_text(json_file.list_to_json(self.coords, json_file.data_to_json), encoding='utf-8')
+        distpath = pathlib.Path('dist.json')
+        distpath.write_text(json_file.list_to_json(self.real_dist, json_file.data_to_json), encoding='utf-8')
 
-    def visualize(self) :
-        visualization.draw2d(self.coords, self.title_list, imagerate=1000, jpeg = 'book_relavant.jpg')
+    def import_data(self) :
+        coordpath = pathlib.Path('coordinates.json')
+        if coordpath.exists() :
+            self.coords = json.loads(coordpath.read_text('utf-8'), encoding='utf-8', strict=False)
+        distpath = pathlib.Path('dist.json')
+        if distpath.exists() :
+            self.real_dist = json.loads(distpath.read_text('utf-8'), encoding='utf=8', strict=False)
+
+
+    def visualize(self, storer) :
+        title_list = [book.title for book in storer.get_ordinary_book()]
+
+        visualization.draw2d(self.coords, title_list, imagerate=10000, jpeg = 'book_relavant.jpg')
