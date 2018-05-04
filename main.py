@@ -1,7 +1,7 @@
 import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import book_data, crawler, visualization, GenreClassifier, book_cluster, book_searcher, nlp_module
+import BookData, BookStorer, crawler, visualization, GenreClassifier, book_cluster, book_searcher, nlp_module
 from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, crawl_ui
 
 #books = crawler.crawl_korean_novel_page()
@@ -110,7 +110,7 @@ def renew_datas(storer, g, bc, bs) :
     bs.init_word_index(storer.get_ordinary_book())
 
 def crawl_search_sample() :
-    book = book_data.book_data()
+    book = BookData.book_data()
     book.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
 
 def cui_main(v, g, bc, bs, storer) :
@@ -500,7 +500,7 @@ def gui_main(v, g, bc, bs, storer) :
 
 
 if __name__ == "__main__" :
-    storer = book_data.book_storer()
+    storer = BookStorer.BookStorer()
     storer.import_data()
     v = visualization.WordFrequencyVisualizer()
     #v.initialize(storer.training_set)
