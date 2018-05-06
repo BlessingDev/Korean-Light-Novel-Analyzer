@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'crawlingform.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.10
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -21,6 +21,9 @@ class Ui_widget(object):
         self.pushButton = QtWidgets.QPushButton(widget)
         self.pushButton.setGeometry(QtCore.QRect(320, 510, 231, 51))
         self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(widget)
+        self.pushButton_2.setGeometry(QtCore.QRect(320, 450, 231, 51))
+        self.pushButton_2.setObjectName("pushButton_2")
 
         self.retranslateUi(widget)
         QtCore.QMetaObject.connectSlotsByName(widget)
@@ -29,14 +32,5 @@ class Ui_widget(object):
         _translate = QtCore.QCoreApplication.translate
         widget.setWindowTitle(_translate("widget", "크롤링"))
         self.pushButton.setText(_translate("widget", "확인"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    widget = QtWidgets.QWidget()
-    ui = Ui_widget()
-    ui.setupUi(widget)
-    widget.show()
-    sys.exit(app.exec_())
+        self.pushButton_2.setText(_translate("widget", "저장하기"))
 

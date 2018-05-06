@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aab144f4-278d-4a9a-85eb-0fbf8bb1bbd1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/BookStorer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NaverBookSearcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Korean-Light-Novel-Analyzer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Korean-Light-Novel-Analyzer.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/BookData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawler.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/json_file.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NaverBookSearcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/NaverBookSearcher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms/crawl_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms/crawl_ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms/crawlingform.ui" beforeDir="false" afterPath="$PROJECT_DIR$/forms/crawlingform.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,37 +22,79 @@
           <file leaf-file-name="crawler.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/crawler.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="390">
-                  <caret line="69" column="22" lean-forward="true" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
+                <state relative-caret-position="15">
+                  <caret line="69" column="22" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
                   <folding>
                     <element signature="e#0#15#0" expanded="true" />
-                    <element signature="e#440#1838#0" />
-                    <element signature="e#2035#4762#0" />
-                    <element signature="e#4671#5136#0" />
-                    <element signature="e#5458#6861#0" />
-                    <element signature="e#6002#6306#0" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="BookData.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/BookData.py">
+          <file leaf-file-name="BookStorer.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BookStorer.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="705">
-                  <caret line="50" column="18" selection-start-line="50" selection-start-column="18" selection-end-line="50" selection-end-column="18" />
+                <state relative-caret-position="555">
+                  <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
                   <folding>
-                    <element signature="e#0#33#0" expanded="true" />
+                    <element signature="e#0#35#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="book_searcher.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/main.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="300">
+                  <caret line="116" column="11" lean-forward="true" selection-start-line="116" selection-start-column="11" selection-end-line="116" selection-end-column="11" />
+                  <folding>
+                    <element signature="e#0#34#0" expanded="true" />
+                    <element signature="e#6473#6755#0" />
+                    <element signature="e#6795#7202#0" />
+                    <element signature="e#7285#7944#0" />
+                    <element signature="e#8000#8400#0" />
+                    <element signature="e#8457#11988#0" />
+                    <element signature="e#12043#12853#0" />
+                    <element signature="e#12903#13088#0" />
+                    <element signature="e#13142#13678#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="crawl_ui.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/forms/crawl_ui.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="210">
+                  <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="bookinfo_ui.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/forms/bookinfo_ui.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="315">
+                  <caret line="43" column="25" lean-forward="true" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="search_ui.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/forms/search_ui.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="390">
+                  <caret line="56" column="32" lean-forward="true" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="book_searcher.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/book_searcher.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="388">
-                  <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
+                <state relative-caret-position="780">
+                  <caret line="52" column="38" lean-forward="true" selection-start-line="52" selection-start-column="38" selection-end-line="52" selection-end-column="38" />
                   <folding>
                     <element signature="e#0#44#0" expanded="true" />
                   </folding>
@@ -77,53 +115,17 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="compiler.py" pinned="false" current-in-tab="false">
-            <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/pycuda/compiler.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="630">
-                  <caret line="51" column="52" selection-start-line="51" selection-start-column="52" selection-end-line="51" selection-end-column="52" />
-                </state>
-              </provider>
-            </entry>
-          </file>
         </leaf>
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-          <file leaf-file-name="BookStorer.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/BookStorer.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="450">
-                  <caret line="166" column="40" selection-start-line="166" selection-start-column="40" selection-end-line="166" selection-end-column="40" />
-                  <folding>
-                    <element signature="e#0#35#0" expanded="true" />
-                    <element signature="e#331#1858#0" />
-                    <element signature="e#2323#2794#0" />
-                    <element signature="e#2835#2875#0" />
-                    <element signature="e#2919#2963#0" />
-                    <element signature="e#3005#3050#0" />
-                    <element signature="e#3091#3184#0" />
-                    <element signature="e#3228#3283#0" />
-                    <element signature="e#3324#3439#0" />
-                    <element signature="e#3486#3719#0" />
-                    <element signature="e#3768#4125#0" />
-                    <element signature="e#4167#5324#0" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="NaverBookSearcher.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="NaverBookSearcher.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/NaverBookSearcher.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="270">
-                  <caret line="150" column="99" selection-start-line="150" selection-start-column="99" selection-end-line="150" selection-end-column="99" />
+                <state relative-caret-position="465">
+                  <caret line="34" column="12" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
                   <folding>
                     <element signature="e#0#33#0" expanded="true" />
-                    <element signature="e#226#2577#0" />
-                    <element signature="e#2666#3165#0" />
-                    <element signature="e#3139#4167#0" />
-                    <element signature="e#4220#5076#0" />
                   </folding>
                 </state>
               </provider>
@@ -146,16 +148,17 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/pycuda/compiler.py" />
         <option value="$PROJECT_DIR$/crawler.py" />
-        <option value="$PROJECT_DIR$/NaverBookSearcher.py" />
         <option value="$PROJECT_DIR$/BookData.py" />
         <option value="$PROJECT_DIR$/BookStorer.py" />
+        <option value="$PROJECT_DIR$/NaverBookSearcher.py" />
+        <option value="$PROJECT_DIR$/forms/crawl_ui.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="235" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
@@ -165,7 +168,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -173,15 +175,21 @@
               <item name="Korean-Light-Novel-Analyzer" type="b2602c69:ProjectViewProjectNode" />
               <item name="Korean-Light-Novel-Analyzer" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Korean-Light-Novel-Analyzer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Korean-Light-Novel-Analyzer" type="462c0819:PsiDirectoryNode" />
+              <item name="forms" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -195,7 +203,25 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.crawl_ui">
+    <configuration name="crawl_ui" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Korean-Light-Novel-Analyzer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/forms" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/forms/crawl_ui.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Korean-Light-Novel-Analyzer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -214,8 +240,13 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.crawl_ui" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.crawl_ui" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
@@ -234,7 +265,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="878" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1796875" />
@@ -242,16 +273,16 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.36732328" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.36623377" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39958376" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
     </layout>
@@ -261,10 +292,19 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="9" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/crawler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/GenreClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -282,6 +322,14 @@
           <caret line="486" column="42" selection-start-line="486" selection-start-column="42" selection-end-line="486" selection-end-column="42" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#6473#6755#0" />
+            <element signature="e#6795#7202#0" />
+            <element signature="e#7285#7944#0" />
+            <element signature="e#8000#8400#0" />
+            <element signature="e#8457#11988#0" />
+            <element signature="e#12043#12853#0" />
+            <element signature="e#12903#13088#0" />
+            <element signature="e#13142#13678#0" />
           </folding>
         </state>
       </provider>
@@ -305,17 +353,6 @@
         <state>
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
@@ -325,11 +362,6 @@
         <state>
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
           </folding>
         </state>
       </provider>
@@ -351,6 +383,14 @@
           <caret line="486" column="42" selection-start-line="486" selection-start-column="42" selection-end-line="486" selection-end-column="42" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#6473#6755#0" />
+            <element signature="e#6795#7202#0" />
+            <element signature="e#7285#7944#0" />
+            <element signature="e#8000#8400#0" />
+            <element signature="e#8457#11988#0" />
+            <element signature="e#12043#12853#0" />
+            <element signature="e#12903#13088#0" />
+            <element signature="e#13142#13678#0" />
           </folding>
         </state>
       </provider>
@@ -374,17 +414,6 @@
         <state>
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
@@ -394,11 +423,6 @@
         <state>
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
           </folding>
         </state>
       </provider>
@@ -420,6 +444,14 @@
           <caret line="486" column="42" selection-start-line="486" selection-start-column="42" selection-end-line="486" selection-end-column="42" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#6473#6755#0" />
+            <element signature="e#6795#7202#0" />
+            <element signature="e#7285#7944#0" />
+            <element signature="e#8000#8400#0" />
+            <element signature="e#8457#11988#0" />
+            <element signature="e#12043#12853#0" />
+            <element signature="e#12903#13088#0" />
+            <element signature="e#13142#13678#0" />
           </folding>
         </state>
       </provider>
@@ -443,17 +475,6 @@
         <state>
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
@@ -463,80 +484,6 @@
         <state>
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GenreClassifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="108" column="49" selection-start-line="108" selection-start-column="49" selection-end-line="108" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#314#1559#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8676">
-          <caret line="486" column="42" selection-start-line="486" selection-start-column="42" selection-end-line="486" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/visualization.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/pycuda/compiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="51" column="52" selection-start-line="51" selection-start-column="52" selection-end-line="51" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BookStorer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crawler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
           </folding>
         </state>
       </provider>
@@ -558,6 +505,14 @@
           <caret line="486" column="42" lean-forward="true" selection-start-line="486" selection-start-column="42" selection-end-line="486" selection-end-column="42" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#6473#6755#0" />
+            <element signature="e#6795#7202#0" />
+            <element signature="e#7285#7944#0" />
+            <element signature="e#8000#8400#0" />
+            <element signature="e#8457#11988#0" />
+            <element signature="e#12043#12853#0" />
+            <element signature="e#12903#13088#0" />
+            <element signature="e#13142#13678#0" />
           </folding>
         </state>
       </provider>
@@ -581,17 +536,6 @@
         <state>
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
@@ -601,11 +545,6 @@
         <state>
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
           </folding>
         </state>
       </provider>
@@ -634,6 +573,14 @@
           <caret line="502" column="34" selection-start-line="502" selection-start-column="34" selection-end-line="502" selection-end-column="34" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#6473#6755#0" />
+            <element signature="e#6795#7202#0" />
+            <element signature="e#7285#7944#0" />
+            <element signature="e#8000#8400#0" />
+            <element signature="e#8457#11988#0" />
+            <element signature="e#12043#12853#0" />
+            <element signature="e#12903#13088#0" />
+            <element signature="e#13142#13678#0" />
           </folding>
         </state>
       </provider>
@@ -643,17 +590,6 @@
         <state>
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
@@ -663,11 +599,6 @@
         <state>
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
           </folding>
         </state>
       </provider>
@@ -678,17 +609,6 @@
           <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
@@ -709,11 +629,6 @@
         <state>
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
           </folding>
         </state>
       </provider>
@@ -724,17 +639,6 @@
           <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
@@ -744,11 +648,6 @@
         <state>
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
           </folding>
         </state>
       </provider>
@@ -759,23 +658,9 @@
           <caret line="12" column="14" lean-forward="true" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/PIL/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/visualization.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -791,31 +676,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crawler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="69" column="22" lean-forward="true" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#440#1838#0" />
-            <element signature="e#2035#4762#0" />
-            <element signature="e#4671#5136#0" />
-            <element signature="e#5458#6861#0" />
-            <element signature="e#6002#6306#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="265" column="52" selection-start-line="265" selection-start-column="52" selection-end-line="265" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GenreClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -827,24 +687,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/NaverBookSearcher.py">
+    <entry file="file://$PROJECT_DIR$/BookData.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="150" column="99" selection-start-line="150" selection-start-column="99" selection-end-line="150" selection-end-column="99" />
+        <state relative-caret-position="810">
+          <caret line="54" column="53" selection-start-line="54" selection-start-column="53" selection-end-line="54" selection-end-column="53" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
-            <element signature="e#226#2577#0" />
-            <element signature="e#2666#3165#0" />
-            <element signature="e#3139#4167#0" />
-            <element signature="e#4220#5076#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BookData.py">
+    <entry file="file://$PROJECT_DIR$/crawler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="50" column="18" selection-start-line="50" selection-start-column="18" selection-end-line="50" selection-end-column="18" />
+        <state relative-caret-position="15">
+          <caret line="69" column="22" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NaverBookSearcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="34" column="12" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
@@ -853,31 +719,72 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/BookStorer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="166" column="40" selection-start-line="166" selection-start-column="40" selection-end-line="166" selection-end-column="40" />
+        <state relative-caret-position="555">
+          <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#331#1858#0" />
-            <element signature="e#2323#2794#0" />
-            <element signature="e#2835#2875#0" />
-            <element signature="e#2919#2963#0" />
-            <element signature="e#3005#3050#0" />
-            <element signature="e#3091#3184#0" />
-            <element signature="e#3228#3283#0" />
-            <element signature="e#3324#3439#0" />
-            <element signature="e#3486#3719#0" />
-            <element signature="e#3768#4125#0" />
-            <element signature="e#4167#5324#0" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/forms/visualization_ui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/forms/main_ui.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/forms/result_ui.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/book_searcher.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="780">
+          <caret line="52" column="38" lean-forward="true" selection-start-line="52" selection-start-column="38" selection-end-line="52" selection-end-column="38" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/forms/search_ui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="56" column="32" lean-forward="true" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/forms/bookinfo_ui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="43" column="25" lean-forward="true" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/forms/crawl_ui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="116" column="11" lean-forward="true" selection-start-line="116" selection-start-column="11" selection-end-line="116" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#6473#6755#0" />
+            <element signature="e#6795#7202#0" />
+            <element signature="e#7285#7944#0" />
+            <element signature="e#8000#8400#0" />
+            <element signature="e#8457#11988#0" />
+            <element signature="e#12043#12853#0" />
+            <element signature="e#12903#13088#0" />
+            <element signature="e#13142#13678#0" />
           </folding>
         </state>
       </provider>

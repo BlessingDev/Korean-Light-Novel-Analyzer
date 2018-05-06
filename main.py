@@ -1,7 +1,7 @@
 import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import BookData, BookStorer, crawler, visualization, GenreClassifier, book_cluster, book_searcher, nlp_module
+import BookData, BookStorer, crawler, visualization, GenreClassifier, book_cluster, book_searcher, NaverBookSearcher
 from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, crawl_ui
 
 #books = crawler.crawl_korean_novel_page()
@@ -98,7 +98,8 @@ def get_close_book(bc, bs, storer) :
         print([(booklist[i].title, dist) for i, dist in closelist])
 
 def crawl_book(g, bc, bs) :
-    storer = crawler.crawl_whole_korean_novel()
+    cw = crawler.NamuNovelCrawler()
+    storer = cw.crawl_whole_korean_novel()
     renew_datas(storer, g, bc, bs)
 
     return storer
@@ -110,8 +111,10 @@ def renew_datas(storer, g, bc, bs) :
     bs.init_word_index(storer.get_ordinary_book())
 
 def crawl_search_sample() :
-    book = BookData.book_data()
-    book.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
+    book = BookData.BookData()
+    sr = NaverBookSearcher.NaverBookSearcher()
+    sr.book = book
+    sr.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
 
 def cui_main(v, g, bc, bs, storer) :
     open_program = True
@@ -193,7 +196,8 @@ def cui_main(v, g, bc, bs, storer) :
         elif choice == '13' :
             crawl_search_sample()
         elif choice == '14':
-            books = crawler.crawl_selected_month(['2017년 6월'])
+            cw = crawler.NamuNovelCrawler()
+            books = cw.crawl_selected_month(['2017년 6월'])
             storer.add_books_by_title(books)
 
 
@@ -414,6 +418,9 @@ def gui_main(v, g, bc, bs, storer) :
             renew_datas(storer, g, bc, bs)
             crui.textBrowser.append('전과정 종료')
 
+        def on_cr_save_clicked(bool=False) :
+            print('save clicked')
+
         ###
 
         curIndex = mainui.listView.currentIndex().row()
@@ -422,7 +429,8 @@ def gui_main(v, g, bc, bs, storer) :
         global searchui
         global MainWindow
         if curIndex == 0 :
-            pages = crawler.crawl_entire_novel_page()
+            cw = crawler.NamuNovelCrawler()
+            pages = cw.crawl_entire_novel_page()
             selected_ym = []
             widget = QtWidgets.QDialog()
             crui = crawl_ui.Ui_widget()
@@ -441,6 +449,7 @@ def gui_main(v, g, bc, bs, storer) :
             crui.listView.setModel(model)
 
             crui.pushButton.clicked.connect(on_cr_clicked)
+            crui.pushButton_2.clicked.connect(on_cr_save_clicked)
 
             widget.show()
             widget.exec_()

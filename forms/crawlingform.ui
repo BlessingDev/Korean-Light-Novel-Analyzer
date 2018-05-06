@@ -46,6 +46,19 @@
     <string>확인</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>450</y>
+     <width>231</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>저장하기</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
