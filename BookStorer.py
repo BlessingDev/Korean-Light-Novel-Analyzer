@@ -179,3 +179,5 @@ class BookStorer :
                     searcher.book = b
                     searcher.from_title(bt)
                     self.date_to_book[dt].append(b)
+
+        searcher.search_finished()

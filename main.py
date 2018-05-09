@@ -240,6 +240,7 @@ def gui_main(v, g, bc, bs, storer) :
             mainui.textBrowser.append(line)
 
     def onClick(bool=False) :
+
         def onSearchClick(bool=False):
             global searchList
 
@@ -403,6 +404,7 @@ def gui_main(v, g, bc, bs, storer) :
                 selected_ym.remove(item)
 
         def on_cr_clicked(bool=False) :
+            global storer
             ymlist = []
             crui.textBrowser.clear()
 
@@ -410,9 +412,15 @@ def gui_main(v, g, bc, bs, storer) :
                 ymlist.append(item.text())
 
             crui.textBrowser.append('크롤 시작')
-            books = crawler.crawl_selected_month(ymlist, pages)
+            cw = crawler.NamuNovelCrawler()
+
             crui.textBrowser.append('크롤된 제목으로 네이버 검색')
-            storer.add_books_by_title(books)
+            if len(ymlist) == 0 :
+                storer = cw.crawl_whole_korean_novel()
+            else :
+                books = cw.crawl_selected_month(ymlist, pages)
+                storer.add_books_by_title(books)
+
             crui.textBrowser.append('검색 완료')
             crui.textBrowser.append('정보 갱신 시작(책간 거리, 책검색 등)')
             renew_datas(storer, g, bc, bs)
@@ -420,6 +428,11 @@ def gui_main(v, g, bc, bs, storer) :
 
         def on_cr_save_clicked(bool=False) :
             print('save clicked')
+            storer.export_data()
+            if (g is not None):
+                g.export_data()
+            bc.export_data()
+            bs.export_data()
 
         ###
 

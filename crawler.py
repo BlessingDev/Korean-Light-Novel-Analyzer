@@ -141,6 +141,7 @@ class NamuNovelCrawler :
                         if japan_check:
                             break
 
+                    print(li.get_text())
                     book_title = li.get_text().strip()
 
                     if book_title != "" and (not (book_title in ignore_word)):
@@ -149,13 +150,14 @@ class NamuNovelCrawler :
 
                             book_title = list_a[0]
 
-                        if '(' in book_title:
+                        if book_title[-1] == ')':
                             list_a = book_title.split('(')
 
                             book_title = list_a[0]
 
                         if book_title[-1] == '권':
                             book_title = book_title.split('권')[0]
+                        book_title.encode('utf-8 sig')
 
                         book_title = [book_title]
                         title_list.extend(book_title)

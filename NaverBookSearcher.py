@@ -11,9 +11,6 @@ class NaverBookSearcher :
         self.book = BookData.BookData()
         self.f = open("Naver Book Search Log.txt", "w")
 
-    def __del__(self) :
-        self.f.close()
-
     def search_for_book(self, title, category = True) :
         self.book.searched_title = title
         client_id = "EiPxhHox870abSfDvZBR"
@@ -39,7 +36,7 @@ class NaverBookSearcher :
         res_code = response.getcode()
 
         print("{}을 검색함".format(title))
-        self.f.write("{}을 검색함".format(title))
+        self.f.write("{}을 검색함\n".format(title))
         self.book.ori_title = title
 
         if (res_code == 200):
@@ -59,15 +56,15 @@ class NaverBookSearcher :
                     self.book.title = item['title']
                     self.book.title = self.book.title.replace('<b>', '').replace('</b>', '')
                     print("{} 검색됨".format(self.book.title))
-                    self.f.write("{} 검색됨".format(self.book.title))
+                    self.f.write("{} 검색됨\n".format(self.book.title))
                     self.book.search_accuracy = nlp_module.search_accsuracy_examine(self.book)
                     print('정확도: {}'.format(self.book.search_accuracy))
-                    self.f.write('정확도: {}'.format(self.book.search_accuracy))
+                    self.f.write('정확도: {}\n'.format(self.book.search_accuracy))
                     if self.book.search_accuracy > highest_accuracy :
                         highest_accuracy = self.book.search_accuracy
                         highest_i = i
                         print("{} {}".format(highest_accuracy, highest_i))
-                        self.f.write("{} {}".format(highest_accuracy, highest_i))
+                        self.f.write("highest_acc: {} index: {}\n".format(highest_accuracy, highest_i))
 
                     i += 1
 
@@ -79,8 +76,7 @@ class NaverBookSearcher :
                     return None
             else :
                 print("{}에 대한 검색 결과 없음".format(title))
-                self.f.write("{}에 대한 검색 결과 없음".format(title))
-                self.f.write("{}에 대한 검색 결과 없음".format(title))
+                self.f.write("{}에 대한 검색 결과 없음\n".format(title))
                 self.book.error_code = 2
                 self.book.search_accuracy = 0.0
                 return None
@@ -107,7 +103,14 @@ class NaverBookSearcher :
         self.book.ori_title = title
 
         print("최초 검색어 '{}'".format(title))
-        self.f.write("최초 검색어 '{}'".format(title))
+        try :
+            self.f.write("최초 검색어 '{}'\n".format(title))
+        except:
+            print("error occured in writing")
+            #while u'\ufeff' in title :
+            #    title.replace(u'\ufeff', '')
+            return None
+
 
         item = self.search_for_book(title)
 
@@ -116,7 +119,7 @@ class NaverBookSearcher :
         else :
             titles = nlp_module.make_alterative_search_set(title)
             print("alternative set made {}".format(titles))
-            self.f.write("alternative set made {}".format(titles))
+            self.f.write("alternative set made {}\n".format(titles))
             for temp in titles :
                 item = self.search_for_book(temp)
 
@@ -135,10 +138,10 @@ class NaverBookSearcher :
                 if self.book.search_accuracy == 0:
                     self.book.error_code = 2
                     print("책 제목 {0}에 대한 검색 결과가 전혀 없음".format(title))
-                    self.f.write("책 제목 {0}에 대한 검색 결과가 전혀 없음".format(title))
+                    self.f.write("책 제목 {0}에 대한 검색 결과가 전혀 없음\n".format(title))
 
         self.book.ori_title = title
-        self.f.write('\n')
+        self.f.write('\n\n')
         return self
 
     def crawl_description(self, link):
@@ -166,3 +169,7 @@ class NaverBookSearcher :
                 self.book.description = div('p')[0].get_text()
 
                 self.book.description = (self.book.description.replace('\n', '').replace('\r', ''))
+
+
+    def search_finished(self) :
+        self.f.close()
