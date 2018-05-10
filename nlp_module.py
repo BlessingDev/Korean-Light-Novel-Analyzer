@@ -99,15 +99,15 @@ def get_accuracy(title_list, ori_list) :
 
     return rate
 
-def search_accsuracy_examine(book) :
+def search_accsuracy_examine(ori_title, title) :
     '''
     검색한 책 제목이 크롤된 책 제목과 맞는지 정확도를 반환하는 함수
     :param book:
     :return:
     '''
     # 검색된 제목(book.title)과 크롤된 제목(book.ori_title)을 각각 tagging한다
-    ori_nlp = pos_Twitter(book.ori_title)
-    title_nlp = pos_Twitter(book.title)
+    ori_nlp = pos_Twitter(ori_title)
+    title_nlp = pos_Twitter(title)
 
     title_list = list()
     ori_list = list()

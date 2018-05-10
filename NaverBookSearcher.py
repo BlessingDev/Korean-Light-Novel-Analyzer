@@ -1,6 +1,7 @@
 from urllib import parse, request
 from bs4 import BeautifulSoup
-import json, datetime
+import json
+import datetime
 
 import BookData, crawler, nlp_module
 
@@ -9,7 +10,10 @@ class NaverBookSearcher :
         # 기본 BookData 객체로 생성
         # 사용하기 전에 반드시 book 멤버를 assign할 것
         self.book = BookData.BookData()
-        self.f = open("Naver Book Search Log.txt", "w")
+        curt = datetime.datetime.now()
+        print(curt)
+        self.f = open("Naver Book Search Log_{} {}h{}m{}s.txt".format(curt.date(), curt.hour, curt.minute, curt.second), "w")
+
 
     def search_for_book(self, title, category = True) :
         self.book.searched_title = title
@@ -53,11 +57,11 @@ class NaverBookSearcher :
                     i < len(book_dict['items']) :
                     item = book_dict['items'][i]
 
-                    self.book.title = item['title']
-                    self.book.title = self.book.title.replace('<b>', '').replace('</b>', '')
+                    temp_title = item['title']
+                    temp_title = temp_title.replace('<b>', '').replace('</b>', '')
                     print("{} 검색됨".format(self.book.title))
                     self.f.write("{} 검색됨\n".format(self.book.title))
-                    self.book.search_accuracy = nlp_module.search_accsuracy_examine(self.book)
+                    self.book.search_accuracy = nlp_module.search_accsuracy_examine(self.book.ori_title, temp_title)
                     print('정확도: {}'.format(self.book.search_accuracy))
                     self.f.write('정확도: {}\n'.format(self.book.search_accuracy))
                     if self.book.search_accuracy > highest_accuracy :
@@ -79,6 +83,7 @@ class NaverBookSearcher :
                 self.f.write("{}에 대한 검색 결과 없음\n".format(title))
                 self.book.error_code = 2
                 self.book.search_accuracy = 0.0
+
                 return None
 
     def get_data_from_searched_item(self, book_item) :
@@ -126,7 +131,7 @@ class NaverBookSearcher :
                 if not (item is None):
                     self.get_data_from_searched_item(item)
 
-                    if self.book.search_accuracy >= 0.8 :
+                    if self.book.search_accuracy >= 0.6 :
                         break
 
             if self.book.search_accuracy == 0 :
