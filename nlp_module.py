@@ -177,6 +177,12 @@ def search_accsuracy_examine(ori_title, title) :
         return max(rate1, rate2, rate3)
 
 def preprocess_title(title) :
+    '''
+    검색된 제목에서 함께 발매된 권수를 때어내기 위한 함수
+    ex. 빙결경계의 에덴 1, 2
+    :param title: 검색된 책 제목
+    :return: titles list
+    '''
     result = pos_Twitter(title)
     title_list = []
 

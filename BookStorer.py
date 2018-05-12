@@ -1,14 +1,15 @@
 from collections import defaultdict
-from urllib import parse, request
+from urllib import request
 import pathlib, random, json
 
-import json_file, BookData, nlp_module, NaverBookSearcher
+import json_file, BookData, nlp_module, book_searcher
 
 class BookStorer :
     def __init__(self):
         self.book_list = list()
         self.date_to_book = defaultdict(list)
         self.training_set = None
+        self.searcher = book_searcher.BookSearcher.get_instance() #
 
     def import_data(self) :
         self.book_list = list()
@@ -20,7 +21,6 @@ class BookStorer :
             book_list = json.loads(temp, encoding='utf-16', strict=False)
 
             for book in book_list :
-                #print(type(book))
                 new_book = BookData.BookData()
                 new_book.from_json_dict(book)
                 self.book_list.append(new_book)
@@ -34,7 +34,6 @@ class BookStorer :
                 new_list = list()
                 book_list = book_dict[key]
                 for book in book_list :
-                    #print(type(book))
                     new_book = BookData.BookData()
                     new_book.from_json_dict(book)
                     new_list.append(new_book)
@@ -54,21 +53,23 @@ class BookStorer :
             self.training_set = book_dict
 
     def add_by_tl_td(self, title_list, title_to_date) :
-        searcher = NaverBookSearcher.NaverBookSearcher()
         self.date_to_book = defaultdict(list)
 
         for idx in range(len(title_list)) :
             title = title_list[idx]
             print("{}/{}".format(idx, len(title_list)))
             book = BookData.BookData()
-            searcher.book = book
-            searcher.from_title(title)
+            self.searcher.book = book
+            self.searcher.from_title(title)
             self.book_list.append(book)
             self.date_to_book[title_to_date[book.ori_title]].append(book)
 
     def export_data(self) :
         book_p = pathlib.Path('book_data.json')
-        book_p.write_text(json_file.list_to_json(self.book_list, json_file.data_to_json), encoding='utf-16')
+        try:
+            book_p.write_text(json_file.list_to_json(self.book_list, json_file.data_to_json), encoding='utf-16')
+        except:
+            print("exception occured")
 
         dic_p = pathlib.Path('date_to_book.json')
         dic_p.write_text(json_file.dict_to_json(self.date_to_book, json_file.data_to_json), encoding='utf-16')
@@ -153,7 +154,6 @@ class BookStorer :
 
     def add_books_by_title(self, bookdate) :
         titlelist = self.get_orititle_list()
-        searcher = NaverBookSearcher.NaverBookSearcher()
 
         for idx in range(len(bookdate)) :
             btlist = bookdate[idx][1]
@@ -163,8 +163,8 @@ class BookStorer :
                     print('{}가 갱신됨'.format(bt))
                     bidx = titlelist.index(bt)
                     b = BookData.BookData()
-                    searcher.book = b
-                    searcher.from_title(bt)
+                    self.searcher.book = b
+                    self.searcher.from_title(bt)
                     self.book_list[bidx] = b
 
                     dtitle = [x.ori_title for x in self.date_to_book[dt]]
@@ -176,8 +176,8 @@ class BookStorer :
                         self.date_to_book[dt].append(self.book_list[bidx])
                 else :
                     b = BookData.BookData()
-                    searcher.book = b
-                    searcher.from_title(bt)
+                    self.searcher.book = b
+                    self.searcher.from_title(bt)
                     self.date_to_book[dt].append(b)
 
-        searcher.search_finished()
+        self.searcher.search_finished()
