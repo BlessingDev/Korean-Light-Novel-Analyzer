@@ -1,15 +1,18 @@
 import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import BookData, BookStorer, visualization, GenreClassifier, book_cluster, bookdata_searcher, crawler, book_searcher
+import BookData, BookStorer, visualization, GenreClassifier, book_cluster, bookdata_searcher
+from experiment_tools_instantiater import external_tools_instantiater as exins
+
+from external_tools import crawler
 from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, crawl_ui
 
 
 def show_menu() :
     print("------라이트 노벨 분석기 v. 0.1------")
-    print("1. 데이터 전체 크롤")
-    print("2. 제목 보기")
-    print("3. 책 정보 보기")
+    print("1. renew")
+    print("2. ordinary_set")
+    print("3. search")
     print("4. 정확도 특정 범위의 책 보기")
     print("5. 프로그램 종료")
     print("6. 검색 정확도 시각화")
@@ -95,7 +98,7 @@ def get_close_book(bc, bs, storer) :
         print([(booklist[i].title, dist) for i, dist in closelist])
 
 def crawl_book(g, bc, bs) :
-    cw = crawler.crawler.get_instance()
+    cw = exins.get_instance().get_crawler_namu_instance()
     storer = cw.crawl_whole_korean_novel()
     renew_datas(storer, g, bc, bs)
 
@@ -109,7 +112,7 @@ def renew_datas(storer, g, bc, bs) :
 
 def crawl_search_sample() :
     book = BookData.BookData()
-    sr = book_searcher.BookSearcher.get_instance()
+    sr = exins.get_instance().get_searcher_naver_instance()
     sr.book = book
     sr.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
 
@@ -121,14 +124,17 @@ def cui_main(v, g, bc, bs, storer) :
         choice = input("무엇을 선택하시겠습니까? ")
 
         if choice == '1':
-            storer = crawl_book(g, bc, bs)
+            cw = exins.get_instance().get_crawler_namu_instance()
+            storer = cw.crawl_whole_korean_novel()
+            renew_datas(storer, g, bc, bs)
             print("크롤 완료")
         elif choice == '2':
-            print(storer.get_title_list())
+            print([book.title for book in storer.get_ordinary_book()])
+            print("len: ", len(storer.get_ordinary_book()))
 
         elif choice == '3':
-            index = int(input("몇 번째 인덱스의 책을 볼까요? "))
-            print(storer.book_list[index].__str__())
+            print(book_search(bs, storer))
+
         elif choice == '4':
             start = float(input("시작범위(1.0-0.0) "))
             end = float(input("종료범위(1.0-0.0) "))
@@ -193,7 +199,7 @@ def cui_main(v, g, bc, bs, storer) :
         elif choice == '13' :
             crawl_search_sample()
         elif choice == '14':
-            cw = crawler.crawler.get_instance()
+            cw = exins.get_instance().get_crawler_namu_instance()
             books = cw.crawl_selected_month(['2017년 6월'])
             storer.add_books_by_title(books)
 
@@ -410,7 +416,7 @@ def gui_main(v, g, bc, bs, storer) :
                 ymlist.append(item.text())
 
             crui.textBrowser.append('크롤 시작')
-            cw = crawler.crawler.get_instance()
+            cw = exins.get_instance().get_crawler_namu_instance()
 
             crui.textBrowser.append('크롤된 제목으로 네이버 검색')
             if len(ymlist) == 0 :
@@ -440,7 +446,7 @@ def gui_main(v, g, bc, bs, storer) :
         global searchui
         global MainWindow
         if curIndex == 0 :
-            cw = crawler.crawler.get_instance()
+            cw = exins.get_instance().get_crawler_namu_instance()
             pages = cw.crawl_entire_novel_page()
             selected_ym = []
             widget = QtWidgets.QDialog()

@@ -1,11 +1,13 @@
 
 from bs4 import BeautifulSoup
 
-import BookStorer, nlp_module, crawler
+import BookStorer, nlp_module
+from external_tools import crawler
 
 
-class NamuNovelCrawler() :
+class NamuNovelCrawler(crawler.crawler) :
     def __init__(self):
+        crawler.crawler.__init__(self)
         pass
 
     def crawl_entire_novel_page(self) :

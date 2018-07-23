@@ -1,5 +1,5 @@
 import requests
-from external_tools import namu_wiki_crawler
+from abc import *
 
 def get_html(url):
     html = ""
@@ -19,10 +19,7 @@ class crawler :
     def __init__(self) :
         pass
 
-    @classmethod
-    def get_instance(cls) :
-        return namu_wiki_crawler.NamuNovelCrawler() # you should modify here to change crawler
-
+    @abstractmethod
     def crawl_certain_month_novel(self, url, date) :
         '''
         abstract method
@@ -32,6 +29,7 @@ class crawler :
         '''
         print("you have to override this function!")
 
+    @abstractmethod
     def crawl_whole_korean_novel(self) :
         '''
 
@@ -39,11 +37,13 @@ class crawler :
         '''
         print("you have to override this function!")
 
-    def crawl_certain_period(self, start_time, end_time):
+    @abstractmethod
+    def crawl_selected_month(self, ym_list, page_dic):
+        '''
+        abstract method
+        :param ym_list:
+        :param page_dic:
+        :return:
         '''
 
-        :param start_time:
-        :param end_time:
-        :return: title list
-        '''
         print("you have to override this function!")

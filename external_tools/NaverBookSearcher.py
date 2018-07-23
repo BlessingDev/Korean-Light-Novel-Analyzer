@@ -2,21 +2,20 @@ from urllib import parse, request
 from bs4 import BeautifulSoup
 import json
 
-import nlp_module, BookData, datetime, crawler
+import nlp_module, datetime
+from external_tools import crawler, searcher
 
-class NaverBookSearcher() :
+
+class NaverBookSearcher(searcher.searcher) :
     def __init__(self) :
         # 기본 BookData 객체로 생성
         # 사용하기 전에 반드시 book 멤버를 assign할 것
+        searcher.searcher.__init__(self)
         curt = datetime.datetime.now()
         self.f = open("Naver Book Search Log_{} {}h{}m{}s.txt".format(curt.date(), curt.hour, curt.minute, curt.second),
                       "w")
-        # you shoud assign self.book member variable to set BookData class
-        self.book = BookData.BookData()
 
-
-
-    def search_for_book(self, title, category = True) :
+    def _search_for_book(self, title, category=True) :
         self.book.searched_title = title
         client_id = "EiPxhHox870abSfDvZBR"
         client_pw = "RqJncUd4p1"
@@ -86,7 +85,7 @@ class NaverBookSearcher() :
 
                 return None
 
-    def get_data_from_searched_item(self, book_item) :
+    def _get_data_from_searched_item(self, book_item) :
         self.book.title = book_item['title']
         self.book.image_url = book_item['image']
         self.book.author = book_item['author']
@@ -97,7 +96,7 @@ class NaverBookSearcher() :
         self.book.translator = ''
 
         link = book_item['link']
-        self.crawl_description(link)
+        self._crawl_description(link)
 
         self.book.title = self.book.title.replace('<b>', '').replace('</b>', '')
 
@@ -117,28 +116,28 @@ class NaverBookSearcher() :
             return None
 
 
-        item = self.search_for_book(title)
+        item = self._search_for_book(title)
 
         if (item is not None) :
-            self.get_data_from_searched_item(item)
+            self._get_data_from_searched_item(item)
         else :
             titles = nlp_module.make_alterative_search_set(title)
             print("alternative set made {}".format(titles))
             self.f.write("alternative set made {}\n".format(titles))
             for temp in titles :
-                item = self.search_for_book(temp)
+                item = self._search_for_book(temp)
 
                 if not (item is None):
-                    self.get_data_from_searched_item(item)
+                    self._get_data_from_searched_item(item)
 
                     if self.book.search_accuracy >= 0.6 :
                         break
 
             if self.book.search_accuracy == 0 :
-                item = self.search_for_book(self.book.ori_title, category=False)
+                item = self._search_for_book(self.book.ori_title, category=False)
 
                 if not (item is None):
-                    self.get_data_from_searched_item(item)
+                    self._get_data_from_searched_item(item)
 
                 if self.book.search_accuracy == 0:
                     self.book.error_code = 2
@@ -147,9 +146,9 @@ class NaverBookSearcher() :
 
         self.book.ori_title = title
         self.f.write('\n\n')
-        return self
+        return self.book
 
-    def crawl_description(self, link):
+    def _crawl_description(self, link):
         c = crawler.get_html(link)
 
         i = 0

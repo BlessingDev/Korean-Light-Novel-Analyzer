@@ -2,14 +2,15 @@ from collections import defaultdict
 from urllib import request
 import pathlib, random, json
 
-import json_file, BookData, nlp_module, book_searcher
+import json_file, BookData, nlp_module
+from experiment_tools_instantiater import external_tools_instantiater as exins
 
 class BookStorer :
     def __init__(self):
         self.book_list = list()
         self.date_to_book = defaultdict(list)
         self.training_set = None
-        self.searcher = book_searcher.BookSearcher.get_instance() #
+        self.searcher = exins.get_instance().get_searcher_naver_instance() #
 
     def import_data(self) :
         self.book_list = list()
