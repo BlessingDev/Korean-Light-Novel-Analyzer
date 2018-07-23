@@ -1,12 +1,9 @@
 import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import BookData, BookStorer, crawler, visualization, GenreClassifier, book_cluster, book_searcher, nlp_module
+import BookData, BookStorer, visualization, GenreClassifier, book_cluster, bookdata_searcher, crawler, book_searcher
 from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, crawl_ui
 
-#books = crawler.crawl_korean_novel_page()
-
-#print(books.title_list[0])
 
 def show_menu() :
     print("------라이트 노벨 분석기 v. 0.1------")
@@ -98,7 +95,8 @@ def get_close_book(bc, bs, storer) :
         print([(booklist[i].title, dist) for i, dist in closelist])
 
 def crawl_book(g, bc, bs) :
-    storer = crawler.crawl_whole_korean_novel()
+    cw = crawler.crawler.get_instance()
+    storer = cw.crawl_whole_korean_novel()
     renew_datas(storer, g, bc, bs)
 
     return storer
@@ -110,8 +108,10 @@ def renew_datas(storer, g, bc, bs) :
     bs.init_word_index(storer.get_ordinary_book())
 
 def crawl_search_sample() :
-    book = BookData.book_data()
-    book.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
+    book = BookData.BookData()
+    sr = book_searcher.BookSearcher.get_instance()
+    sr.book = book
+    sr.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
 
 def cui_main(v, g, bc, bs, storer) :
     open_program = True
@@ -193,7 +193,8 @@ def cui_main(v, g, bc, bs, storer) :
         elif choice == '13' :
             crawl_search_sample()
         elif choice == '14':
-            books = crawler.crawl_selected_month(['2017년 6월'])
+            cw = crawler.crawler.get_instance()
+            books = cw.crawl_selected_month(['2017년 6월'])
             storer.add_books_by_title(books)
 
 
@@ -236,6 +237,7 @@ def gui_main(v, g, bc, bs, storer) :
             mainui.textBrowser.append(line)
 
     def onClick(bool=False) :
+
         def onSearchClick(bool=False):
             global searchList
 
@@ -347,6 +349,7 @@ def gui_main(v, g, bc, bs, storer) :
             infolist = [
                 "제목: {}".format(selected_book.title),
                 "작가: {}".format(selected_book.author),
+                "출판일자: {}".format(selected_book.pubdate),
                 "번역가: {}".format(selected_book.translator),
                 "출판사: {}".format(selected_book.publisher)
             ]
@@ -399,6 +402,7 @@ def gui_main(v, g, bc, bs, storer) :
                 selected_ym.remove(item)
 
         def on_cr_clicked(bool=False) :
+            global storer
             ymlist = []
             crui.textBrowser.clear()
 
@@ -406,13 +410,27 @@ def gui_main(v, g, bc, bs, storer) :
                 ymlist.append(item.text())
 
             crui.textBrowser.append('크롤 시작')
-            books = crawler.crawl_selected_month(ymlist, pages)
+            cw = crawler.crawler.get_instance()
+
             crui.textBrowser.append('크롤된 제목으로 네이버 검색')
-            storer.add_books_by_title(books)
+            if len(ymlist) == 0 :
+                storer = cw.crawl_whole_korean_novel()
+            else :
+                books = cw.crawl_selected_month(ymlist, pages)
+                storer.add_books_by_title(books)
+
             crui.textBrowser.append('검색 완료')
             crui.textBrowser.append('정보 갱신 시작(책간 거리, 책검색 등)')
             renew_datas(storer, g, bc, bs)
             crui.textBrowser.append('전과정 종료')
+
+        def on_cr_save_clicked(bool=False) :
+            print('save clicked')
+            storer.export_data()
+            if (g is not None):
+                g.export_data()
+            bc.export_data()
+            bs.export_data()
 
         ###
 
@@ -422,7 +440,8 @@ def gui_main(v, g, bc, bs, storer) :
         global searchui
         global MainWindow
         if curIndex == 0 :
-            pages = crawler.crawl_entire_novel_page()
+            cw = crawler.crawler.get_instance()
+            pages = cw.crawl_entire_novel_page()
             selected_ym = []
             widget = QtWidgets.QDialog()
             crui = crawl_ui.Ui_widget()
@@ -441,6 +460,7 @@ def gui_main(v, g, bc, bs, storer) :
             crui.listView.setModel(model)
 
             crui.pushButton.clicked.connect(on_cr_clicked)
+            crui.pushButton_2.clicked.connect(on_cr_save_clicked)
 
             widget.show()
             widget.exec_()
@@ -508,7 +528,7 @@ if __name__ == "__main__" :
     g.import_data()
     bc = book_cluster.BookCluster()
     bc.import_data()
-    bs = book_searcher.BookSearcher()
+    bs = bookdata_searcher.BookDataSearcher()
     bs.import_data()
 
     #cui_main(v, g, bc, bs, storer)

@@ -1,8 +1,5 @@
-from urllib import parse, request
-from bs4 import BeautifulSoup
-import json, datetime
+import datetime
 
-import crawler, nlp_module
 
 class BookData:
     def __init__(self) :

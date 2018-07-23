@@ -236,9 +236,6 @@ class neuron :
         for data in weights :
             self.weights.append(numpy.float64(data))
 
-    def output(self, input) :
-        return sigmoid(dot(self.weights, input))
-
     def __str__(self) :
         return self.weights.__str__()
 

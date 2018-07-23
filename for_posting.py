@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from urllib import parse, request
 import json
 import pathlib
+import NaverBookSearcher
 
 def get_html(url) :
     html = ""
@@ -205,4 +206,6 @@ def parse_json() :
     print(json_data)
 
 if __name__ == "__main__" :
-    parse_json()
+    bs = NaverBookSearcher.NaverBookSearcher()
+    bs.from_title('마법소녀는 마(魔)보다도 음흉하고 제멋대로 꿈을 꾼다 1')
+    bs.search_finished()
