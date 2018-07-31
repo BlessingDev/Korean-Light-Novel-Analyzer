@@ -2,7 +2,7 @@ from collections import defaultdict
 from urllib import request
 import pathlib, random, json
 
-import json_file, BookData, nlp_module
+import json_file, book_data, nlp_module
 from experiment_tools_instantiater import external_tools_instantiater as exins
 
 class BookStorer :
@@ -22,7 +22,7 @@ class BookStorer :
             book_list = json.loads(temp, encoding='utf-16', strict=False)
 
             for book in book_list :
-                new_book = BookData.BookData()
+                new_book = book_data.BookData()
                 new_book.from_json_dict(book)
                 self.book_list.append(new_book)
 
@@ -35,19 +35,19 @@ class BookStorer :
                 new_list = list()
                 book_list = book_dict[key]
                 for book in book_list :
-                    new_book = BookData.BookData()
+                    new_book = book_data.BookData()
                     new_book.from_json_dict(book)
                     new_list.append(new_book)
 
                 self.date_to_book[key] = new_list
 
-        tra_path = pathlib.Path("baseyan_set.json")
+        tra_path = pathlib.Path("training_set.json")
         if tra_path.exists() :
             temp = tra_path.read_text(encoding='utf-16')
             book_dict = json.loads(temp, strict=False)
 
             for dic in book_dict :
-                new_book = BookData.BookData()
+                new_book = book_data.BookData()
                 new_book.from_json_dict(dic["book"])
                 dic["book"] = new_book
 
@@ -59,7 +59,7 @@ class BookStorer :
         for idx in range(len(title_list)) :
             title = title_list[idx]
             print("{}/{}".format(idx, len(title_list)))
-            book = BookData.BookData()
+            book = book_data.BookData()
             self.searcher.book = book
             self.searcher.from_title(title)
             self.book_list.append(book)
@@ -75,7 +75,7 @@ class BookStorer :
         dic_p = pathlib.Path('date_to_book.json')
         dic_p.write_text(json_file.dict_to_json(self.date_to_book, json_file.data_to_json), encoding='utf-16')
 
-        #ran_p = pathlib.Path('baseyan_set.json')
+        #ran_p = pathlib.Path('training_set.json')
         #ran_p.write_text(json_file.list_to_json(self.random_set, json_file.data_to_json), encoding='utf-16')
 
     def get_title_list(self) :
@@ -163,7 +163,7 @@ class BookStorer :
                 if bt in titlelist :
                     print('{}가 갱신됨'.format(bt))
                     bidx = titlelist.index(bt)
-                    b = BookData.BookData()
+                    b = book_data.BookData()
                     self.searcher.book = b
                     self.searcher.from_title(bt)
                     self.book_list[bidx] = b
@@ -176,7 +176,7 @@ class BookStorer :
                         print('왜 {}는 책 리스트에는 있는데 {} 출판 책 리스트에는 없는거지?'.format(bt, dt))
                         self.date_to_book[dt].append(self.book_list[bidx])
                 else :
-                    b = BookData.BookData()
+                    b = book_data.BookData()
                     self.searcher.book = b
                     self.searcher.from_title(bt)
                     self.date_to_book[dt].append(b)

@@ -1,7 +1,7 @@
 
 from bs4 import BeautifulSoup
 
-import BookStorer, nlp_module
+import book_storer, nlp_module
 from external_tools import crawler
 
 
@@ -159,7 +159,7 @@ class NamuNovelCrawler(crawler.crawler) :
         외부에서 호출하여 크롤의 결과로 BookStorer 객체를 반환하는 함수
         :return: BookStorer 객체
         '''
-        books = BookStorer.BookStorer()
+        books = book_storer.BookStorer()
         title_list = list()
         title_to_date = dict()
 

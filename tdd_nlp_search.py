@@ -1,5 +1,5 @@
 import unittest
-from BookData import BookData
+from book_data import BookData
 from external_tools import NaverBookSearcher as nb
 import nlp_module
 

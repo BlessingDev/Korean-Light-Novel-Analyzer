@@ -1,4 +1,4 @@
-import BookData
+import book_data
 import numpy
 
 def list_to_json(list, func):
@@ -48,7 +48,7 @@ def data_to_json(data) :
     if type(data) is str :
         data = data.replace('"', "'")
         return '"' + data + '"'
-    elif type(data) is BookData.BookData :
+    elif type(data) is book_data.BookData :
         return book_to_json(data)
     elif type(data) is list :
         return list_to_json(data, data_to_json)

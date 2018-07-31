@@ -1,10 +1,11 @@
 import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import BookData, BookStorer, visualization, GenreClassifier, book_cluster, bookdata_searcher
+import book_data, book_storer, visualization, book_cluster, bookdata_searcher
+import external_tools.cuda_genre_classifier
 from experiment_tools_instantiater import external_tools_instantiater as exins
 
-from external_tools import crawler
+from external_tools import cuda_genre_classifier as cugc
 from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, crawl_ui
 
 
@@ -40,7 +41,8 @@ def classify_genre(g, storer) :
         print("g is None")
 
 def networktest() :
-    g = GenreClassifier.neuron_classifier(input_size=2, num_hidden=30, output_size=1)
+    g = exins.get_instance().get_genre_classifier_cuda_instance("xor")
+
 
     input_vectors = [[0, 0], [1, 1], [1, 0], [0, 1]]
     target_vectors = [[0], [0], [1], [1]]
@@ -49,7 +51,7 @@ def networktest() :
         choice = input("1. 결과보기 2. 학습 3. 종료")
 
         if choice == '1':
-            results = [g.feed_forward_relu(input_vectors[i]) for i in range(4)]
+            results = [g._feed_forward_relu(input_vectors[i]) for i in range(4)]
 
             print("{}: {}".format(input_vectors[0], results[0][-1]))
             print("{}: {}".format(input_vectors[1], results[1][-1]))
@@ -111,7 +113,7 @@ def renew_datas(storer, g, bc, bs) :
     bs.init_word_index(storer.get_ordinary_book())
 
 def crawl_search_sample() :
-    book = BookData.BookData()
+    book = book_data.BookData()
     sr = exins.get_instance().get_searcher_naver_instance()
     sr.book = book
     sr.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
@@ -166,7 +168,7 @@ def cui_main(v, g, bc, bs, storer) :
 
             visualization.word_count_pareto(usable_set, k=0.5)
         elif choice == '8':
-            g = GenreClassifier.neuron_classifier(511, 300, 1)
+            g = external_tools.cuda_genre_classifier.cuda_classifier(511, 300, 1)
 
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
@@ -176,13 +178,7 @@ def cui_main(v, g, bc, bs, storer) :
             print(train_data)
             print(test_data)
 
-            g.train_with_book(train_data, n=5000, error=5)
-
-            for test in test_data:
-                genre_prob = g.classify(test["book"])
-
-                print(genre_prob)
-                print(test["genre"])
+            g.examine(test_data)
         elif choice == '9':
             i, book = book_search(bs, storer, n=20)
             print("idx = " + i.__str__())
@@ -526,11 +522,11 @@ def gui_main(v, g, bc, bs, storer) :
 
 
 if __name__ == "__main__" :
-    storer = BookStorer.BookStorer()
+    storer = book_storer.BookStorer()
     storer.import_data()
     v = visualization.WordFrequencyVisualizer()
     #v.initialize(storer.training_set)
-    g = GenreClassifier.neuron_classifier(1, 1, 1)
+    g = external_tools.cuda_genre_classifier.cuda_classifier(2, 2, 1)
     g.import_data()
     bc = book_cluster.BookCluster()
     bc.import_data()

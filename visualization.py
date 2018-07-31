@@ -8,7 +8,8 @@ from PIL import Image, ImageDraw, ImageFont
 import datetime
 
 
-import GenreClassifier, paretochart
+import paretochart
+from external_tools import genre_classifier
 
 font_location = "HANDotum.ttf"
 font_name = fm.FontProperties(fname = font_location).get_name()
@@ -78,7 +79,7 @@ class WordFrequencyVisualizer :
 
     def initialize(self, training_set) :
         if self.counts is None :
-            self.counts = GenreClassifier.count_words(training_set)
+            self.counts = genre_classifier.count_words(training_set)
 
     def show_genre_word_frequency(self, train_set, show_genre, n=20):
         self.initialize(train_set)
@@ -106,7 +107,7 @@ class WordFrequencyVisualizer :
             print("{} 장르는 없음".format(show_genre))
 
 def word_count_pareto(training_set, k = 0.9) :
-    num_counts = GenreClassifier.count_word_num(training_set)
+    num_counts = genre_classifier.count_word_num(training_set)
 
     print(num_counts)
 
