@@ -11,6 +11,14 @@ class searcher :
         self.book = BookData()
 
     @abstractmethod
+    def from_titles(self, title_list):
+        '''
+        타이틀의 리스트를 인자로 받아 book_data 리스트를 반환하는 객체
+        :param title_list: 
+        :return: [book_data]
+        '''
+
+    @abstractmethod
     def from_title(self, title) :
         '''
         1. assign BookData.ori_title

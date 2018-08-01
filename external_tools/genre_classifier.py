@@ -1,9 +1,18 @@
 from collections import defaultdict
 from abc import *
-import math
+import math, pathlib, json
 
 import nlp_module
 
+genre_to_index = None
+index_to_genre = None
+
+genretoindex = pathlib.Path('genretoindex.json')
+if genretoindex.exists() :
+    genre_to_index = json.loads(genretoindex.read_text('utf-8'), strict=False)
+    index_to_genre = [g for i in range(len(genre_to_index.keys())) for g, j in genre_to_index.items() if j == i]
+else :
+    print('genretoindex.json does not exist')
 
 def tokenize(sentences) :
     sen_nlp = nlp_module.pos_Kkma(sentences)

@@ -108,6 +108,7 @@ class WordFrequencyVisualizer :
 
 def word_count_pareto(training_set, k = 0.9) :
     num_counts = genre_classifier.count_word_num(training_set)
+    num_counts = sorted(num_counts, key=lambda x : x[1], reverse=True)
 
     print(num_counts)
 

@@ -7,7 +7,7 @@ from pycuda import driver as cuda
 from pycuda.compiler import SourceModule
 
 import json_file
-from external_tools.genre_classifier import tokenize_book, count_word_num, genre_classifier, adjust_train_set
+from external_tools.genre_classifier import tokenize_book, count_word_num, genre_classifier, adjust_train_set, genre_to_index
 
 
 class neuron :
@@ -23,7 +23,7 @@ class cuda_classifier(genre_classifier) :
     def __init__(self, input_size, num_hidden, output_size) :
         genre_classifier.__init__(self)
         self.wordtoindex_dic = {}
-        self.genretoindex_dic = {}
+        self.genretoindex_dic = genre_to_index
         random.seed()
 
         self.input_size = input_size
@@ -205,12 +205,6 @@ class cuda_classifier(genre_classifier) :
             self.wordtoindex_dic = json.loads(wordtoindex.read_text('utf-8'), strict=False)
         else :
             print('wordtoindex.json does not exist')
-
-        genretoindex = pathlib.Path('genretoindex.json')
-        if genretoindex.exists() :
-            self.genretoindex_dic = json.loads(genretoindex.read_text('utf-8'), strict=False)
-        else :
-            print('genretoindex.json does not exist')
 
     def _feed_forward(self, input_vector) :
         outputs = []

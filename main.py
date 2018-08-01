@@ -2,10 +2,10 @@ import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import book_data, book_storer, visualization, book_cluster, bookdata_searcher
-import external_tools.cuda_genre_classifier
+from external_tools import cuda_genre_classifier
 from experiment_tools_instantiater import external_tools_instantiater as exins
+from experiment import genre_experiment
 
-from external_tools import cuda_genre_classifier as cugc
 from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, crawl_ui
 
 
@@ -166,9 +166,11 @@ def cui_main(v, g, bc, bs, storer) :
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
 
-            visualization.word_count_pareto(usable_set, k=0.5)
+            # visualization.word_count_pareto(usable_set, k=0.8)
+            genre_num, start_num = input("비교할 장르 번호, 단어 번호를 적어주세요: ").split(' ')
+            genre_experiment.word_to_word_genre_scatter(usable_set, int(genre_num), start_num=int(start_num))
         elif choice == '8':
-            g = external_tools.cuda_genre_classifier.cuda_classifier(511, 300, 1)
+            g = cuda_genre_classifier.cuda_classifier(511, 300, 1)
 
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
@@ -526,12 +528,12 @@ if __name__ == "__main__" :
     storer.import_data()
     v = visualization.WordFrequencyVisualizer()
     #v.initialize(storer.training_set)
-    g = external_tools.cuda_genre_classifier.cuda_classifier(2, 2, 1)
-    g.import_data()
+    g = None
+    # g.import_data()
     bc = book_cluster.BookCluster()
     bc.import_data()
     bs = bookdata_searcher.BookDataSearcher()
     bs.import_data()
 
-    #cui_main(v, g, bc, bs, storer)
-    gui_main(v, g, bc, bs, storer)
+    cui_main(v, g, bc, bs, storer)
+    # gui_main(v, g, bc, bs, storer)

@@ -287,4 +287,3 @@ def make_alterative_search_set(title) :
         title_list.append(revive_ori_space(title, new_title))
 
     return title_list
-

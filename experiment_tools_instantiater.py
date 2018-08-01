@@ -1,6 +1,6 @@
 from external_tools import namu_wiki_crawler as nmcw
 from external_tools import NaverBookSearcher as nase
-from external_tools import cuda_genre_classifier as cugc
+
 
 class external_tools_instantiater :
     __instance = None

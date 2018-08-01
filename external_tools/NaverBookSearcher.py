@@ -4,6 +4,7 @@ import json
 
 import nlp_module, datetime
 from external_tools import crawler, searcher
+from book_data import BookData
 
 
 class NaverBookSearcher(searcher.searcher) :
@@ -102,6 +103,18 @@ class NaverBookSearcher(searcher.searcher) :
 
         print("검색된 책 제목: {}".format(self.book.title))
         self.f.write("검색된 책 제목: {}".format(self.book.title))
+
+    def from_titles(self, title_list) :
+        books = []
+
+        for i, title in enumerate(title_list) :
+            self.book = BookData()
+            print("{}/{}".format(i, len(title_list)))
+            self.from_title(title)
+            books.append(self.book)
+
+        return books
+
 
     def from_title(self, title) :
         self.book.ori_title = title
