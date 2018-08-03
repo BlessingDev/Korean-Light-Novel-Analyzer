@@ -2,12 +2,14 @@ import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import book_data, book_storer, visualization, book_cluster, bookdata_searcher
-from external_tools import cuda_genre_classifier
-from experiment_tools_instantiater import external_tools_instantiater as exins
+from external_tools import cuda_genre_classifier, tf_model
+from external_tools_instantiater import external_tools_instantiater as exins
 from experiment import genre_experiment
 
 from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, crawl_ui
 
+import tensorflow as tf
+import numpy as np
 
 def show_menu() :
     print("------라이트 노벨 분석기 v. 0.1------")
@@ -193,7 +195,24 @@ def cui_main(v, g, bc, bs, storer) :
         elif choice == '11':
             get_close_book(bc, bs, storer)
         elif choice == '12':
-            storer.classify_book_genre(g)
+            sess = tf.Session()
+
+            x_data = np.array([[0, 0], [1, 0], [0, 1], [1, 1]], dtype=np.float32)
+            y_data = np.array([[0], [1], [1], [0]], dtype=np.float32)
+
+            m = tf_model.FC_Model(sess, "xor_nn", 2, 1, 1, [5])
+
+            sess.run(tf.global_variables_initializer())
+
+            for i in range(2000) :
+                c, _ = m.train(x_data, y_data, keep_prob=1.0)
+
+                if i % 10 == 0 :
+                    print(i, c)
+
+            print(m.predict(x_data))
+            print(m.get_accuracy(x_data, y_data))
+
         elif choice == '13' :
             crawl_search_sample()
         elif choice == '14':

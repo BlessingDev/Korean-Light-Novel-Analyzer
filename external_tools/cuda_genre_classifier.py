@@ -7,7 +7,7 @@ from pycuda import driver as cuda
 from pycuda.compiler import SourceModule
 
 import json_file
-from external_tools.genre_classifier import tokenize_book, count_word_num, genre_classifier, adjust_train_set, genre_to_index
+from external_tools.genre_classifier import tokenize_book, count_word_num, genre_classifier, adjust_train_set, genre_to_index, word_to_index, adjust_book
 
 
 class neuron :
@@ -24,6 +24,7 @@ class cuda_classifier(genre_classifier) :
         genre_classifier.__init__(self)
         self.wordtoindex_dic = {}
         self.genretoindex_dic = genre_to_index
+        self.wordtoindex_dic = word_to_index
         random.seed()
 
         self.input_size = input_size
@@ -199,12 +200,6 @@ class cuda_classifier(genre_classifier) :
             self.neuron_layers = layers
         else :
             print('weights.json does not exist')
-
-        wordtoindex = pathlib.Path('wordtoindex.json')
-        if wordtoindex.exists() :
-            self.wordtoindex_dic = json.loads(wordtoindex.read_text('utf-8'), strict=False)
-        else :
-            print('wordtoindex.json does not exist')
 
     def _feed_forward(self, input_vector) :
         outputs = []
@@ -591,15 +586,8 @@ class cuda_classifier(genre_classifier) :
         :param book: 분류할 책의 book_data 객체
         :return: [(genre name(str), probability(float))] 형태의 리스트로 반환
         '''
-        print(book.title)
-        input_vector = [0 for _ in range(self.input_size)]
-        word_list = tokenize_book(book)
-        for word in word_list:
-            if word in self.wordtoindex_dic.keys():
-                input_vector[self.wordtoindex_dic[word]] = 1
-            else:
-                print("{} 단어는 학습 대상이 아님".format(word))
 
+        input_vector = adjust_book(book)
         outputs = self._feed_forward(input_vector)
         indextogenre_dic = {idx : genre for genre, idx in self.genretoindex_dic.items()}
         return [(indextogenre_dic[i], outputs[-1][i]) for i in range(len(outputs[-1]))]

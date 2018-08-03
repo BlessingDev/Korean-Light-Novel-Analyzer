@@ -2,7 +2,7 @@ from collections import defaultdict
 from abc import *
 import math, pathlib, json
 
-import nlp_module
+import nlp_module, json_file
 
 genre_to_index = None
 index_to_genre = None
@@ -13,6 +13,17 @@ if genretoindex.exists() :
     index_to_genre = [g for i in range(len(genre_to_index.keys())) for g, j in genre_to_index.items() if j == i]
 else :
     print('genretoindex.json does not exist')
+
+word_to_index = None
+index_to_word = None
+
+wordtoindex_file = pathlib.Path('wordtoindex.json')
+if wordtoindex_file.exists() :
+    word_to_index = json.loads(wordtoindex_file.read_text('utf-8'), strict=False)
+    index_to_word = [w for i in range(len(word_to_index.keys())) for w, j in word_to_index.items() if j == i]
+else:
+    print('wordtoindex.json  does not exist')
+
 
 def tokenize(sentences) :
     sen_nlp = nlp_module.pos_Kkma(sentences)
@@ -188,6 +199,18 @@ def adjust_train_set(input_size, wordtoindex_dic, genre_num, genretoindex_dic, t
 
     return inputs, targets
 
+def adjust_book(book) :
+    print(book.title)
+    input_vector = [0 for _ in range(len(index_to_word))]
+    word_list = tokenize_book(book)
+    for word in word_list:
+        if word in word_to_index.keys():
+            input_vector[word_to_index[word]] = 1
+        else:
+            print("{} 단어는 학습 대상이 아님".format(word))
+
+    return input_vector
+
 def genre_probability(word_probs, book) :
     '''
     모든 장르에 대한 bayesian 확률을 계산하는 함수
@@ -213,12 +236,49 @@ def genre_probability(word_probs, book) :
     prob_sum = sum([x for _, x in exp_list])
     return [(genre, (exp / prob_sum)) for genre, exp in exp_list]
 
+def set_to_vector(trainig_set, word_num) :
+    genre_list = [genre for item in trainig_set
+                    for genre in item["genre"]]
+    genre_list = set(genre_list)
+
+    genre_num = len(genre_list)
+
+    print(genre_list)
+    num_counts = count_word_num(trainig_set)
+    num_counts.sort(key=lambda x : x[1], reverse=True)
+
+    num_counts = num_counts[:word_num]
+
+    print("word_count done")
+
+    for i in range(word_num) :
+        word_to_index[num_counts[i][0]] = i
+
+    for i, genre in enumerate(list(genre_list)) :
+        genre_to_index[genre] = i
+
+    print("trainset adjustment finished")
+
+    wordtoindex_dic_path = pathlib.Path('wordtoindex.json')
+    wordtoindex_dic_path.write_text(json_file.dict_to_json(word_to_index, json_file.data_to_json),
+                                    encoding='utf-8')
+
+    genretoindex_dic_path = pathlib.Path('genretoindex.json')
+    genretoindex_dic_path.write_text(json_file.dict_to_json(genre_to_index,
+                                                            json_file.data_to_json),
+                                     encoding='utf-8')
+
+    print("2index set file saved")
+
+    return adjust_train_set(word_num, word_to_index, genre_num, genre_to_index,
+                                           trainig_set)
+
 class genre_classifier :
     def __init__(self) :
         pass
 
     @abstractmethod
-    def train(self, training_set, target_set, n=1000, error=0.1):
+    def train(self, input_sets, target_sets, n=1000, error=0.1):
         '''
         classifier를 훈련시키기 위한 함수
         :param training_set: 입력 셋 [None, input_num]
@@ -234,7 +294,7 @@ class genre_classifier :
         '''
         학습된 모델로 책의 장르를 분류하는 함수
         :param book: 분류할 책의 book_data 객체
-        :return: [(genre name, probability)] 형태의 리스트로 반환
+        :return: [(genre name, float number)] 형태의 리스트로 반환
         '''
         print("you have to override this function")
 
