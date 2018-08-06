@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 import matplotlib.font_manager as fm
+
 import matplotlib
 
 from external_tools import genre_classifier

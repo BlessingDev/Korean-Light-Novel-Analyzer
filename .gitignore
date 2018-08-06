@@ -104,3 +104,4 @@ images/
 *.txt
 *.png
 *.rtf
+logs/

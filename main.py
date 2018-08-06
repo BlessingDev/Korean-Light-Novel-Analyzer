@@ -2,7 +2,7 @@ import random, sys, subprocess, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import book_data, book_storer, visualization, book_cluster, bookdata_searcher
-from external_tools import cuda_genre_classifier, tf_model
+from external_tools import genre_classifier, tf_model
 from external_tools_instantiater import external_tools_instantiater as exins
 from experiment import genre_experiment
 
@@ -172,7 +172,7 @@ def cui_main(v, g, bc, bs, storer) :
             genre_num, start_num = input("비교할 장르 번호, 단어 번호를 적어주세요: ").split(' ')
             genre_experiment.word_to_word_genre_scatter(usable_set, int(genre_num), start_num=int(start_num))
         elif choice == '8':
-            g = cuda_genre_classifier.cuda_classifier(511, 300, 1)
+            g = exins.get_instance().get_genre_classifier_instance()
 
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
@@ -182,7 +182,13 @@ def cui_main(v, g, bc, bs, storer) :
             print(train_data)
             print(test_data)
 
-            g.examine(test_data)
+            inputs, targets = genre_classifier.set_to_vector(train_data, 1400)
+            print(inputs, targets)
+            g.train(inputs, targets, n=100)
+            print(g.examine(test_data))
+
+            g.sess.close()
+
         elif choice == '9':
             i, book = book_search(bs, storer, n=20)
             print("idx = " + i.__str__())
@@ -194,6 +200,7 @@ def cui_main(v, g, bc, bs, storer) :
 
         elif choice == '11':
             get_close_book(bc, bs, storer)
+
         elif choice == '12':
             sess = tf.Session()
 

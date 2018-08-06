@@ -199,9 +199,9 @@ def adjust_train_set(input_size, wordtoindex_dic, genre_num, genretoindex_dic, t
 
     return inputs, targets
 
-def adjust_book(book) :
+def adjust_book(book, input_num) :
     print(book.title)
-    input_vector = [0 for _ in range(len(index_to_word))]
+    input_vector = [0 for _ in range(input_num)]
     word_list = tokenize_book(book)
     for word in word_list:
         if word in word_to_index.keys():
@@ -237,6 +237,10 @@ def genre_probability(word_probs, book) :
     return [(genre, (exp / prob_sum)) for genre, exp in exp_list]
 
 def set_to_vector(trainig_set, word_num) :
+    global index_to_genre, index_to_word, word_to_index, genre_to_index
+
+    genre_to_index = {}
+    word_to_index = {}
     genre_list = [genre for item in trainig_set
                     for genre in item["genre"]]
     genre_list = set(genre_list)
@@ -254,8 +258,13 @@ def set_to_vector(trainig_set, word_num) :
     for i in range(word_num) :
         word_to_index[num_counts[i][0]] = i
 
+    index_to_word = [w for i in range(len(word_to_index.keys())) for w, j in word_to_index.items() if j == i]
+
     for i, genre in enumerate(list(genre_list)) :
         genre_to_index[genre] = i
+
+    index_to_genre = [g for i in range(len(genre_to_index.keys())) for g, j in genre_to_index.items() if j == i]
+
 
     print("trainset adjustment finished")
 
@@ -324,5 +333,6 @@ class genre_classifier :
         for t in test_set :
             g = self.genre_hot(self.classify(t["book"]))
             a_sum += self.genre_accuraccy(g, t["genre"])
+            print(g, t["genre"])
 
         return a_sum / t_num

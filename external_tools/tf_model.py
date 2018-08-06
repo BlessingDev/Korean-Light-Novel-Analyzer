@@ -36,9 +36,10 @@ class FC_Model :
                 with tf.variable_scope("Layer{0}".format(i + 1)) :
                     W = tf.Variable(tf.random_normal([bef_input_num, self.hidden_node_nums[i]]), name='weight{0}'.format(i + 1))
                     b = tf.Variable(tf.random_normal([self.hidden_node_nums[i]]), name='bias{0}'.format(i + 1))
-                    L = tf.nn.relu(tf.matmul(bef_output, W) + b)
+                    L = tf.nn.tanh(tf.matmul(bef_output, W) + b)
                     L = tf.nn.dropout(L, keep_prob=self.keep_prob)
                     bef_output = L
+                    bef_input_num = self.hidden_node_nums[i]
 
             Wl = tf.Variable(tf.random_normal([self.hidden_node_nums[-1], self.output_num]), name='last_weight')
             bl = tf.Variable(tf.random_normal([self.output_num]), name='last_bias')
@@ -50,6 +51,11 @@ class FC_Model :
         correct_prediction = tf.equal(tf.cast(self.hypothesis > 0.5, dtype=tf.float32), self.Y)
         self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+        self.hy_hist = tf.summary.histogram("hypothesis", self.hypothesis)
+        self.cost_summ = tf.summary.scalar("cost", self.cost)
+
+        self.summary = tf.summary.merge_all()
+
     def predict(self, x_test, keep_prob=1.0) :
         return self.sess.run(self.hypothesis,
                              feed_dict={self.X: x_test, self.keep_prob: keep_prob})
@@ -59,5 +65,6 @@ class FC_Model :
                              feed_dict={self.X: x_test, self.Y: y_test, self.keep_prob: keep_prob})
 
     def train(self, x_data, y_data, keep_prob=0.7) :
-        return self.sess.run([self.cost, self.optimizer],
+
+        return self.sess.run([self.cost, self.summary, self.optimizer],
                              feed_dict={self.X: x_data, self.Y: y_data, self.keep_prob: keep_prob})

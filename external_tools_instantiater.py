@@ -1,6 +1,6 @@
 from external_tools import namu_wiki_crawler as nmcw
 from external_tools import NaverBookSearcher as nase
-
+from external_tools import tf_genre_classifier as tfgc
 
 
 class external_tools_instantiater :
@@ -9,7 +9,7 @@ class external_tools_instantiater :
     def __init__(self) :
         self.nase_instance = nase.NaverBookSearcher()
         self.nmcw_instance = nmcw.NamuNovelCrawler()
-        self.gc_instance = None
+        self.gc_instance = tfgc.tf_genre_classifier()
 
     @classmethod
     def get_instance(cls) :
