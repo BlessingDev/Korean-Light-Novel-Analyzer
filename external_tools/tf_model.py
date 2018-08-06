@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 class FC_Model :
-    def __init__(self, sess, name, input_num, output_num, hidden_num, hidden_node_nums, learning_rate=0.01) :
+    def __init__(self, sess, name, input_num, output_num, hidden_num, hidden_node_nums, learning_rate=0.01, activation=tf.nn.relu) :
         '''
         Fully Connected 신경망 모델 초기화 함수
         :param sess: tensorflow 세션
@@ -19,6 +19,7 @@ class FC_Model :
         self.hidden_node_nums = hidden_node_nums
 
         self.learning_rate = learning_rate
+        self.activation = activation
 
         self._build_net()
 
@@ -36,7 +37,7 @@ class FC_Model :
                 with tf.variable_scope("Layer{0}".format(i + 1)) :
                     W = tf.Variable(tf.random_normal([bef_input_num, self.hidden_node_nums[i]]), name='weight{0}'.format(i + 1))
                     b = tf.Variable(tf.random_normal([self.hidden_node_nums[i]]), name='bias{0}'.format(i + 1))
-                    L = tf.nn.tanh(tf.matmul(bef_output, W) + b)
+                    L = self.activation(tf.matmul(bef_output, W) + b)
                     L = tf.nn.dropout(L, keep_prob=self.keep_prob)
                     bef_output = L
                     bef_input_num = self.hidden_node_nums[i]

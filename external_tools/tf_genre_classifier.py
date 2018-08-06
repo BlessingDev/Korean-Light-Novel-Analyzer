@@ -21,7 +21,7 @@ class tf_genre_classifier(genre_classifier.genre_classifier) :
 
         self.model = FC_Model(self.sess, "genre_classifier", len(input_sets[0]), len(target_sets[0]),
                               20, [2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1800, 1800, 1800, 1800, 1800, 1800, 1600, 1600, 1300, 1000],
-                              learning_rate=0.000001)
+                              learning_rate=0.000001, activation=tf.sigmoid)
         self.input_num = len(input_sets[0])
         self.genre_num =  len(target_sets[0])
 
@@ -30,17 +30,33 @@ class tf_genre_classifier(genre_classifier.genre_classifier) :
         writer = tf.summary.FileWriter('./logs')
         writer.add_graph(self.sess.graph)
 
-        for i in range(n) :
-            c, s, _ = self.model.train(np.asarray(input_sets), np.asarray(target_sets))
+        if n != 0 :
+            for i in range(n) :
+                c, s, _ = self.model.train(np.asarray(input_sets), np.asarray(target_sets))
 
-            writer.add_summary(s, global_step=i)
+                writer.add_summary(s, global_step=i)
 
-            if i % 10 == 0 :
-                print(i, c)
+                if i % 10 == 0 :
+                    print(i, c)
 
-            if c < error :
-                print("error condition is satisfied")
-                break
+                if c < error :
+                    print("error condition is satisfied")
+                    break
+        else :
+            c = 10000
+            i = 0
+            while c > error :
+                c, s, _ = self.model.train(np.asarray(input_sets), np.asarray(target_sets))
+
+                writer.add_summary(s, global_step=i)
+
+                if i % 10 == 0:
+                    print(i, c)
+
+                i += 1
+
+            print(c, "error condition is satisfied")
+
 
     def genre_hot(self, output) :
         cut_val = 0.3
@@ -58,6 +74,7 @@ class tf_genre_classifier(genre_classifier.genre_classifier) :
         output = self.sess.run(tf.reshape(output, [len(genre_classifier.index_to_genre)]))
 
         output = output.tolist()
+        print(output)
         genre_prob = [(genre_classifier.index_to_genre[i], p) for i, p in enumerate(output)]
 
         return genre_prob

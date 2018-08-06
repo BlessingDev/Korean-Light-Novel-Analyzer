@@ -184,7 +184,7 @@ def cui_main(v, g, bc, bs, storer) :
 
             inputs, targets = genre_classifier.set_to_vector(train_data, 1400)
             print(inputs, targets)
-            g.train(inputs, targets, n=100)
+            g.train(inputs, targets, n=0, error=0.01)
             print(g.examine(test_data))
 
             g.sess.close()
