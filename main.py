@@ -184,7 +184,7 @@ def cui_main(v, g, bc, bs, storer) :
 
             inputs, targets = genre_classifier.set_to_vector(train_data, 1400)
             print(inputs, targets)
-            g.train(inputs, targets, n=0, error=0.01)
+            g.train(inputs, targets, n=10000, error=1.65)
             print(g.examine(test_data))
 
             g.sess.close()
@@ -212,7 +212,7 @@ def cui_main(v, g, bc, bs, storer) :
             sess.run(tf.global_variables_initializer())
 
             for i in range(2000) :
-                c, _ = m.train(x_data, y_data, keep_prob=1.0)
+                c, _ = m.train(x_data, y_data, keep_prob=1.65)
 
                 if i % 10 == 0 :
                     print(i, c)

@@ -199,7 +199,36 @@ def adjust_train_set(input_size, wordtoindex_dic, genre_num, genretoindex_dic, t
 
     return inputs, targets
 
-def adjust_book(book, input_num) :
+def adjust_train_logistic(input_size, word_to_index, genre_num, genre_to_index, training_set) :
+    inputs = []
+    targets = []
+    print("학습 set 만들기 시작")
+
+    for tr_dic in training_set:
+        print(tr_dic["book"].title)
+        input_vector = [0 for _ in range(input_size)]
+        word_list = tokenize_book(tr_dic["book"])
+        no_num = 0
+        for word in word_list:
+            if word in word_to_index.keys():
+                input_vector[word_to_index[word]] = 1
+            else:
+                no_num += 1
+                print("{} 단어는 학습 대상이 아님".format(word))
+
+        print("전체 단어 {}개 중에 학습 불가 단어 {}개".format(len(word_list), no_num))
+        inputs.append(input_vector)
+
+        target_vector = [0.0 for _ in range(genre_num)]
+        for genre in tr_dic["genre"]:
+            g_num = len(genre)
+            target_vector[genre_to_index[genre]] = 1 / g_num
+
+        targets.append(target_vector)
+
+    return inputs, targets
+
+def adjust_book_input(book, input_num) :
     print(book.title)
     input_vector = [0 for _ in range(input_num)]
     word_list = tokenize_book(book)
@@ -279,7 +308,7 @@ def set_to_vector(trainig_set, word_num) :
 
     print("2index set file saved")
 
-    return adjust_train_set(word_num, word_to_index, genre_num, genre_to_index,
+    return adjust_train_logistic(word_num, word_to_index, genre_num, genre_to_index,
                                            trainig_set)
 
 class genre_classifier :

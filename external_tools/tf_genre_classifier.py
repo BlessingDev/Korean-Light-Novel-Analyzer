@@ -1,4 +1,4 @@
-from external_tools.tf_model import FC_Model
+from external_tools.tf_model import Softmax_Model, FC_Model
 from external_tools import genre_classifier
 
 import tensorflow as tf
@@ -19,9 +19,10 @@ class tf_genre_classifier(genre_classifier.genre_classifier) :
         config.gpu_options.allow_growth = True
         self.sess = tf.Session(config=config)
 
-        self.model = FC_Model(self.sess, "genre_classifier", len(input_sets[0]), len(target_sets[0]),
-                              20, [2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1800, 1800, 1800, 1800, 1800, 1800, 1600, 1600, 1300, 1000],
-                              learning_rate=0.000001, activation=tf.sigmoid)
+        self.model = Softmax_Model(self.sess, "genre_classifier", len(input_sets[0]), len(target_sets[0]),
+                              5, [1200, 800, 500, 500, 500],
+                              learning_rate=0.00001, activation=tf.nn.tanh)
+
         self.input_num = len(input_sets[0])
         self.genre_num =  len(target_sets[0])
 
@@ -57,24 +58,31 @@ class tf_genre_classifier(genre_classifier.genre_classifier) :
 
             print(c, "error condition is satisfied")
 
-
     def genre_hot(self, output) :
-        cut_val = 0.3
+        cut_val = 0.1
+        acc_max = 0.8
         gl = []
+        acc_p = 0.0
+        output = sorted(output, key=lambda x : x[1], reverse=True)
+        print(output)
         for g, p in output:
-            if p >= cut_val:
+            if p >= cut_val :
                 gl.append(g)
+            acc_p += p
+
+            if acc_p >= acc_max :
+                break
+
 
         return gl
 
     def classify(self, book) :
-        input_vector = genre_classifier.adjust_book(book, self.input_num)
+        input_vector = genre_classifier.adjust_book_input(book, self.input_num)
 
         output = self.model.predict(np.asarray([input_vector]))
         output = self.sess.run(tf.reshape(output, [len(genre_classifier.index_to_genre)]))
 
         output = output.tolist()
-        print(output)
         genre_prob = [(genre_classifier.index_to_genre[i], p) for i, p in enumerate(output)]
 
         return genre_prob

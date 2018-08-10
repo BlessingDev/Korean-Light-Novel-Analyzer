@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aab144f4-278d-4a9a-85eb-0fbf8bb1bbd1" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/genre_experiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/genre_experiment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/external_tools/cuda_genre_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/external_tools/cuda_genre_classifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/external_tools/genre_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/external_tools/genre_classifier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/external_tools/tf_genre_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/external_tools/tf_genre_classifier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/external_tools/tf_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/external_tools/tf_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -16,33 +21,37 @@
     <session id="491605302">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="14" />
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.3" value="2" />
-          <entry key="project.open.time.6" value="5" />
-          <entry key="project.open.time.7" value="4" />
-          <entry key="project.open.time.8" value="1" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="14" />
+          <entry key="project.closed" value="19" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.2" value="2" />
+          <entry key="project.open.time.3" value="3" />
+          <entry key="project.open.time.6" value="6" />
+          <entry key="project.open.time.7" value="5" />
+          <entry key="project.open.time.8" value="2" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="6" />
-          <entry key="py" value="8592" />
+          <entry key="json" value="399" />
+          <entry key="py" value="11630" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+          <entry key="JSON" value="399" />
           <entry key="PLAIN_TEXT" value="6" />
-          <entry key="Python" value="8592" />
+          <entry key="Python" value="11630" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="json" value="6" />
+          <entry key="json" value="9" />
           <entry key="png" value="1" />
-          <entry key="py" value="38" />
+          <entry key="py" value="39" />
           <entry key="txt" value="2" />
         </counts>
       </usages-collector>
@@ -50,8 +59,8 @@
         <counts>
           <entry key="Hoi4 file" value="2" />
           <entry key="Image" value="1" />
-          <entry key="JSON" value="6" />
-          <entry key="Python" value="38" />
+          <entry key="JSON" value="9" />
+          <entry key="Python" value="39" />
         </counts>
       </usages-collector>
     </session>
@@ -60,11 +69,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="330">
-                  <caret line="187" column="21" selection-start-line="187" selection-start-column="21" selection-end-line="187" selection-end-column="21" />
+                <state relative-caret-position="461">
+                  <caret line="184" column="57" selection-start-line="184" selection-start-column="57" selection-end-line="184" selection-end-column="57" />
                   <folding>
                     <element signature="e#0#34#0" expanded="true" />
                   </folding>
@@ -73,13 +82,34 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/genretoindex.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state>
+                  <caret column="57" selection-start-column="57" selection-end-column="57" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/external_tools/tf_model.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="75">
-                  <caret line="41" column="32" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
+                <state relative-caret-position="340">
+                  <caret line="190" column="44" selection-start-line="190" selection-start-column="44" selection-end-line="190" selection-end-column="44" />
                   <folding>
-                    <marker date="1533533812711" expanded="true" signature="41:46" ph="..." />
+                    <element signature="e#0#23#0" expanded="true" />
+                    <marker date="1533882269012" expanded="true" signature="1522:1524" ph="..." />
+                    <marker date="1533882269012" expanded="true" signature="1550:1555" ph="..." />
+                    <marker date="1533882269012" expanded="true" signature="4762:4767" ph="..." />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/training_set.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-504">
+                  <caret column="67739" selection-start-column="67739" selection-end-column="67739" />
                 </state>
               </provider>
             </entry>
@@ -87,12 +117,13 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/external_tools/genre_classifier.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1253">
-                  <caret line="333" column="39" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
+                <state relative-caret-position="3855">
+                  <caret line="362" column="26" selection-start-line="362" selection-start-column="26" selection-end-line="362" selection-end-column="26" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
                     <element signature="e#881#2478#0" />
-                    <marker date="1533307978950" expanded="true" signature="4526:4843" ph="..." />
+                    <marker date="1533624449394" expanded="true" signature="4587:5437" ph="..." />
+                    <marker date="1533624449394" expanded="true" signature="5477:5794" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -146,22 +177,13 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/external_tools/tf_genre_classifier.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="471">
-                  <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+                <state relative-caret-position="405">
+                  <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
                   <folding>
-                    <element signature="e#0#44#0" expanded="true" />
-                    <marker date="1533541660419" expanded="true" signature="196:201" ph="..." />
-                    <marker date="1533541660419" expanded="true" signature="1946:2095" ph="..." />
+                    <element signature="e#0#59#0" expanded="true" />
+                    <marker date="1533887714974" expanded="true" signature="211:216" ph="..." />
+                    <marker date="1533887714974" expanded="true" signature="1870:2232" ph="..." />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/training_set.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="218">
-                  <caret column="241677" selection-start-column="241677" selection-end-column="241685" />
                 </state>
               </provider>
             </entry>
@@ -169,7 +191,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/external_tools/cuda_genre_classifier.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="815">
+                <state relative-caret-position="8535">
                   <caret line="578" column="20" selection-start-line="578" selection-start-column="20" selection-end-line="578" selection-end-column="20" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
@@ -193,8 +215,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/experiment/genre_experiment.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+                <state relative-caret-position="510">
+                  <caret line="38" selection-start-line="38" selection-end-line="38" />
                   <folding>
                     <element signature="e#0#36#0" expanded="true" />
                   </folding>
@@ -238,6 +260,24 @@
       <find>마법전쟁</find>
       <find>청춘돼지</find>
       <find>마왕 같다고 3</find>
+      <find>그녀의 플래그가 꺾이면</find>
+      <find>스트라이크 더 블러드</find>
+      <find>블랙 불릿</find>
+      <find>치유</find>
+      <find>액셀 월드</find>
+      <find>메카</find>
+      <find>노 게임 노 라이프</find>
+      <find>앱솔루트 듀오</find>
+      <find>액션</find>
+      <find>널 오타쿠로 만들어줄 테니까, 날 리얼충으로 만들어줘!</find>
+      <find>포스트 아포칼립스</find>
+      <find>이능배틀</find>
+      <find>데이트 어 라이브</find>
+      <find>모든 사람이 두려워하는 그 반장이 내 전속 메이드가 되는 것 같습니다 2</find>
+      <find>너에게 호소하는 방법 2</find>
+      <find>빙결경계의 에덴</find>
+      <find>이것은 좀비입니까?</find>
+      <find>전기</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -276,18 +316,18 @@
         <option value="$PROJECT_DIR$/external_tools_instantiater.py" />
         <option value="$PROJECT_DIR$/external_tools/genre_classifier.py" />
         <option value="$PROJECT_DIR$/experiment/genre_experiment.py" />
-        <option value="$PROJECT_DIR$/training_set.json" />
         <option value="$PROJECT_DIR$/external_tools/tf_model.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/external_tools/tf_genre_classifier.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/training_set.json" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1209" />
-    <option name="y" value="27" />
-    <option name="width" value="1552" />
-    <option name="height" value="880" />
+    <option name="x" value="-2148" />
+    <option name="y" value="30" />
+    <option name="width" value="1549" />
+    <option name="height" value="740" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -297,6 +337,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -318,7 +359,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -492,17 +532,17 @@
     <frame x="-1928" y="46" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1705757" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18443497" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3296146" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932885" weight="0.2068607" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49934897" weight="0.39731544" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32952183" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932885" visible="true" weight="0.24948025" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49934897" weight="0.3970894" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.32952183" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32848233" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067115" side_tool="true" weight="0.2671141" />
@@ -533,13 +573,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/book_data.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="871">
-          <caret column="3497550" selection-start-column="3497550" selection-end-column="3497550" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/907059903/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
@@ -662,13 +695,6 @@
     <entry file="file://$PROJECT_DIR$/experiment/단어 산포도/하렘_0.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/genretoindex.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="607" lean-forward="true" selection-start-column="607" selection-end-column="607" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/tensorflow/python/training/optimizer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -713,13 +739,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/tensorflow/python/framework/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="5165" selection-start-line="5165" selection-end-line="5165" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -742,6 +761,33 @@
       </provider>
     </entry>
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/tensorflow/python/keras/backend/__init__.py" />
+    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/tensorflow/python/framework/ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="4125" selection-start-line="4125" selection-end-line="4125" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/genretoindex.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="57" selection-start-column="57" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/external_tools/genre_classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3855">
+          <caret line="362" column="26" selection-start-line="362" selection-start-column="26" selection-end-line="362" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#881#2478#0" />
+            <marker date="1533624449394" expanded="true" signature="4587:5437" ph="..." />
+            <marker date="1533624449394" expanded="true" signature="5477:5794" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/visualization.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1590">
@@ -777,6 +823,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/external_tools/cuda_genre_classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8535">
+          <caret line="578" column="20" selection-start-line="578" selection-start-column="20" selection-end-line="578" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/book_storer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2325">
@@ -789,8 +845,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/experiment/genre_experiment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+        <state relative-caret-position="510">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
@@ -808,63 +864,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/external_tools/cuda_genre_classifier.py">
+    <entry file="file://$PROJECT_DIR$/external_tools/tf_genre_classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="815">
-          <caret line="578" column="20" selection-start-line="578" selection-start-column="20" selection-end-line="578" selection-end-column="20" />
+        <state relative-caret-position="405">
+          <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#59#0" expanded="true" />
+            <marker date="1533887714974" expanded="true" signature="211:216" ph="..." />
+            <marker date="1533887714974" expanded="true" signature="1870:2232" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/external_tools/tf_model.py">
+    <entry file="file://$PROJECT_DIR$/book_data.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="41" column="32" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
-          <folding>
-            <marker date="1533533812711" expanded="true" signature="41:46" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/external_tools/genre_classifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1253">
-          <caret line="333" column="39" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#881#2478#0" />
-            <marker date="1533307978950" expanded="true" signature="4526:4843" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/training_set.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret column="241677" selection-start-column="241677" selection-end-column="241685" />
+        <state relative-caret-position="473">
+          <caret column="3471421" selection-start-column="3471413" selection-end-column="3471421" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="187" column="21" selection-start-line="187" selection-start-column="21" selection-end-line="187" selection-end-column="21" />
+        <state relative-caret-position="461">
+          <caret line="184" column="57" selection-start-line="184" selection-start-column="57" selection-end-line="184" selection-end-column="57" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/external_tools/tf_genre_classifier.py">
+    <entry file="file://$PROJECT_DIR$/training_set.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+        <state relative-caret-position="-504">
+          <caret column="67739" selection-start-column="67739" selection-end-column="67739" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/external_tools/tf_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="190" column="44" selection-start-line="190" selection-start-column="44" selection-end-line="190" selection-end-column="44" />
           <folding>
-            <element signature="e#0#44#0" expanded="true" />
-            <marker date="1533541660419" expanded="true" signature="196:201" ph="..." />
-            <marker date="1533541660419" expanded="true" signature="1946:2095" ph="..." />
+            <element signature="e#0#23#0" expanded="true" />
+            <marker date="1533882269012" expanded="true" signature="1522:1524" ph="..." />
+            <marker date="1533882269012" expanded="true" signature="1550:1555" ph="..." />
+            <marker date="1533882269012" expanded="true" signature="4762:4767" ph="..." />
           </folding>
         </state>
       </provider>

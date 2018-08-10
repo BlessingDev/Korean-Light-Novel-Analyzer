@@ -7,7 +7,7 @@ from pycuda import driver as cuda
 from pycuda.compiler import SourceModule
 
 import json_file
-from external_tools.genre_classifier import tokenize_book, count_word_num, genre_classifier, adjust_train_set, genre_to_index, word_to_index, adjust_book
+from external_tools.genre_classifier import tokenize_book, count_word_num, genre_classifier, adjust_train_set, genre_to_index, word_to_index, adjust_book_input
 
 
 class neuron :
@@ -587,7 +587,7 @@ class cuda_classifier(genre_classifier) :
         :return: [(genre name(str), probability(float))] 형태의 리스트로 반환
         '''
 
-        input_vector = adjust_book(book)
+        input_vector = adjust_book_input(book)
         outputs = self._feed_forward(input_vector)
         indextogenre_dic = {idx : genre for genre, idx in self.genretoindex_dic.items()}
         return [(indextogenre_dic[i], outputs[-1][i]) for i in range(len(outputs[-1]))]
