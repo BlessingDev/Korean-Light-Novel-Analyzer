@@ -1,6 +1,6 @@
 from collections import defaultdict
 from urllib import request
-import pathlib, random, json
+import pathlib, random, json, datetime
 
 import json_file, book_data, nlp_module
 from external_tools_instantiater import external_tools_instantiater as exins
@@ -11,6 +11,8 @@ class BookStorer :
         self.date_to_book = defaultdict(list)
         self.training_set = None
         self.searcher = exins.get_instance().get_searcher_naver_instance() #
+        self.curt = datetime.datetime.now()
+
 
     def import_data(self) :
         self.book_list = list()
@@ -55,6 +57,9 @@ class BookStorer :
 
     def add_by_tl_td(self, title_list, title_to_date) :
         self.date_to_book = defaultdict(list)
+        f = open("Naver Book Search Log_{} {}h{}m{}s.txt".
+                 format(self.curt.date(), self.curt.hour, self.curt.minute, self.curt.second), "w")
+        self.searcher.f = f
 
         for idx in range(len(title_list)) :
             title = title_list[idx]
@@ -64,6 +69,8 @@ class BookStorer :
             self.searcher.from_title(title)
             self.book_list.append(book)
             self.date_to_book[title_to_date[book.ori_title]].append(book)
+
+        self.searcher.search_finished()
 
     def export_data(self) :
         book_p = pathlib.Path('book_data.json')
@@ -155,6 +162,9 @@ class BookStorer :
 
     def add_books_by_title(self, bookdate) :
         titlelist = self.get_orititle_list()
+        f = open("Naver Book Search Log_{} {}h{}m{}s.txt".
+                 format(self.curt.date(), self.curt.hour, self.curt.minute, self.curt.second), "w")
+        self.searcher.f = f
 
         for idx in range(len(bookdate)) :
             btlist = bookdate[idx][1]
@@ -182,3 +192,7 @@ class BookStorer :
                     self.date_to_book[dt].append(b)
 
         self.searcher.search_finished()
+
+    def get_usable_training_set(self) :
+        return [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in self.training_set
+                          if len(t_set["genre"]) > 0]

@@ -62,13 +62,7 @@ class FC_Model(NN_Model) :
         :param hidden_num: 숨겨진 레이어의 개수
         :param hidden_node_num: [숨겨진 레이어의 노드 개수]
         '''
-        NN_Model.__init__(sess, name, input_num, output_num, learning_rate, activation)
-        self.sess = sess
-        self.name = name
-        self.input_num = input_num
-        self.output_num = output_num
-        self.learning_rate = learning_rate
-        self.activation = activation
+        super().__init__(sess, name, input_num, output_num, learning_rate, activation)
 
         self.hidden_num = hidden_num
         self.hidden_node_nums = hidden_node_nums
@@ -132,13 +126,7 @@ class Softmax_Model(NN_Model) :
                 :param hidden_num: 숨겨진 레이어의 개수
                 :param hidden_node_num: [숨겨진 레이어의 노드 개수]
                 '''
-        NN_Model.__init__(sess, name, input_num, output_num, learning_rate, activation)
-        self.sess = sess
-        self.name = name
-        self.input_num = input_num
-        self.output_num = output_num
-        self.learning_rate = learning_rate
-        self.activation = activation
+        super().__init__(sess, name, input_num, output_num, learning_rate, activation)
 
         self.hidden_num = hidden_num
         self.hidden_node_nums = hidden_node_nums

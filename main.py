@@ -11,8 +11,10 @@ from forms import main_ui, search_ui, bookinfo_ui, result_ui, visualization_ui, 
 import tensorflow as tf
 import numpy as np
 
+software_version = "0.2"
+
 def show_menu() :
-    print("------라이트 노벨 분석기 v. 0.1------")
+    print("------라이트 노벨 분석기 v. {0}------".format(software_version))
     print("1. renew")
     print("2. ordinary_set")
     print("3. search")
@@ -174,9 +176,9 @@ def cui_main(v, g, bc, bs, storer) :
         elif choice == '8':
             g = exins.get_instance().get_genre_classifier_instance()
 
-            usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
-                          if len(t_set["genre"]) > 0]
+            usable_set = storer.get_usable_training_set()
             random.shuffle(usable_set)
+            print("train_set num", len(usable_set))
 
             train_data, test_data = split_data(usable_set, 0.9)
             print(train_data)
@@ -184,7 +186,7 @@ def cui_main(v, g, bc, bs, storer) :
 
             inputs, targets = genre_classifier.set_to_vector(train_data, 1400)
             print(inputs, targets)
-            g.train(inputs, targets, n=10000, error=1.65)
+            g.train(inputs, targets, n=10000, error=1.66)
             print(g.examine(test_data))
 
             g.sess.close()

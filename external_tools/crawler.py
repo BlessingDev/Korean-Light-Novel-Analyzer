@@ -3,7 +3,6 @@ from abc import *
 
 def get_html(url):
     html = ""
-    resp = ""
     try:
         resp = requests.get(url)
     except:

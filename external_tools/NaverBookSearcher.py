@@ -12,9 +12,7 @@ class NaverBookSearcher(searcher.searcher) :
         # 기본 BookData 객체로 생성
         # 사용하기 전에 반드시 book 멤버를 assign할 것
         searcher.searcher.__init__(self)
-        curt = datetime.datetime.now()
-        self.f = open("Naver Book Search Log_{} {}h{}m{}s.txt".format(curt.date(), curt.hour, curt.minute, curt.second),
-                      "w")
+        self.f = None
 
     def _search_for_book(self, title, category=True) :
         self.book.searched_title = title
