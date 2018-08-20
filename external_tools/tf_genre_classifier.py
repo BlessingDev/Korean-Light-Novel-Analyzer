@@ -1,4 +1,4 @@
-from external_tools.tf_model import Softmax_Model, FC_Model
+from external_tools.tf_model import Softmax_Model, restored_model
 from external_tools import genre_classifier
 
 import tensorflow as tf
@@ -7,18 +7,28 @@ import numpy as np
 class tf_genre_classifier(genre_classifier.genre_classifier) :
     def __init__(self) :
         genre_classifier.genre_classifier.__init__(self)
-        self.input_num = 0
-        self.genre_num = 0
+        self.input_num = len(genre_classifier.index_to_word)
+        self.genre_num = len(genre_classifier.index_to_genre)
 
         self.model = None
-        self.sess = None
-
-    def train(self, input_sets, target_sets, n=1000, error=0.1) :
 
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         self.sess = tf.Session(config=config)
 
+    def export_data(self) :
+        saver = tf.train.Saver()
+        saver.save(self.sess, './genre_classifier')
+
+    def import_data(self) :
+        self.model = restored_model(self.sess, "./genre_classifier.meta", self.input_num, self.genre_num)
+
+        saver = tf.train.import_meta_graph('genre_classifier.meta')
+        saver.restore(self.sess, tf.train.latest_checkpoint('./'))
+
+
+
+    def train(self, input_sets, target_sets, n=1000, error=0.1) :
         self.model = Softmax_Model(self.sess, "genre_classifier", len(input_sets[0]), len(target_sets[0]),
                               5, [1200, 800, 500, 500, 500],
                               learning_rate=0.00001, activation=tf.nn.tanh)

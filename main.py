@@ -158,8 +158,6 @@ def cui_main(v, g, bc, bs, storer) :
         elif choice == '5':
             print("프로그램을 종료합니다")
             storer.export_data()
-            if (g is not None):
-                g.export_data()
             bc.export_data()
             bs.export_data()
             open_program = False
@@ -174,7 +172,6 @@ def cui_main(v, g, bc, bs, storer) :
             genre_num, start_num = input("비교할 장르 번호, 단어 번호를 적어주세요: ").split(' ')
             genre_experiment.word_to_word_genre_scatter(usable_set, int(genre_num), start_num=int(start_num))
         elif choice == '8':
-            g = exins.get_instance().get_genre_classifier_instance()
 
             usable_set = storer.get_usable_training_set()
             random.shuffle(usable_set)
@@ -189,7 +186,9 @@ def cui_main(v, g, bc, bs, storer) :
             g.train(inputs, targets, n=10000, error=1.66)
             print(g.examine(test_data))
 
-            g.sess.close()
+            a = input('모델을 저장하시겠습니까?(y/n) ')
+            if a == 'y' :
+                g.export_data()
 
         elif choice == '9':
             i, book = book_search(bs, storer, n=20)
@@ -214,7 +213,7 @@ def cui_main(v, g, bc, bs, storer) :
             sess.run(tf.global_variables_initializer())
 
             for i in range(2000) :
-                c, _ = m.train(x_data, y_data, keep_prob=1.65)
+                c, _ = m.train(x_data, y_data, keep_prob=1.0)
 
                 if i % 10 == 0 :
                     print(i, c)
@@ -223,11 +222,7 @@ def cui_main(v, g, bc, bs, storer) :
             print(m.get_accuracy(x_data, y_data))
 
         elif choice == '13' :
-            crawl_search_sample()
-        elif choice == '14':
-            cw = exins.get_instance().get_crawler_namu_instance()
-            books = cw.crawl_selected_month(['2017년 6월'])
-            storer.add_books_by_title(books)
+            storer.classify_book_genre(g)
 
 
 
@@ -556,8 +551,8 @@ if __name__ == "__main__" :
     storer.import_data()
     v = visualization.WordFrequencyVisualizer()
     #v.initialize(storer.training_set)
-    g = None
-    # g.import_data()
+    g = exins.get_instance().get_genre_classifier_instance()
+    #g.import_data()
     bc = book_cluster.BookCluster()
     bc.import_data()
     bs = bookdata_searcher.BookDataSearcher()

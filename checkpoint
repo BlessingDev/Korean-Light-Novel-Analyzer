@@ -1,0 +1,2 @@
+model_checkpoint_path: "genre_classifier"
+all_model_checkpoint_paths: "genre_classifier"

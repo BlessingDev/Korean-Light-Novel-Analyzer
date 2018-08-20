@@ -365,3 +365,19 @@ class genre_classifier :
             print(g, t["genre"])
 
         return a_sum / t_num
+
+    @abstractmethod
+    def export_data(self) :
+        '''
+        method to save classifier data
+        분류기의 데이터를 저장하는 함수
+        :return: None
+        '''
+
+    @abstractmethod
+    def import_data(self) :
+        '''
+        method to load classifier data
+        분류기의 데이터를 로드하는 함수
+        :return: None
+        '''

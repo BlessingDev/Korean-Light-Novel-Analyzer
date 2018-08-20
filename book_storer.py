@@ -114,16 +114,11 @@ class BookStorer :
 
     def classify_book_genre(self, g) :
         for book in self.book_list :
-            genres = []
             if book.error_code == 0 and book.genre == []:
-                genre_prob = g.classify(book)
+                genres = g.genre_hot(g.classify(book))
 
-                for genre, prob in genre_prob :
-                    if prob >= 0.0005 :
-                        genres.append(genre)
-
-                book.genre = genres
                 print(genres)
+                book.genre = genres
 
     def download_images(self) :
         for book in self.get_ordinary_book() :

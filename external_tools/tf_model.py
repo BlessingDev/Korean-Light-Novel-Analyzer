@@ -90,13 +90,13 @@ class FC_Model(NN_Model) :
 
             Wl = tf.Variable(tf.random_normal([self.hidden_node_nums[-1], self.output_num]), name='last_weight')
             bl = tf.Variable(tf.random_normal([self.output_num]), name='last_bias')
-            self.hypothesis = tf.sigmoid(tf.matmul(bef_output, Wl) + bl)
+            self.hypothesis = tf.sigmoid(tf.matmul(bef_output, Wl) + bl, name='hypothesis')
 
-        self.cost = tf.reduce_mean(tf.square(self.hypothesis - self.Y))
+        self.cost = tf.reduce_mean(tf.square(self.hypothesis - self.Y), name='cost')
         self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.cost)
 
         correct_prediction = tf.equal(tf.cast(self.hypothesis > 0.5, dtype=tf.float32), self.Y)
-        self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
 
         self.hy_hist = tf.summary.histogram("hypothesis", self.hypothesis)
         self.cost_summ = tf.summary.scalar("cost", self.cost)
@@ -135,10 +135,10 @@ class Softmax_Model(NN_Model) :
 
     def _build_net(self) :
         with tf.variable_scope(self.name) :
-            self.keep_prob = tf.placeholder(tf.float32)
+            self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
 
-            self.X = tf.placeholder(tf.float32, [None, self.input_num])
-            self.Y = tf.placeholder(tf.float32, [None, self.output_num])
+            self.X = tf.placeholder(tf.float32, [None, self.input_num], name='x')
+            self.Y = tf.placeholder(tf.float32, [None, self.output_num], name='y')
 
             bef_input_num = self.input_num
             bef_output = self.X
@@ -163,7 +163,7 @@ class Softmax_Model(NN_Model) :
                                         initializer=tf.contrib.layers.xavier_initializer())
                 bl = tf.Variable(tf.random_normal([self.output_num]), name='last_bias')
                 self.logits = tf.matmul(bef_output, Wl) + bl
-                self.hypothesis = tf.nn.softmax(self.logits)
+                self.hypothesis = tf.nn.softmax(self.logits, name='hypothesis')
 
                 tf.summary.histogram("weights", Wl)
                 tf.summary.histogram("bias", bl)
@@ -173,7 +173,7 @@ class Softmax_Model(NN_Model) :
         self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.cost)
 
         correct_prediction = tf.equal(tf.cast(self.hypothesis > 0.5, dtype=tf.float32), self.Y)
-        self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
 
         tf.summary.histogram("hypothesis", self.hypothesis)
         tf.summary.scalar("cost", self.cost)
@@ -192,3 +192,29 @@ class Softmax_Model(NN_Model) :
     def train(self, x_data, y_data, keep_prob=0.7) :
         return self.sess.run([self.cost, self.summary, self.optimizer],
                              feed_dict={self.X: x_data, self.Y: y_data, self.keep_prob: keep_prob})
+
+class restored_model(NN_Model) :
+    def __init__(self, sess, file_name, input_num, output_num) :
+        super().__init__(sess, file_name, input_num, output_num)
+
+        saver = tf.train.import_meta_graph(file_name)
+        saver.restore(sess, tf.train.latest_checkpoint('./'))
+
+        graph = tf.get_default_graph()
+        self.X = graph.get_tensor_by_name('genre_classifier/x:0')
+        self.Y = graph.get_tensor_by_name('genre_classifier/y:0')
+        self.keep_prob = graph.get_tensor_by_name('genre_classifier/keep_prob:0')
+        self.hypothesis = graph.get_tensor_by_name("genre_classifier/OutputLayer/hypothesis:0")
+        self.accuracy = graph.get_tensor_by_name("accuracy:0")
+
+    def predict(self, x_test, keep_prob=1.0):
+        return self.sess.run(self.hypothesis,
+                             feed_dict={self.X: x_test, self.keep_prob: keep_prob})
+
+    def get_accuracy(self, x_test, y_test, keep_prob=1.0):
+        return self.sess.run(self.accuracy,
+                             feed_dict={self.X: x_test, self.Y: y_test, self.keep_prob: keep_prob})
+
+    def train(self, x_data, y_data, keep_prob=0.7) :
+        print('This is restored graph!')
+        return None

@@ -42,8 +42,9 @@ class BookData:
               'author: {}\n' \
               'translator: {}\n' \
               'publisher: {}\n' \
-              'description: {}' \
-            .format(self.title, self.ori_title, self.author, self.translator, self.publisher, self.description)
+              'description: {}\n' \
+              'genre: {}' \
+            .format(self.title, self.ori_title, self.author, self.translator, self.publisher, self.description, self.genre)
 
         return rex
 
