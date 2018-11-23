@@ -1,7 +1,7 @@
 import tensorflow as tf
 from abc import *
 
-class NN_Model :
+class NNModel :
     def __init__(self, sess, name, input_num, output_num, learning_rate=0.01, activation=tf.nn.relu) :
         self.sess = sess
         self.name = name
@@ -51,7 +51,7 @@ class NN_Model :
         '''
 
 
-class FC_Model(NN_Model) :
+class FC_Model(NNModel) :
     def __init__(self, sess, name, input_num, output_num, hidden_num, hidden_node_nums, learning_rate=0.01, activation=tf.nn.relu) :
         '''
         Fully Connected 신경망 모델 초기화 함수
@@ -115,7 +115,7 @@ class FC_Model(NN_Model) :
         return self.sess.run([self.cost, self.summary, self.optimizer],
                              feed_dict={self.X: x_data, self.Y: y_data, self.keep_prob: keep_prob})
 
-class Softmax_Model(NN_Model) :
+class SoftmaxModel(NNModel) :
     def __init__(self, sess, name, input_num, output_num, hidden_num, hidden_node_nums, learning_rate=0.01, activation=tf.nn.relu) :
         '''
                 Fully Connected 신경망 모델 초기화 함수
@@ -193,7 +193,7 @@ class Softmax_Model(NN_Model) :
         return self.sess.run([self.cost, self.summary, self.optimizer],
                              feed_dict={self.X: x_data, self.Y: y_data, self.keep_prob: keep_prob})
 
-class restored_model(NN_Model) :
+class RestoredModel(NNModel) :
     def __init__(self, sess, file_name, input_num, output_num) :
         super().__init__(sess, file_name, input_num, output_num)
 

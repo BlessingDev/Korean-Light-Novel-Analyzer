@@ -1,5 +1,5 @@
 from external_tools import namu_wiki_crawler as nmcw
-from external_tools import NaverBookSearcher as nase
+from external_tools import naver_book_searcher as nase
 
 
 class external_tools_instantiater :

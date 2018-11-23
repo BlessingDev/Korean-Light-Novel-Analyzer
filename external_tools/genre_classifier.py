@@ -311,7 +311,7 @@ def set_to_vector(trainig_set, word_num) :
     return adjust_train_logistic(word_num, word_to_index, genre_num, genre_to_index,
                                            trainig_set)
 
-class genre_classifier :
+class GenreClassifier :
     def __init__(self) :
         pass
 

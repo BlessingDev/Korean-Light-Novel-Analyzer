@@ -4,9 +4,9 @@ import book_storer, nlp_module
 from external_tools import crawler
 
 
-class NamuNovelCrawler(crawler.crawler) :
+class NamuNovelCrawler(crawler.Crawler) :
     def __init__(self):
-        crawler.crawler.__init__(self)
+        crawler.Crawler.__init__(self)
         pass
 
     def crawl_entire_novel_page(self) :

@@ -1,12 +1,12 @@
-from external_tools.tf_model import Softmax_Model, restored_model
+from external_tools.tf_model import SoftmaxModel, RestoredModel
 from external_tools import genre_classifier
 
 import tensorflow as tf
 import numpy as np
 
-class tf_genre_classifier(genre_classifier.genre_classifier) :
+class TfGenreClassifier(genre_classifier.GenreClassifier) :
     def __init__(self) :
-        genre_classifier.genre_classifier.__init__(self)
+        genre_classifier.GenreClassifier.__init__(self)
         self.input_num = len(genre_classifier.index_to_word)
         self.genre_num = len(genre_classifier.index_to_genre)
 
@@ -21,7 +21,7 @@ class tf_genre_classifier(genre_classifier.genre_classifier) :
         saver.save(self.sess, './genre_classifier')
 
     def import_data(self) :
-        self.model = restored_model(self.sess, "./genre_classifier.meta", self.input_num, self.genre_num)
+        self.model = RestoredModel(self.sess, "./genre_classifier.meta", self.input_num, self.genre_num)
 
         saver = tf.train.import_meta_graph('genre_classifier.meta')
         saver.restore(self.sess, tf.train.latest_checkpoint('./'))
@@ -29,9 +29,9 @@ class tf_genre_classifier(genre_classifier.genre_classifier) :
 
 
     def train(self, input_sets, target_sets, n=1000, error=0.1) :
-        self.model = Softmax_Model(self.sess, "genre_classifier", len(input_sets[0]), len(target_sets[0]),
-                              5, [1200, 800, 500, 500, 500],
-                              learning_rate=0.00001, activation=tf.nn.tanh)
+        self.model = SoftmaxModel(self.sess, "genre_classifier", len(input_sets[0]), len(target_sets[0]),
+                                  5, [1200, 800, 500, 500, 500],
+                                  learning_rate=0.00001, activation=tf.nn.tanh)
 
         self.input_num = len(input_sets[0])
         self.genre_num =  len(target_sets[0])

@@ -7,7 +7,7 @@ from pycuda import driver as cuda
 from pycuda.compiler import SourceModule
 
 import json_file
-from external_tools.genre_classifier import tokenize_book, count_word_num, genre_classifier, adjust_train_set, genre_to_index, word_to_index, adjust_book_input
+from external_tools.genre_classifier import tokenize_book, count_word_num, GenreClassifier, adjust_train_set, genre_to_index, word_to_index, adjust_book_input
 
 
 class neuron :
@@ -19,9 +19,9 @@ class neuron :
     def __str__(self) :
         return self.weights.__str__()
 
-class cuda_classifier(genre_classifier) :
+class CudaGenreClassifier(GenreClassifier) :
     def __init__(self, input_size, num_hidden, output_size) :
-        genre_classifier.__init__(self)
+        GenreClassifier.__init__(self)
         self.wordtoindex_dic = {}
         self.genretoindex_dic = genre_to_index
         self.wordtoindex_dic = word_to_index

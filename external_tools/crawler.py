@@ -14,7 +14,7 @@ def get_html(url):
 
     return html
 
-class crawler :
+class Crawler :
     def __init__(self) :
         pass
 

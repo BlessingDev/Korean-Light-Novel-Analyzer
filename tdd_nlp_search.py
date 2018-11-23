@@ -1,6 +1,6 @@
 import unittest
 from book_data import BookData
-from external_tools import NaverBookSearcher as nb
+from external_tools import naver_book_searcher as nb
 import nlp_module
 
 class NaverSearchTest(unittest.TestCase) :

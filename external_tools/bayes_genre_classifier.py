@@ -6,7 +6,7 @@ import json_file
 from external_tools.genre_classifier import count_words, word_probabilities, genre_probability
 
 
-class bayes_GenreClassifier :
+class BayesGenreClassifier :
     def __init__(self, k = 0.5) :
         self.k = k
         self.word_probs = []
