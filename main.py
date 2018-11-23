@@ -122,7 +122,7 @@ def crawl_search_sample() :
     sr.book = book
     sr.from_title('시원찮은 그녀를 위한 육성방법 GS 2권')
 
-def cui_main(v, g, bc, bs, storer) :
+def cui_main(v, g, bc, bs, otbs, storer) :
     open_program = True
 
     while (open_program):
@@ -139,27 +139,17 @@ def cui_main(v, g, bc, bs, storer) :
             print("len: ", len(storer.get_ordinary_book()))
 
         elif choice == '3':
-            print(book_search(bs, storer))
+            otbs.init_word_index(storer.book_list)
 
         elif choice == '4':
-            start = float(input("시작범위(1.0-0.0) "))
-            end = float(input("종료범위(1.0-0.0) "))
-
-            i = 0
-            for book in storer.book_list:
-                i += 1
-                if book.search_accuracy >= start and \
-                                book.search_accuracy <= end:
-                    print("index: {}".format(i))
-                    print(book.__str__())
-                    print(book.search_accuracy)
-                    print()
+            storer.make_training_set(500)
 
         elif choice == '5':
             print("프로그램을 종료합니다")
             storer.export_data()
-            bc.export_data()
+            #bc.export_data()
             bs.export_data()
+            otbs.export_data()
             open_program = False
         elif choice == '6':
             visualization.show_error_code(storer.get_error_codes())
@@ -195,6 +185,11 @@ def cui_main(v, g, bc, bs, storer) :
             print("idx = " + i.__str__())
             print(book.__str__())
 
+        elif choice == '9.5' :
+            i, book = book_search(otbs, storer, n=20)
+            print("idx = " + i.__str__())
+            print(book.__str__())
+
         elif choice == '10':
             bc.set_real_dist(storer.get_ordinary_book())
             #bc.visualize()
@@ -222,19 +217,21 @@ def cui_main(v, g, bc, bs, storer) :
             print(m.get_accuracy(x_data, y_data))
 
         elif choice == '13' :
-            storer.classify_book_genre(g)
+            visualization.show_error_code(storer.get_error_codes())
 
 
 
-def gui_main(v, g, bc, bs, storer) :
+def gui_main(v, g, bc, bs, otbs, storer) :
     mainui = None
     searchui = None
+    ori_search_win = None
     searchList = None
 
     def mainList(ui):
         uis = [
             "특정기간 책 크롤",
             "책 검색",
+            "원 제목 검색",
             "시각화"
         ]
 
@@ -253,6 +250,8 @@ def gui_main(v, g, bc, bs, storer) :
              "특정 기간의 책을 크롤해서 자동으로 데이터를 추가한다."],
             ["책 검색",
              "책 제목을 검색하여 여러가지 작업을 수행한다."],
+            ["원 제목 검색",
+             "원래 책 제목으로 검색한다."],
             ["시각화",
              "여러가지 시각화 결과를 본다."]
         ]
@@ -288,6 +287,29 @@ def gui_main(v, g, bc, bs, storer) :
             searchui.graphicsView.setScene(scene)
             searchui.graphicsView.show()
 
+        def on_ori_title_search_click(bool=False) :
+            global searchList
+
+            curNum = ori_search_win.comboBox.currentIndex()
+            curNum += 1
+            searchWord = ori_search_win.lineEdit.text()
+
+            searchList = otbs.search_book_by_title(searchWord, n=curNum)
+
+            books = storer.get_ordinary_book()
+
+            model = QtGui.QStandardItemModel(ori_search_win.listView)
+
+            for index, _ in searchList:
+                item = QtGui.QStandardItem(books[index].title)
+
+                model.appendRow(item)
+
+            ori_search_win.listView.setModel(model)
+            scene = QtWidgets.QGraphicsScene()
+            ori_search_win.graphicsView.setScene(scene)
+            ori_search_win.graphicsView.show()
+
         def on_list_clicked(modelIndex) :
             global searchList
             curindex = modelIndex.row()
@@ -309,7 +331,7 @@ def gui_main(v, g, bc, bs, storer) :
 
                 if curindex == 0 :
                     print('자동장르분류')
-                    problist = [x for x in g.classify(selected_book) if x[1] >= 0.0001]
+                    problist = [x for x in g.classify(selected_book) if x[1] >= 0.1]
                     problist = sorted(problist, key=lambda x : x[1], reverse=True)
 
                     widget = QtWidgets.QDialog()
@@ -375,6 +397,7 @@ def gui_main(v, g, bc, bs, storer) :
 
             infolist = [
                 "제목: {}".format(selected_book.title),
+                "원제목: {}".format(selected_book.ori_title),
                 "작가: {}".format(selected_book.author),
                 "출판일자: {}".format(selected_book.pubdate),
                 "번역가: {}".format(selected_book.translator),
@@ -391,6 +414,109 @@ def gui_main(v, g, bc, bs, storer) :
 
             model = QtGui.QStandardItemModel(bookui.listView)
             for menu in menulist :
+                item = QtGui.QStandardItem(menu)
+                model.appendRow(item)
+
+            bookui.listView.setModel(model)
+
+            bookui.pushButton.clicked.connect(on_action_clicked)
+
+            widget.show()
+            widget.exec_()
+
+        def on_ori_title_selected(bool=False) :
+            global searchList
+            global g
+            global bc
+
+            def on_action_clicked(bool=False):
+                curindex = bookui.listView.currentIndex().row()
+
+                if curindex == 0:
+                    print('자동장르분류')
+                    problist = [x for x in g.classify(selected_book) if x[1] >= 0.1]
+                    problist = sorted(problist, key=lambda x: x[1], reverse=True)
+
+                    widget = QtWidgets.QDialog()
+                    resui = result_ui.Ui_Form()
+                    resui.setupUi(widget)
+
+                    model = QtGui.QStandardItemModel(resui.listView)
+                    for genre, prob in problist:
+                        item = QtGui.QStandardItem("장르: {}, 확률: {:.4f}%".format(genre, prob * 100))
+                        model.appendRow(item)
+
+                    if len(problist) == 0:
+                        item = QtGui.QStandardItem("0.01%보다 높은 확률을 가지는 장르가 없음")
+                        model.appendRow(item)
+
+                    resui.listView.setModel(model)
+
+                    resui.label.setText('장르 자동 분류 결과')
+
+                    widget.show()
+                    widget.exec_()
+                elif curindex == 1:
+                    print('컨텐츠 기반 추천')
+                    close_book = bc.get_close_books(searched_index)
+
+                    widget = QtWidgets.QDialog()
+                    resui = result_ui.Ui_Form()
+                    resui.setupUi(widget)
+
+                    model = QtGui.QStandardItemModel(resui.listView)
+
+                    if close_book is None:
+                        item = QtGui.QStandardItem("0.01%보다 높은 확률을 가지는 장르가 없음")
+                        model.appendRow(item)
+                    else:
+                        for bindex, dist in close_book:
+                            item = QtGui.QStandardItem("책제목: {}".format(storer.get_ordinary_book()[bindex].title))
+                            model.appendRow(item)
+
+                    resui.listView.setModel(model)
+
+                    resui.label.setText('컨텐츠 기반 비슷한 책 상위 10개')
+
+                    widget.show()
+                    widget.exec_()
+
+            ###
+            curindex = ori_search_win.listView.currentIndex().row()
+
+            selected_book = storer.get_ordinary_book()[searchList[curindex][0]]
+            searched_index = searchList[curindex][0]
+
+            widget = QtWidgets.QDialog()
+            bookui = bookinfo_ui.Ui_Form()
+            bookui.setupUi(widget)
+            image = QtGui.QPixmap(selected_book.get_image_dir())
+
+            scene = QtWidgets.QGraphicsScene()
+            scene.addItem(QtWidgets.QGraphicsPixmapItem(image))
+            view = bookui.graphicsView
+            view.setScene(scene)
+            view.show()
+
+            infolist = [
+                "제목: {}".format(selected_book.title),
+                "원제목: {}".format(selected_book.ori_title),
+                "작가: {}".format(selected_book.author),
+                "출판일자: {}".format(selected_book.pubdate),
+                "번역가: {}".format(selected_book.translator),
+                "출판사: {}".format(selected_book.publisher)
+            ]
+
+            for info in infolist:
+                bookui.textBrowser.append(info)
+
+            menulist = [
+                '자동장르분류',
+                '컨텐츠 기반 책 추천'
+            ]
+
+            model = QtGui.QStandardItemModel(bookui.listView)
+            for menu in menulist:
                 item = QtGui.QStandardItem(menu)
                 model.appendRow(item)
 
@@ -465,6 +591,7 @@ def gui_main(v, g, bc, bs, storer) :
         print(curIndex)
         selected_ym = []
         global searchui
+        global ori_search_win
         global MainWindow
         if curIndex == 0 :
             cw = exins.get_instance().get_crawler_namu_instance()
@@ -503,6 +630,16 @@ def gui_main(v, g, bc, bs, storer) :
             widget.exec_()
 
         elif curIndex == 2 :
+            widget = QtWidgets.QDialog()
+            ori_search_win = search_ui.Ui_Form()
+            ori_search_win.setupUi(widget)
+            ori_search_win.pushButton.clicked.connect(on_ori_title_search_click)
+            ori_search_win.pushButton_2.clicked.connect(on_ori_title_selected)
+
+            widget.show()
+            widget.exec_()
+
+        elif curIndex == 3 :
             widget = QtWidgets.QDialog()
             visui = visualization_ui.Ui_Form()
             visui.setupUi(widget)
@@ -552,11 +689,13 @@ if __name__ == "__main__" :
     v = visualization.WordFrequencyVisualizer()
     #v.initialize(storer.training_set)
     g = exins.get_instance().get_genre_classifier_instance()
-    #g.import_data()
+    g.import_data()
     bc = book_cluster.BookCluster()
     bc.import_data()
     bs = bookdata_searcher.BookDataSearcher()
     bs.import_data()
+    otbs = bookdata_searcher.ori_title_searcher()
+    otbs.import_data()
 
-    cui_main(v, g, bc, bs, storer)
-    # gui_main(v, g, bc, bs, storer)
+    cui_main(v, g, bc, bs, otbs, storer)
+    #gui_main(v, g, bc, bs, otbs, storer)

@@ -184,6 +184,7 @@ class NaverBookSearcher(searcher.searcher) :
                 self.book.description = div('p')[0].get_text()
 
                 self.book.description = (self.book.description.replace('\n', '').replace('\r', ''))
+                self.book.description.replace('\\', '')
 
 
     def search_finished(self) :

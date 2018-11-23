@@ -1,4 +1,3 @@
-
 from bs4 import BeautifulSoup
 
 import book_storer, nlp_module

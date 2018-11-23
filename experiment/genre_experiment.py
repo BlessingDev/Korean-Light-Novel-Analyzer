@@ -3,6 +3,7 @@ import matplotlib.font_manager as fm
 import matplotlib
 
 from external_tools import genre_classifier
+import nlp_module, pathlib, book_data, json_file, json
 
 font_location = "HANDotum.ttf"
 font_name = fm.FontProperties(fname = font_location).get_name()
@@ -71,3 +72,31 @@ def word_to_word_genre_scatter(training_set, genre_index, start_num = 0, word_to
             ax.scatter([x[1] for x in ap_xy], [x[2] for x in ap_xy])
 
     plt.show()
+
+if __name__ == "__main__" :
+    training_set = []
+    tra_path = pathlib.Path("../training_set.json")
+    if tra_path.exists():
+        temp = tra_path.read_text(encoding='utf-16')
+        book_dict = json.loads(temp, strict=False)
+
+        for dic in book_dict:
+            new_book = book_data.BookData()
+            new_book.from_json_dict(dic["book"])
+            dic["book"] = new_book
+
+        training_set = book_dict
+
+    t_json = []
+    for t in training_set :
+        data = t["book"].title
+        pos = json_file.list_to_json([{"segment":n, "tag":t} for n, t in nlp_module.pos_Twitter(data)], json_file.data_to_json)
+        t_json.append({"string":data, "pos":pos})
+
+        data = t["book"].description
+        pos = json_file.list_to_json([{"segment": n, "tag": t} for n, t in nlp_module.pos_Twitter(data)],
+                                     json_file.data_to_json)
+        t_json.append({"string": data, "pos": pos})
+
+    tra_path = pathlib.Path("nlp_training_set.json")
+    tra_path.write_text(json_file.list_to_json(t_json, json_file.data_to_json), encoding='utf-8')

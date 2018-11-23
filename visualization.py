@@ -146,7 +146,7 @@ def book_published_by_month(storer) :
 
     date_list = [x.split()[0][2:] + "\n" + x.split()[1]
                  for x in dates]
-    ax.set_xticklabels(date_list, size = 'small')
+    ax.set_xticklabels(date_list, size='small')
 
     plt.show()
 

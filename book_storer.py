@@ -43,6 +43,7 @@ class BookStorer :
 
                 self.date_to_book[key] = new_list
 
+        '''
         tra_path = pathlib.Path("training_set.json")
         if tra_path.exists() :
             temp = tra_path.read_text(encoding='utf-16')
@@ -54,6 +55,8 @@ class BookStorer :
                 dic["book"] = new_book
 
             self.training_set = book_dict
+        '''
+
 
     def add_by_tl_td(self, title_list, title_to_date) :
         self.date_to_book = defaultdict(list)
@@ -74,13 +77,25 @@ class BookStorer :
 
     def export_data(self) :
         book_p = pathlib.Path('book_data.json')
+        book_json = json_file.list_to_json(self.book_list, json_file.data_to_json)
         try:
-            book_p.write_text(json_file.list_to_json(self.book_list, json_file.data_to_json), encoding='utf-16')
+            if book_p.exists() :
+                file_data = book_p.read_text(encoding='utf-16')
+                if file_data != book_json :
+                    book_p.write_text(book_json, encoding='utf-16')
+            else :
+                book_p.write_text(book_json, encoding='utf-16')
         except:
             print("exception occured")
 
         dic_p = pathlib.Path('date_to_book.json')
-        dic_p.write_text(json_file.dict_to_json(self.date_to_book, json_file.data_to_json), encoding='utf-16')
+        dic_json = json_file.dict_to_json(self.date_to_book, json_file.data_to_json)
+        if dic_p.exists():
+            file_data = dic_p.read_text(encoding='utf-16')
+            if file_data != dic_json:
+                dic_p.write_text(dic_json, encoding='utf-16')
+        else:
+            dic_p.write_text(dic_json, encoding='utf-16')
 
         #ran_p = pathlib.Path('training_set.json')
         #ran_p.write_text(json_file.list_to_json(self.random_set, json_file.data_to_json), encoding='utf-16')
@@ -105,12 +120,21 @@ class BookStorer :
         for book in self.get_ordinary_book() :
             book.search_accuracy = nlp_module.search_accsuracy_examine(book)
 
-    def make_random_set(self, num) :
-        ordinary_set = [{'book':x, 'genre':[]} for x in self.get_ordinary_book() if x.search_accuracy >= 0.6]
-        if num < len(ordinary_set) :
-            self.random_set = random.sample(ordinary_set, num)
+    def make_training_set(self, num) :
+        ordinary_set = self.get_ordinary_book()
+        if num < len(ordinary_set):
+            self.training_set = random.sample(ordinary_set, num)
 
-        return self.random_set
+        self.training_set = [{"book":b, "genre":[]} for b in self.training_set]
+
+        tra_p = pathlib.Path('training_set.json')
+        tra_json = json_file.list_to_json(self.training_set, json_file.data_to_json)
+        if tra_p.exists():
+            file_data = tra_p.read_text(encoding='utf-16')
+            if file_data != tra_json:
+                tra_p.write_text(tra_json, encoding='utf-16')
+        else:
+            tra_p.write_text(tra_json, encoding='utf-16')
 
     def classify_book_genre(self, g) :
         for book in self.book_list :

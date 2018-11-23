@@ -1,4 +1,4 @@
-from konlpy.tag import Kkma, Twitter
+from konlpy.tag import Kkma, Okt
 
 def pos_Twitter(sentence) :
     '''
@@ -10,7 +10,7 @@ def pos_Twitter(sentence) :
     :param sentence: 분리할 문장
     :return: 분리된 각 tag의 list를 반환
     '''
-    nlp = Twitter()
+    nlp = Okt()
     result = nlp.pos(phrase=sentence)
 
     return result
