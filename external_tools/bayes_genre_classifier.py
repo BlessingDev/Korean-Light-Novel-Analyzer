@@ -38,10 +38,12 @@ class BayesGenreClassifier :
 
     def export_data(self) :
         dic_p = pathlib.Path('word_prob.json')
-        dic_p.write_text(json_file.list_to_json([[x, y] for x, y in self.word_probs], json_file.data_to_json), encoding='utf-16')
+        dic_p.write_text(json.dumps
+                         (json_file.list_to_json([[x, y] for x, y in self.word_probs], json_file.data_to_json)), encoding='utf-16')
 
         dic_p = pathlib.Path('genre_num.json')
-        dic_p.write_text(json_file.dict_to_json(self.genre_list, json_file.data_to_json), encoding='utf-16')
+        dic_p.write_text(json.dumps
+                         (json_file.dict_to_json(self.genre_list, json_file.data_to_json)), encoding='utf-16')
 
     def import_data(self) :
         book_path = pathlib.Path('word_prob.json')

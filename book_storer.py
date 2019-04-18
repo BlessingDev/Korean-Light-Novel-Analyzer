@@ -61,7 +61,7 @@ class BookStorer :
     def add_by_tl_td(self, title_list, title_to_date) :
         self.date_to_book = defaultdict(list)
         f = open("Naver Book Search Log_{} {}h{}m{}s.txt".
-                 format(self.curt.date(), self.curt.hour, self.curt.minute, self.curt.second), "w")
+                 format(self.curt.date(), self.curt.hour, self.curt.minute, self.curt.second), "w", encoding='utf-8')
         self.searcher.f = f
 
         for idx in range(len(title_list)) :
@@ -77,7 +77,7 @@ class BookStorer :
 
     def export_data(self) :
         book_p = pathlib.Path('book_data.json')
-        book_json = json_file.list_to_json(self.book_list, json_file.data_to_json)
+        book_json = json.dumps(json_file.list_to_json(self.book_list, json_file.data_to_json))
         try:
             if book_p.exists() :
                 file_data = book_p.read_text(encoding='utf-16')
@@ -89,7 +89,7 @@ class BookStorer :
             print("exception occured")
 
         dic_p = pathlib.Path('date_to_book.json')
-        dic_json = json_file.dict_to_json(self.date_to_book, json_file.data_to_json)
+        dic_json = json.dumps(json_file.dict_to_json(self.date_to_book, json_file.data_to_json))
         if dic_p.exists():
             file_data = dic_p.read_text(encoding='utf-16')
             if file_data != dic_json:
@@ -109,9 +109,12 @@ class BookStorer :
     def get_error_codes(self) :
         return [x.error_code for x in self.book_list]
 
-    def add_book(self, book) :
+    def add_book(self, book, dt=None) :
         self.book_list.append(book)
-        self.date_to_book[book.get_pub_year_month()].append(book)
+
+        if dt is None :
+            dt = book.get_pub_year_month()
+        self.date_to_book[dt].append(book)
 
     def get_ordinary_book(self) :
         return [x for x in self.book_list if x.error_code == 0]
@@ -128,7 +131,7 @@ class BookStorer :
         self.training_set = [{"book":b, "genre":[]} for b in self.training_set]
 
         tra_p = pathlib.Path('training_set.json')
-        tra_json = json_file.list_to_json(self.training_set, json_file.data_to_json)
+        tra_json = json.dumps(json_file.list_to_json(self.training_set, json_file.data_to_json))
         if tra_p.exists():
             file_data = tra_p.read_text(encoding='utf-16')
             if file_data != tra_json:
@@ -182,7 +185,7 @@ class BookStorer :
     def add_books_by_title(self, bookdate) :
         titlelist = self.get_orititle_list()
         f = open("Naver Book Search Log_{} {}h{}m{}s.txt".
-                 format(self.curt.date(), self.curt.hour, self.curt.minute, self.curt.second), "w")
+                 format(self.curt.date(), self.curt.hour, self.curt.minute, self.curt.second), "w", encoding='utf-8')
         self.searcher.f = f
 
         for idx in range(len(bookdate)) :
@@ -208,7 +211,7 @@ class BookStorer :
                     b = book_data.BookData()
                     self.searcher.book = b
                     self.searcher.from_title(bt)
-                    self.date_to_book[dt].append(b)
+                    self.add_book(b, dt)
 
         self.searcher.search_finished()
 

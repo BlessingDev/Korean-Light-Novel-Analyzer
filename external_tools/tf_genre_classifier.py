@@ -17,8 +17,9 @@ class TfGenreClassifier(genre_classifier.GenreClassifier) :
         self.sess = tf.Session(config=config)
 
     def export_data(self) :
-        saver = tf.train.Saver()
-        saver.save(self.sess, './genre_classifier')
+        if type(self.model) is not RestoredModel :
+            saver = tf.train.Saver()
+            saver.save(self.sess, './genre_classifier')
 
     def import_data(self) :
         self.model = RestoredModel(self.sess, "./genre_classifier.meta", self.input_num, self.genre_num)

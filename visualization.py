@@ -11,18 +11,28 @@ import datetime
 import paretochart
 from external_tools import genre_classifier
 
+# 한글 폰트 추가
 font_location = "HANDotum.ttf"
 font_name = fm.FontProperties(fname = font_location).get_name()
 matplotlib.rc('font', family=font_name)
 
 def show_error_code(error_list) :
+    """
+    책을 검색할 때 난 에러의 검출수를 시각화하는 함수
+    BookStorer.get_error_code와 BookData를 참고
+    :param error_list: BookStorer.get_error_code로 반환되는 리스트
+    :return: None
+    """
+    # Counter 객체를 통해 각 에로코드 기준으로 개수를 세 dictionary를 만든다
     error_count = Counter(error_list)
 
     print("keys: {}".format(error_count.keys()))
     print("items: {}".format(error_count.items()))
 
+    # matplotlib에 전달할 x배열 생성
     xs = [i + 0.1 for i, _ in enumerate(error_count.keys())]
 
+    # matplotlib에 그래프 입력
     plt.bar(xs, [x[1] for x in error_count.items()])
     plt.ylabel("# of error")
     plt.xlabel("kind of error")
@@ -31,7 +41,12 @@ def show_error_code(error_list) :
     plt.show()
 
 def show_search_accuracy(storer, renew = False) :
-
+    """
+    BookStorer 객체를 인자로 받아 책의 검색 정확도를 막대 그래프로 시각화하는 함수
+    :param storer:
+    :param renew: 시각화하기에 앞서 정확도를 갱신할지 여부
+    :return:
+    """
     if renew :
         storer.renew_accuracy()
 

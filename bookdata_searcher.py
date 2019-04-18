@@ -48,7 +48,7 @@ class BookDataSearcher :
 
     def export_data(self) :
         wtipath = pathlib.Path('wordtoindex_searcher.json')
-        wti_json = json_file.dict_to_json(self.wordtobookindex, json_file.data_to_json)
+        wti_json = json.dumps(json_file.dict_to_json(self.wordtobookindex, json_file.data_to_json))
         if wtipath.exists():
             file_data = wtipath.read_text(encoding='utf-8')
             if file_data != wti_json:
@@ -87,7 +87,7 @@ class ori_title_searcher(BookDataSearcher) :
 
     def export_data(self) :
         wtipath = pathlib.Path('wordtoindex_ori_title.json')
-        wti_json = json_file.dict_to_json(self.wordtobookindex, json_file.data_to_json)
+        wti_json = json.dumps(json_file.dict_to_json(self.wordtobookindex, json_file.data_to_json))
         if wtipath.exists():
             file_data = wtipath.read_text(encoding='utf-8')
             if file_data != wti_json:

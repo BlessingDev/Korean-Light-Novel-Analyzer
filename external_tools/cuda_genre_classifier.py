@@ -160,21 +160,21 @@ class CudaGenreClassifier(GenreClassifier) :
             weights[1].extend(neuron.weights)
 
         weights_path = pathlib.Path('weights.json')
-        weights_path.write_text(json_file.list_to_json(weights, json_file.data_to_json),
-                                'utf-8')
+        weights_path.write_text(json.dumps(
+            json_file.list_to_json(weights, json_file.data_to_json)), 'utf-8')
 
         network_info = pathlib.Path('network_info.json')
-        network_info.write_text(json_file.list_to_json(
-            [self.input_size, self.hidden_size, self.genre_num], json_file.data_to_json),
+        network_info.write_text(json.dumps(json_file.list_to_json
+            ([self.input_size, self.hidden_size, self.genre_num], json_file.data_to_json)),
             encoding='utf-8')
 
         wordtoindex_dic_path = pathlib.Path('wordtoindex.json')
-        wordtoindex_dic_path.write_text(json_file.dict_to_json(self.wordtoindex_dic, json_file.data_to_json),
+        wordtoindex_dic_path.write_text(json.dumps(json_file.dict_to_json(self.wordtoindex_dic, json_file.data_to_json)),
                                         encoding='utf-8')
 
         genretoindex_dic_path = pathlib.Path('genretoindex.json')
-        genretoindex_dic_path.write_text(json_file.dict_to_json(self.genretoindex_dic,
-                                                                json_file.data_to_json),
+        genretoindex_dic_path.write_text(json.dumps(json_file.dict_to_json
+                                                    (self.genretoindex_dic,json_file.data_to_json)),
                                          encoding='utf-8')
 
     def import_data(self) :

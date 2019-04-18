@@ -14,15 +14,24 @@ import numpy as np
 software_version = "0.2"
 
 def show_menu() :
+    menu_list = [
+        'renew',
+        'ordinary_set',
+        'search',
+        '훈련용 셋 만들기',
+        '검색 정확도 시각화',
+        '장르-단어 그래프',
+        '장르 분류기 학습',
+        '책 검색',
+        '책간 거리 계산하기',
+        '가까운 책 보기',
+        'XOR 네트워크 실험',
+        '프로그램 종료'
+    ]
+
     print("------라이트 노벨 분석기 v. {0}------".format(software_version))
-    print("1. renew")
-    print("2. ordinary_set")
-    print("3. search")
-    print("4. 정확도 특정 범위의 책 보기")
-    print("5. 프로그램 종료")
-    print("6. 검색 정확도 시각화")
-    print("7. 장르 분류기 학습")
-    print("8. 장르 자동 분류")
+    for i, m in enumerate(menu_list) :
+        print("{0}. {1}".format(i + 1, m))
     print("--------------------------------------")
 
 def split_data(li, rate) :
@@ -145,23 +154,16 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             storer.make_training_set(500)
 
         elif choice == '5':
-            print("프로그램을 종료합니다")
-            storer.export_data()
-            #bc.export_data()
-            bs.export_data()
-            otbs.export_data()
-            open_program = False
-        elif choice == '6':
             visualization.show_error_code(storer.get_error_codes())
             visualization.show_search_accuracy(storer)
-        elif choice == '7':
+        elif choice == '6':
             usable_set = [{"book": t_set["book"], "genre": t_set["genre"]} for t_set in storer.training_set
                           if len(t_set["genre"]) > 0]
 
             # visualization.word_count_pareto(usable_set, k=0.8)
             genre_num, start_num = input("비교할 장르 번호, 단어 번호를 적어주세요: ").split(' ')
             genre_experiment.word_to_word_genre_scatter(usable_set, int(genre_num), start_num=int(start_num))
-        elif choice == '8':
+        elif choice == '7':
 
             usable_set = storer.get_usable_training_set()
             random.shuffle(usable_set)
@@ -180,24 +182,19 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             if a == 'y' :
                 g.export_data()
 
-        elif choice == '9':
+        elif choice == '8' :
             i, book = book_search(bs, storer, n=20)
             print("idx = " + i.__str__())
             print(book.__str__())
 
-        elif choice == '9.5' :
-            i, book = book_search(otbs, storer, n=20)
-            print("idx = " + i.__str__())
-            print(book.__str__())
-
-        elif choice == '10':
+        elif choice == '9' :
             bc.set_real_dist(storer.get_ordinary_book())
             #bc.visualize()
 
-        elif choice == '11':
+        elif choice == '10':
             get_close_book(bc, bs, storer)
 
-        elif choice == '12':
+        elif choice == '11':
             sess = tf.Session()
 
             x_data = np.array([[0, 0], [1, 0], [0, 1], [1, 1]], dtype=np.float32)
@@ -216,8 +213,13 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             print(m.predict(x_data))
             print(m.get_accuracy(x_data, y_data))
 
-        elif choice == '13' :
-            visualization.show_error_code(storer.get_error_codes())
+        elif choice == '12' :
+            print("프로그램을 종료합니다")
+            storer.export_data()
+            # bc.export_data()
+            bs.export_data()
+            otbs.export_data()
+            open_program = False
 
 
 
@@ -579,11 +581,14 @@ def gui_main(v, g, bc, bs, otbs, storer) :
 
         def on_cr_save_clicked(bool=False) :
             print('save clicked')
+            crui.textBrowser.append('저장 시작')
             storer.export_data()
             if (g is not None):
                 g.export_data()
             bc.export_data()
             bs.export_data()
+            crui.textBrowser.append('저장 종료')
+
 
         ###
 
@@ -681,21 +686,36 @@ def gui_main(v, g, bc, bs, otbs, storer) :
     app.exec_()
 
 
-
-
 if __name__ == "__main__" :
     storer = book_storer.BookStorer()
-    storer.import_data()
     v = visualization.WordFrequencyVisualizer()
-    #v.initialize(storer.training_set)
     g = exins.get_instance().get_genre_classifier_instance()
-    g.import_data()
     bc = book_cluster.BookCluster()
-    bc.import_data()
     bs = bookdata_searcher.BookDataSearcher()
-    bs.import_data()
     otbs = bookdata_searcher.ori_title_searcher()
-    otbs.import_data()
 
-    cui_main(v, g, bc, bs, otbs, storer)
-    #gui_main(v, g, bc, bs, otbs, storer)
+    try :
+        storer.import_data()
+    except:
+        print("An error occured during BookStorer initiation")
+        #v.initialize(storer.training_set)
+    try:
+        g.import_data()
+    except:
+        print("An error occured during GenreClassifier initiation")
+    try:
+        bc.import_data()
+    except:
+        print("An error occured during BookCluster initiation")
+    try:
+        bs.import_data()
+    except:
+        print("An error occured during BookDataSearcher initiation")
+    try:
+        otbs.import_data()
+    except :
+        print("An error occured during ori_title_searcher initiation")
+
+
+    #cui_main(v, g, bc, bs, otbs, storer)
+    gui_main(v, g, bc, bs, otbs, storer)

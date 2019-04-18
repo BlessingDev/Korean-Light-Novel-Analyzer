@@ -298,12 +298,12 @@ def set_to_vector(trainig_set, word_num) :
     print("trainset adjustment finished")
 
     wordtoindex_dic_path = pathlib.Path('wordtoindex.json')
-    wordtoindex_dic_path.write_text(json_file.dict_to_json(word_to_index, json_file.data_to_json),
+    wordtoindex_dic_path.write_text(json.dumps(json_file.dict_to_json(word_to_index, json_file.data_to_json)),
                                     encoding='utf-8')
 
     genretoindex_dic_path = pathlib.Path('genretoindex.json')
-    genretoindex_dic_path.write_text(json_file.dict_to_json(genre_to_index,
-                                                            json_file.data_to_json),
+    genretoindex_dic_path.write_text(json.dumps
+                                     (json_file.dict_to_json(genre_to_index, json_file.data_to_json)),
                                      encoding='utf-8')
 
     print("2index set file saved")

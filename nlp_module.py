@@ -1,5 +1,7 @@
 from konlpy.tag import Kkma, Okt
 
+dll_path = ""
+
 def pos_Twitter(sentence) :
     """
     Twitter class를 이용해 문장의 tag를 분리하는 함수
