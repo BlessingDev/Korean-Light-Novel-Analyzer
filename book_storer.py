@@ -100,6 +100,12 @@ class BookStorer :
         #ran_p = pathlib.Path('training_set.json')
         #ran_p.write_text(json_file.list_to_json(self.random_set, json_file.data_to_json), encoding='utf-16')
 
+    def export_as_text(self) :
+        txt_p = pathlib.Path('book_data.txt')
+        book_list = json_file.list_to_json(self.book_list, json_file.data_to_json)
+
+        txt_p.write_text(str(book_list), encoding='utf-8')
+
     def get_title_list(self) :
         return [x.title for x in self.book_list]
 
@@ -116,15 +122,15 @@ class BookStorer :
             dt = book.get_pub_year_month()
         self.date_to_book[dt].append(book)
 
-    def get_ordinary_book(self) :
+    def get_ordinary_books(self) :
         return [x for x in self.book_list if x.error_code == 0]
 
     def renew_accuracy(self) :
-        for book in self.get_ordinary_book() :
+        for book in self.get_ordinary_books() :
             book.search_accuracy = nlp_module.search_accsuracy_examine(book)
 
     def make_training_set(self, num) :
-        ordinary_set = self.get_ordinary_book()
+        ordinary_set = self.get_ordinary_books()
         if num < len(ordinary_set):
             self.training_set = random.sample(ordinary_set, num)
 
@@ -148,7 +154,7 @@ class BookStorer :
                 book.genre = genres
 
     def download_images(self) :
-        for book in self.get_ordinary_book() :
+        for book in self.get_ordinary_books() :
             iconpath = 'images\\' + book.title + '_icon.' +\
                                 book.image_url.split('.')[-1].split('?')[0]
 

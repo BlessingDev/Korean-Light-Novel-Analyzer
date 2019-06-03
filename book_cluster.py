@@ -148,6 +148,6 @@ class BookCluster :
 
 
     def visualize(self, storer) :
-        title_list = [book.title for book in storer.get_ordinary_book()]
+        title_list = [book.title for book in storer.get_ordinary_books()]
 
         visualization.draw2d(self.coords, title_list, imagerate=10000, jpeg = 'book_relavant.jpg')

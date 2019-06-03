@@ -51,7 +51,7 @@ def show_search_accuracy(storer, renew = False) :
         storer.renew_accuracy()
 
     result_list= list()
-    for book in storer.get_ordinary_book() :
+    for book in storer.get_ordinary_books() :
         result_list.append(book.search_accuracy)
 
     def devide_range(pro) :

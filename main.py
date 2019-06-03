@@ -1,4 +1,4 @@
-import random, sys, subprocess, os
+import random, sys, subprocess, os, nlp_module, pathlib
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import book_data, book_storer, visualization, book_cluster, bookdata_searcher
@@ -26,7 +26,8 @@ def show_menu() :
         '책간 거리 계산하기',
         '가까운 책 보기',
         'XOR 네트워크 실험',
-        '프로그램 종료'
+        '프로그램 종료',
+        '자유'
     ]
 
     print("------라이트 노벨 분석기 v. {0}------".format(software_version))
@@ -42,7 +43,7 @@ def split_data(li, rate) :
 
 def classify_genre(g, storer) :
     if g is not None:
-        ordinary_books = storer.get_ordinary_book()
+        ordinary_books = storer.get_ordinary_books()
 
         book_idx = input("장르를 분류하고 싶은 책의 인덱스 입력 ")
         book_idx = int(book_idx)
@@ -80,7 +81,7 @@ def networktest() :
             break
 
 def cluster_book(bc, storer) :
-    bc.set_real_dist(storer.get_ordinary_book())
+    bc.set_real_dist(storer.get_ordinary_books())
     print("dist 구하기 종료")
     bc.scaledown(rate=0.0002, trainn = 5000)
     print("2D 투영 종료")
@@ -93,7 +94,7 @@ def book_search(bs, storer, n=10) :
 
     searchedlist = bs.search_book_by_title(title, n=n)
 
-    booklist = storer.get_ordinary_book()
+    booklist = storer.get_ordinary_books()
 
     # GUI로 변경시에 이 부분을 함수로 만들어 리스트로 보여주게 할 것
     print(["{} : {}회 등장".format(booklist[i].title, n) for i, n in searchedlist])
@@ -107,7 +108,7 @@ def get_close_book(bc, bs, storer) :
     idx, book = book_search(bs, storer)
 
     closelist = bc.get_close_books(idx)
-    booklist = storer.get_ordinary_book()
+    booklist = storer.get_ordinary_books()
 
     if closelist is not None :
         print([(booklist[i].title, dist) for i, dist in closelist])
@@ -122,8 +123,8 @@ def crawl_book(g, bc, bs) :
 def renew_datas(storer, g, bc, bs) :
     storer.classify_book_genre(g)
     storer.download_images()
-    bc.set_real_dist(storer.get_ordinary_book())
-    bs.init_word_index(storer.get_ordinary_book())
+    bc.set_real_dist(storer.get_ordinary_books())
+    bs.init_word_index(storer.get_ordinary_books())
 
 def crawl_search_sample() :
     book = book_data.BookData()
@@ -144,8 +145,8 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             renew_datas(storer, g, bc, bs)
             print("크롤 완료")
         elif choice == '2':
-            print([book.title for book in storer.get_ordinary_book()])
-            print("len: ", len(storer.get_ordinary_book()))
+            print([book.title for book in storer.get_ordinary_books()])
+            print("len: ", len(storer.get_ordinary_books()))
 
         elif choice == '3':
             otbs.init_word_index(storer.book_list)
@@ -188,7 +189,7 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             print(book.__str__())
 
         elif choice == '9' :
-            bc.set_real_dist(storer.get_ordinary_book())
+            bc.set_real_dist(storer.get_ordinary_books())
             #bc.visualize()
 
         elif choice == '10':
@@ -220,6 +221,8 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             bs.export_data()
             otbs.export_data()
             open_program = False
+        elif choice == '13' :
+            nlp_module.train_spm()
 
 
 
@@ -275,7 +278,7 @@ def gui_main(v, g, bc, bs, otbs, storer) :
 
             searchList = bs.search_book_by_title(searchWord, n=curNum)
 
-            books = storer.get_ordinary_book()
+            books = storer.get_ordinary_books()
 
             model = QtGui.QStandardItemModel(searchui.listView)
 
@@ -298,7 +301,7 @@ def gui_main(v, g, bc, bs, otbs, storer) :
 
             searchList = otbs.search_book_by_title(searchWord, n=curNum)
 
-            books = storer.get_ordinary_book()
+            books = storer.get_ordinary_books()
 
             model = QtGui.QStandardItemModel(ori_search_win.listView)
 
@@ -315,7 +318,7 @@ def gui_main(v, g, bc, bs, otbs, storer) :
         def on_list_clicked(modelIndex) :
             global searchList
             curindex = modelIndex.row()
-            curbook = storer.get_ordinary_book()[searchList[curindex][0]]
+            curbook = storer.get_ordinary_books()[searchList[curindex][0]]
             image = QtGui.QPixmap(curbook.get_image_dir())
 
             scene = QtWidgets.QGraphicsScene()
@@ -370,7 +373,7 @@ def gui_main(v, g, bc, bs, otbs, storer) :
                         model.appendRow(item)
                     else :
                         for bindex, dist in close_book:
-                            item = QtGui.QStandardItem("책제목: {}".format(storer.get_ordinary_book()[bindex].title))
+                            item = QtGui.QStandardItem("책제목: {}".format(storer.get_ordinary_books()[bindex].title))
                             model.appendRow(item)
 
                     resui.listView.setModel(model)
@@ -383,7 +386,7 @@ def gui_main(v, g, bc, bs, otbs, storer) :
             ###
             curindex = searchui.listView.currentIndex().row()
 
-            selected_book = storer.get_ordinary_book()[searchList[curindex][0]]
+            selected_book = storer.get_ordinary_books()[searchList[curindex][0]]
             searched_index = searchList[curindex][0]
 
             widget = QtWidgets.QDialog()
@@ -473,7 +476,7 @@ def gui_main(v, g, bc, bs, otbs, storer) :
                         model.appendRow(item)
                     else:
                         for bindex, dist in close_book:
-                            item = QtGui.QStandardItem("책제목: {}".format(storer.get_ordinary_book()[bindex].title))
+                            item = QtGui.QStandardItem("책제목: {}".format(storer.get_ordinary_books()[bindex].title))
                             model.appendRow(item)
 
                     resui.listView.setModel(model)
@@ -486,7 +489,7 @@ def gui_main(v, g, bc, bs, otbs, storer) :
             ###
             curindex = ori_search_win.listView.currentIndex().row()
 
-            selected_book = storer.get_ordinary_book()[searchList[curindex][0]]
+            selected_book = storer.get_ordinary_books()[searchList[curindex][0]]
             searched_index = searchList[curindex][0]
 
             widget = QtWidgets.QDialog()
@@ -717,5 +720,5 @@ if __name__ == "__main__" :
         print("An error occured during ori_title_searcher initiation")
 
 
-    #cui_main(v, g, bc, bs, otbs, storer)
-    gui_main(v, g, bc, bs, otbs, storer)
+    cui_main(v, g, bc, bs, otbs, storer)
+    #gui_main(v, g, bc, bs, otbs, storer)

@@ -1,6 +1,52 @@
 from konlpy.tag import Kkma, Okt
+import sentencepiece as spm
+import re
 
 dll_path = ""
+
+def train_spm() :
+    spm.SentencePieceTrainer.train('--model_prefix=m --input=book_description.txt --vocab_size=1200')
+
+def preprocess_lnv_description(book_list) :
+    proccessed_doc = []
+
+    for book in book_list :
+        title = book.title
+        description = book.description
+
+        sentences = re.compile('[?|!|.]').split(description)
+
+        # 권수 전처리
+        p1 = re.compile('[1-99]권|[1-99]탄')
+        # 광고 전처리
+        p2 = re.compile('화제작|의 작가|신인상|신작|선사하는|애니메이션|시리즈|수상|'
+                       '방영|전작|누계|완결|신인작가|이 라이트노벨이 대단해|인기작|증정|'
+                        '코미컬라이즈|한국어판')
+        match_idx1 = []
+        match_idx2 = []
+        for i, sentence in enumerate(sentences) :
+            sentence = sentence.strip()
+            m = p1.search(sentence)
+            if m is not None :
+                match_idx1.append(i)
+            m = p2.search(sentence)
+            if m is not None :
+                match_idx2.append(i)
+
+        for i in match_idx2 :
+            sentences[i] = '광고'
+
+        if len(match_idx1) == 1 :
+            sentences[match_idx1[0]] = '권수'
+        elif len(match_idx1) > 1 :
+            sentences = sentences[match_idx1[len(match_idx1) - 1]:]
+
+        for i in range(sentences.count('')) :
+            sentences.remove('')
+
+        proccessed_doc.append(". ".join(sentences))
+
+    return proccessed_doc
 
 def pos_Twitter(sentence) :
     """
