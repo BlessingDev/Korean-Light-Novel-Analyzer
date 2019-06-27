@@ -27,7 +27,7 @@ def show_menu() :
         '가까운 책 보기',
         'XOR 네트워크 실험',
         '프로그램 종료',
-        '자유'
+        '이하 자유'
     ]
 
     print("------라이트 노벨 분석기 v. {0}------".format(software_version))
@@ -222,7 +222,12 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             otbs.export_data()
             open_program = False
         elif choice == '13' :
-            nlp_module.distributed_save()
+            try :
+                nlp_module.distributed_save()
+            except Exception as e:
+                print(e)
+        elif choice == '14' :
+            nlp_module.train_spm()
 
 
 

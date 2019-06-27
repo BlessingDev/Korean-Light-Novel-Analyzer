@@ -7,30 +7,26 @@ dll_path = ""
 def distributed_save() :
     f = open('namuwiki_20190312.json')
     data = ijson.parse(f)
+    p = open('namu_sentences.txt', 'w', encoding='utf-8')
     for prefix, event, value in data :
         if prefix == "item.text" :
-            sentences = re.compile('[가-힣][.]+|[?]|[\n]').split(value)
-            dot_sentences = re.compile('[.]+|[)][.]|[?]|[\n]').split(value)
+            sentences = re.compile('[\n]').split(value)
+
+            for i, s in enumerate(sentences) :
+                sentences[i] = get_namuwiki_text(s.strip())
+
+            new_s = '\n'.join(sentences)
+
+            sentences = re.compile('[.]+|[?]|[\n]').split(new_s)
             sentences = [s.strip() for s in sentences if len(s) > 2]
-            dot_sentences = [s.strip() for s in dot_sentences if len(s) > 2]
 
-            for i, s1 in enumerate(dot_sentences) :
-                for j, s2 in enumerate(sentences) :
-                    try :
-                        res1 = re.compile(s1).search(s2)
-                        res2 = re.compile(s1[:len(s1) - 1]).search(s2)
-
-                        if res2 is not None and res1 is None :
-                            sentences[j] = sentences[j].replace(s1[:len(s1) - 1], s1)
-                    except :
-                        pass
-                        #print("regex error")
-
-
+            p.write('\n'.join(sentences) + '\n')
             print(sentences)
 
         elif prefix == "item.title" :
-            print(value)
+            p.write(value + '\n')
+
+    p.close()
 
 def get_namuwiki_text(sentence) :
     if '#redirect' in sentence :
@@ -38,7 +34,7 @@ def get_namuwiki_text(sentence) :
     else :
         file_p = re.compile('[[][[]파일:')
         inner_link_p1 = re.compile('[[][[][^파][^일].+[]][]]')
-        inner_link_p2 = re.compile('[[][[].+[|].+[]][]]')
+        inner_link_p2 = re.compile('[[][[][^]]+[|][^]]+[]][]]')
         strong_p = re.compile("'''.+'''")
         cancel_p = re.compile('~~.+~~')
         list_p = re.compile('^[*] ')
@@ -61,30 +57,70 @@ def get_namuwiki_text(sentence) :
         if res is not None :
             return ''
 
+        # 표는 포기할 수 밖에 없었다...
+        res = table_p.search(sentence)
+        if res is not None :
+            return ''
+
         ### 대입 파트 ###
+        offset = 0
         res = inner_link_p2.finditer(sentence)
         for r in res :
             # 대체말 링크가 있으면 모두 대체말로 바꿔서 넣는다.
-            sub = sentence[r.start():r.end()]
+            sub = sentence[r.start() - offset:r.end() - offset]
             sub = sub.replace('[[', '').replace(']]', '')
             sub = sub.split('|')[1]
 
-            sentence = sentence[:r.start()] + sub + sentence[r.end():]
+            sentence = sentence[:r.start()- offset] + sub + sentence[r.end() - offset:]
+            offset += (r.end() - r.start()) - len(sub)
 
         # 대체말 링크 다음에는 일반 링크 처리
+        offset = 0
         res = inner_link_p1.finditer(sentence)
         for r in res :
-            sub = sentence[r.start():r.end()]
+            sub = sentence[r.start() - offset:r.end() - offset]
             sub = sub.replace('[[', '').replace(']]', '')
 
-            sentence = sentence[:r.start()] + sub + sentence[r.end():]
+            sentence = sentence[:r.start() - offset] + sub + sentence[r.end() - offset:]
+            offset += (r.end() - r.start()) - len(sub)
 
+        offset = 0
         res = strong_p.finditer(sentence)
         for r in res :
-            sub = sentence[r.start():r.end()]
+            sub = sentence[r.start() - offset:r.end() - offset]
             sub = sub.replace("'''", '')
 
-            sentence = sentence[:r.start()] + sub + sentence[r.end():]
+            sentence = sentence[:r.start() - offset] + sub + sentence[r.end() - offset:]
+            offset += (r.end() - r.start()) - len(sub)
+
+        offset = 0
+        res = title_p.finditer(sentence)
+        for r in res :
+            sub = sentence[r.start() - offset:r.end() - offset]
+            sub = sub.replace("{{{", '').replace('}}}', '')
+
+            sentence = sentence[:r.start() - offset] + sub + sentence[r.end() - offset:]
+            offset += (r.end() - r.start()) - len(sub)
+
+        # 목차 내용 빼기
+        res = topic_p.search(sentence)
+        if res is not None :
+            sub = sentence[res.start():res.end()]
+            eq_num = int(sub.count('=') / 2)
+            sub = sub.replace("=" * eq_num, '')
+
+            sentence = sentence[:res.start()] + sub + sentence[res.end():]
+
+        # 주석 내용 꺼내기
+        # 구분할 수 있게 해야한다 (\n)
+        offset = 0
+        res = exp_p.finditer(sentence)
+        for r in res :
+            sub = sentence[r.start() - offset:r.end() - offset]
+            sub = sub.replace("[*", '\n').replace(']', '')
+
+            sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:] + sub
+            offset += (r.end() - r.start()) - len(sub)
 
         ### 내용 삭제 파트 ###
         # 취소선 내용은 삭제한다
@@ -107,7 +143,8 @@ def get_namuwiki_text(sentence) :
 
 
 def train_spm() :
-    spm.SentencePieceTrainer.train('--model_prefix=m --input=disk1.gsd --vocab_size=100000')
+    spm.SentencePieceTrainer.train('--model_prefix=m --input=namu_sentences.txt --vocab_size=100000'
+                                   ' --input_sentence_size=1000000 --shuffle_input_sentence=true')
 
 def tokenize_spm(sentence) :
     sp = spm.SentencePieceProcessor()
