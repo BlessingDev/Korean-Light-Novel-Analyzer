@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="aab144f4-278d-4a9a-85eb-0fbf8bb1bbd1" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_cluster.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_cluster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_storer.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_storer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nlp_module.py" beforeDir="false" afterPath="$PROJECT_DIR$/nlp_module.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualization.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,10 +24,6 @@
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
                     <element signature="e#534#2015#0" />
-                    <element signature="e#4586#5213#0" />
-                    <element signature="e#5262#5470#0" />
-                    <element signature="e#5512#6669#0" />
-                    <element signature="e#6724#8093#0" />
                     <marker date="1559530289102" expanded="true" signature="4800:5443" ph="..." />
                   </folding>
                 </state>
@@ -46,14 +39,24 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="132">
-                  <caret line="224" selection-start-line="224" selection-end-line="224" />
+                <state relative-caret-position="226">
+                  <caret line="224" column="41" selection-start-line="224" selection-start-column="41" selection-end-line="224" selection-end-column="41" />
                   <folding>
-                    <element signature="e#0#34#0" expanded="true" />
+                    <element signature="e#0#55#0" expanded="true" />
+                    <element signature="e#7127#22503#0" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/sre_parse.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="140">
+                  <caret line="246" selection-start-line="246" selection-end-line="246" />
                 </state>
               </provider>
             </entry>
@@ -65,7 +68,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/visualization.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
+                <state relative-caret-position="-720">
                   <caret column="10" selection-start-column="10" selection-end-column="10" />
                 </state>
               </provider>
@@ -74,18 +77,10 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/nlp_module.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="105">
-                  <caret line="7" selection-start-line="7" selection-end-line="7" />
+                <state relative-caret-position="270">
+                  <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
-                    <element signature="e#108#1048#0" />
-                    <element signature="e#730#1018#0" />
-                    <element signature="e#400#671#0" />
-                    <element signature="e#718#2154#0" />
-                    <element signature="e#2209#4258#0" />
-                    <element signature="e#4294#6014#0" />
-                    <element signature="e#6061#6326#0" />
-                    <element signature="e#6372#8130#0" />
                   </folding>
                 </state>
               </provider>
@@ -104,11 +99,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>블랙코미디</find>
-      <find>던전에서 만남을 추구하면 안 되는 걸까</find>
-      <find>기어와라! 냐루코 양</find>
-      <find>에로망가 선생</find>
-      <find>나와 이치노의 게임동호회 활동일지</find>
       <find>제로부터 시작하는 이세계 생활</find>
       <find>강철의 누이들</find>
       <find>드래곤X프린세스X블레이드</find>
@@ -134,6 +124,11 @@
       <find>29세와</find>
       <find>벌써 12월</find>
       <find>광고</find>
+      <find>OSMU</find>
+      <find>개별 도서 소개</find>
+      <find>스승</find>
+      <find>폐허</find>
+      <find>폐</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -181,8 +176,9 @@
         <option value="$PROJECT_DIR$/external_tools/NaverBookSearcher.py" />
         <option value="$PROJECT_DIR$/external_tools/tf_genre_classifier.py" />
         <option value="$PROJECT_DIR$/book_storer.py" />
-        <option value="$PROJECT_DIR$/nlp_module.py" />
+        <option value="C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/jsonstreamer/yajl/parse.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/nlp_module.py" />
       </list>
     </option>
   </component>
@@ -217,7 +213,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -225,21 +220,17 @@
               <item name="Korean-Light-Novel-Analyzer" type="b2602c69:ProjectViewProjectNode" />
               <item name="Korean-Light-Novel-Analyzer" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Korean-Light-Novel-Analyzer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Korean-Light-Novel-Analyzer" type="462c0819:PsiDirectoryNode" />
-              <item name="external_tools" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -406,8 +397,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19550858" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20643431" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -417,8 +409,8 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Python Console" order="7" weight="0.32952183" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32848233" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.32841823" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32841823" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067115" side_tool="true" weight="0.2671141" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -474,35 +466,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/dist.json">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="-13095" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/nlp_training_set.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_console_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="159" selection-start-line="159" selection-end-line="159" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/json/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="366" selection-start-line="366" selection-end-line="366" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/external_tools_instantiater.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/random.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -731,13 +694,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/visualization.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="10" selection-start-column="10" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tdd_nlp_search.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -781,39 +737,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/book_data.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret column="2538453" selection-start-column="2538453" selection-end-column="2538453" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/book_storer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="930">
-          <caret line="103" column="15" selection-start-line="103" selection-start-column="15" selection-end-line="103" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <element signature="e#534#2015#0" />
-            <element signature="e#4586#5213#0" />
-            <element signature="e#5262#5470#0" />
-            <element signature="e#5512#6669#0" />
-            <element signature="e#6724#8093#0" />
-            <marker date="1559530289102" expanded="true" signature="4800:5443" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/book_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/book_description.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/external_tools/tf_model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="239">
@@ -831,37 +754,108 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/book_data.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1575">
+          <caret column="2536833" selection-start-column="2536833" selection-end-column="2536833" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/ijson/backends/python.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="73" selection-start-line="73" selection-end-line="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/ctypes/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-391">
+          <caret line="321" column="23" lean-forward="true" selection-start-line="321" selection-start-column="23" selection-end-line="321" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/site-packages/jsonstreamer/yajl/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
+          <folding>
+            <element signature="e#30#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/book_description.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5580">
+          <caret line="372" column="29" lean-forward="true" selection-start-line="372" selection-start-column="29" selection-end-line="372" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/typing.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="518" column="51" lean-forward="true" selection-start-line="518" selection-start-column="51" selection-end-line="518" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="1751" selection-start-line="1751" selection-end-line="1751" />
+        <state relative-caret-position="132">
+          <caret line="1146" selection-start-line="1146" selection-end-line="1146" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/book_storer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="930">
+          <caret line="103" column="15" selection-start-line="103" selection-start-column="15" selection-end-line="103" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#534#2015#0" />
+            <marker date="1559530289102" expanded="true" signature="4800:5443" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/book_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualization.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-720">
+          <caret column="10" selection-start-column="10" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="224" selection-start-line="224" selection-end-line="224" />
+        <state relative-caret-position="226">
+          <caret line="224" column="41" selection-start-line="224" selection-start-column="41" selection-end-line="224" selection-end-column="41" />
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#55#0" expanded="true" />
+            <element signature="e#7127#22503#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Python36_64/Lib/sre_parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="246" selection-start-line="246" selection-end-line="246" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nlp_module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="270">
+          <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <element signature="e#108#1048#0" />
-            <element signature="e#730#1018#0" />
-            <element signature="e#400#671#0" />
-            <element signature="e#718#2154#0" />
-            <element signature="e#2209#4258#0" />
-            <element signature="e#4294#6014#0" />
-            <element signature="e#6061#6326#0" />
-            <element signature="e#6372#8130#0" />
           </folding>
         </state>
       </provider>

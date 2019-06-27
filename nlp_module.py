@@ -1,11 +1,122 @@
 from konlpy.tag import Kkma, Okt
 import sentencepiece as spm
-import re
+import re, ijson, pathlib
 
 dll_path = ""
 
+def distributed_save() :
+    f = open('namuwiki_20190312.json')
+    data = ijson.parse(f)
+    for prefix, event, value in data :
+        if prefix == "item.text" :
+            sentences = re.compile('[\n]').split(value)
+            dot_sentences = re.compile('[\n]').split(value)
+            sentences = [s.strip() for s in sentences if len(s) > 2]
+            dot_sentences = [s.strip() for s in dot_sentences if len(s) > 2]
+
+            for i, s1 in enumerate(dot_sentences) :
+                for j, s2 in enumerate(sentences) :
+                    try :
+                        res1 = re.compile(s1).search(s2)
+                        res2 = re.compile(s1[:len(s1) - 1]).search(s2)
+
+                        if res2 is not None and res1 is None :
+                            sentences[j] = sentences[j].replace(s1[:len(s1) - 1], s1)
+                    except :
+                        pass
+                        #print("regex error")
+
+
+            print(sentences)
+
+        elif prefix == "item.title" :
+            print(value)
+
+def get_namuwiki_text(sentence) :
+    if '#redirect' in sentence :
+        return sentence.split()[1]
+    else :
+        file_p = re.compile('[[][[]파일:')
+        inner_link_p1 = re.compile('[[][[][^파][^일].+[]][]]')
+        inner_link_p2 = re.compile('[[][[].+[|].+[]][]]')
+        strong_p = re.compile("'''.+'''")
+        cancel_p = re.compile('~~.+~~')
+        list_p = re.compile('^[*] ')
+        tag_p = re.compile('<.+>')
+        table_p = re.compile('[|][|][^|].+[^|][|][|]')
+        topic_p = re.compile('=+ .+ =+')
+        include_p = re.compile('include[(]틀:')
+        root_p = re.compile('/')
+        title_p = re.compile('[{][{][{].+[}][}][}]')
+        exp_p = re.compile('[[][*].+[]]')
+
+        ### 입구컷 파트 ###
+        # 파일 링크이면 날려버리기
+        res = file_p.search(sentence)
+        if res is not None :
+            return ''
+
+        # 틀 include면 날려버리기
+        res = include_p.search(sentence)
+        if res is not None :
+            return ''
+
+        ### 대입 파트 ###
+        res = inner_link_p2.finditer(sentence)
+        for r in res :
+            # 대체말 링크가 있으면 모두 대체말로 바꿔서 넣는다.
+            sub = sentence[r.start():r.end()]
+            sub = sub.replace('[[', '').replace(']]', '')
+            sub = sub.split('|')[1]
+
+            sentence = sentence[:r.start()] + sub + sentence[r.end():]
+
+        # 대체말 링크 다음에는 일반 링크 처리
+        res = inner_link_p1.finditer(sentence)
+        for r in res :
+            sub = sentence[r.start():r.end()]
+            sub = sub.replace('[[', '').replace(']]', '')
+
+            sentence = sentence[:r.start()] + sub + sentence[r.end():]
+
+        res = strong_p.finditer(sentence)
+        for r in res :
+            sub = sentence[r.start():r.end()]
+            sub = sub.replace("'''", '')
+
+            sentence = sentence[:r.start()] + sub + sentence[r.end():]
+
+        ### 내용 삭제 파트 ###
+        # 취소선 내용은 삭제한다
+        res = cancel_p.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start()] + sentence[r.end():]
+
+        # 리스트는 리스트 표시를 삭제한다
+        res = list_p.search(sentence)
+        if res is not None :
+            sentence = sentence[2:]
+
+        # html 태그는 모두 삭제야!
+        res = tag_p.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start()] + sentence[r.end():]
+
+
+        return sentence.strip()
+
+
 def train_spm() :
-    spm.SentencePieceTrainer.train('--model_prefix=m --input=book_description.txt --vocab_size=1200')
+    spm.SentencePieceTrainer.train('--model_prefix=m --input=disk1.gsd --vocab_size=100000')
+
+def tokenize_spm(sentence) :
+    sp = spm.SentencePieceProcessor()
+    sp.load('m.model')
+
+    tokens = sp.encode_as_pieces(sentence)
+
+    return tokens
+
 
 def preprocess_lnv_description(book_list) :
     proccessed_doc = []
@@ -14,14 +125,14 @@ def preprocess_lnv_description(book_list) :
         title = book.title
         description = book.description
 
-        sentences = re.compile('[?|!|.]').split(description)
+        sentences = re.compile('[?]|[!]|[.]').split(description)
 
         # 권수 전처리
         p1 = re.compile('[1-99]권|[1-99]탄')
         # 광고 전처리
         p2 = re.compile('화제작|의 작가|신인상|신작|선사하는|애니메이션|시리즈|수상|'
                        '방영|전작|누계|완결|신인작가|이 라이트노벨이 대단해|인기작|증정|'
-                        '코미컬라이즈|한국어판')
+                        '코미컬라이즈|한국어판|출간|OSMU')
         match_idx1 = []
         match_idx2 = []
         for i, sentence in enumerate(sentences) :
@@ -44,7 +155,7 @@ def preprocess_lnv_description(book_list) :
         for i in range(sentences.count('')) :
             sentences.remove('')
 
-        proccessed_doc.append(". ".join(sentences))
+        proccessed_doc.append(".\n".join(sentences))
 
     return proccessed_doc
 

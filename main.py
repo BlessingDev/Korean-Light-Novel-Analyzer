@@ -222,7 +222,7 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             otbs.export_data()
             open_program = False
         elif choice == '13' :
-            nlp_module.train_spm()
+            nlp_module.distributed_save()
 
 
 
