@@ -9,8 +9,8 @@ def distributed_save() :
     data = ijson.parse(f)
     for prefix, event, value in data :
         if prefix == "item.text" :
-            sentences = re.compile('[\n]').split(value)
-            dot_sentences = re.compile('[\n]').split(value)
+            sentences = re.compile('[가-힣][.]+|[?]|[\n]').split(value)
+            dot_sentences = re.compile('[.]+|[)][.]|[?]|[\n]').split(value)
             sentences = [s.strip() for s in sentences if len(s) > 2]
             dot_sentences = [s.strip() for s in dot_sentences if len(s) > 2]
 
