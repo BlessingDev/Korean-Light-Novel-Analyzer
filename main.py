@@ -222,12 +222,12 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             otbs.export_data()
             open_program = False
         elif choice == '13' :
-            try :
-                nlp_module.distributed_save()
-            except Exception as e:
-                print(e)
+            nlp_module.distributed_save()
         elif choice == '14' :
             nlp_module.train_spm()
+        elif choice == '15' :
+            s = input("문장을 입력하세요: ")
+            print(nlp_module.get_namuwiki_text(s))
 
 
 

@@ -13,15 +13,19 @@ def distributed_save() :
             sentences = re.compile('[\n]').split(value)
 
             for i, s in enumerate(sentences) :
-                sentences[i] = get_namuwiki_text(s.strip())
+                try :
+                    sentences[i] = get_namuwiki_text(s.strip())
+                except Exception as e:
+                    print(e, "in sentence", s)
 
             new_s = '\n'.join(sentences)
 
-            sentences = re.compile('[.]+|[?]|[\n]').split(new_s)
-            sentences = [s.strip() for s in sentences if len(s) > 2]
+            new_s = re.compile('[]]|[[]|[|][|]|[{][{][{]|[}][}][}]').sub('', new_s)
+            new_s = re.compile('[.]+|[?]|[\n]').split(new_s)
+            new_s = [s.strip() for s in new_s if len(s) > 2]
 
-            p.write('\n'.join(sentences) + '\n')
-            print(sentences)
+            p.write('\n'.join(new_s) + '\n')
+            print(new_s)
 
         elif prefix == "item.title" :
             p.write(value + '\n')
@@ -32,25 +36,32 @@ def get_namuwiki_text(sentence) :
     if '#redirect' in sentence :
         return sentence.split()[1]
     else :
-        file_p = re.compile('[[][[]파일:')
+        file_p = re.compile('[[][[]파일:.+[]][]]')
         inner_link_p1 = re.compile('[[][[][^파][^일].+[]][]]')
         inner_link_p2 = re.compile('[[][[][^]]+[|][^]]+[]][]]')
         strong_p = re.compile("'''.+'''")
-        cancel_p = re.compile('~~.+~~')
+        cancel_p1 = re.compile('~~.+~~')
+        cancel_p2 = re.compile('--.+--')
         list_p = re.compile('^[*] ')
+        quote_p = re.compile('^>')
         tag_p = re.compile('<.+>')
+
         table_p = re.compile('[|][|][^|].+[^|][|][|]')
+        color_p = re.compile('#\w{6} ')
+        html_p1 = re.compile('#!\s+')
+        html_p2 = re.compile('\s+=".+"')
+        br_p = re.compile('[[]br[]]')
+
         topic_p = re.compile('=+ .+ =+')
         include_p = re.compile('include[(]틀:')
         root_p = re.compile('/')
+        ruby_p = re.compile('[[]ruby[(].+[)][]]')
         title_p = re.compile('[{][{][{].+[}][}][}]')
+        title_num_p = re.compile('[{][{][{][+]\d .+[}][}][}]')
         exp_p = re.compile('[[][*].+[]]')
 
+
         ### 입구컷 파트 ###
-        # 파일 링크이면 날려버리기
-        res = file_p.search(sentence)
-        if res is not None :
-            return ''
 
         # 틀 include면 날려버리기
         res = include_p.search(sentence)
@@ -58,11 +69,73 @@ def get_namuwiki_text(sentence) :
             return ''
 
         # 표는 포기할 수 밖에 없었다...
-        res = table_p.search(sentence)
+        # 이제 표도 포기하지 않는다!
+
+        ### 내용 삭제 파트 ###
+        # 취소선 내용은 삭제한다
+        offset = 0
+        res = cancel_p1.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:]
+            offset += (r.end() - r.start())
+
+        offset = 0
+        res = cancel_p2.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:]
+            offset += (r.end() - r.start())
+
+        # 파일에 해당하는 부분만 삭제
+        offset = 0
+        res = file_p.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:]
+            offset += (r.end() - r.start())
+
+        # 표에서 삭제할 것 모음
+        offset = 0
+        res = color_p.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:]
+            offset += (r.end() - r.start())
+
+        offset = 0
+        res = html_p1.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:]
+            offset += (r.end() - r.start())
+
+        offset = 0
+        res = html_p2.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:]
+            offset += (r.end() - r.start())
+
+        # 리스트는 리스트 표시를 삭제한다
+        res = list_p.search(sentence)
         if res is not None :
-            return ''
+            sentence = sentence[2:]
+
+        # 인용구 명령어 삭제
+        res = quote_p.search(sentence)
+        if res is not None :
+            sentence = sentence[1:]
+
+        # html 태그는 모두 삭제야!
+        res = tag_p.finditer(sentence)
+        for r in res :
+            sentence = sentence[:r.start()] + sentence[r.end():]
 
         ### 대입 파트 ###
+        # 목차 내용 빼기
+        res = topic_p.search(sentence)
+        if res is not None :
+            sub = sentence[res.start():res.end()]
+            eq_num = int(sub.count('=') / 2)
+            sub = sub.replace("=" * eq_num, '')
+
+            sentence = sentence[:res.start()] + sub + sentence[res.end():]
+
         offset = 0
         res = inner_link_p2.finditer(sentence)
         for r in res :
@@ -93,6 +166,18 @@ def get_namuwiki_text(sentence) :
             sentence = sentence[:r.start() - offset] + sub + sentence[r.end() - offset:]
             offset += (r.end() - r.start()) - len(sub)
 
+        # {{{}}} 묶음 안에 +(숫자)가 붙어 있는 경우의 처리
+        offset = 0
+        res = title_num_p.finditer(sentence)
+        for r in res:
+            sub = sentence[r.start() - offset:r.end() - offset]
+            sub = sub.replace("{{{", '').replace('}}}', '')
+            sub = sub[2:]
+
+            sentence = sentence[:r.start() - offset] + sub + sentence[r.end() - offset:]
+            offset += (r.end() - r.start()) - len(sub)
+
+
         offset = 0
         res = title_p.finditer(sentence)
         for r in res :
@@ -102,14 +187,21 @@ def get_namuwiki_text(sentence) :
             sentence = sentence[:r.start() - offset] + sub + sentence[r.end() - offset:]
             offset += (r.end() - r.start()) - len(sub)
 
-        # 목차 내용 빼기
-        res = topic_p.search(sentence)
-        if res is not None :
-            sub = sentence[res.start():res.end()]
-            eq_num = int(sub.count('=') / 2)
-            sub = sub.replace("=" * eq_num, '')
+        # 루비(위첨자) 처리
+        res = ruby_p.search(sentence)
+        while res is not None :
+            offset = 0
+            res = ruby_p.finditer(sentence)
+            for r in res :
+                # 대체말 링크가 있으면 모두 대체말로 바꿔서 넣는다.
+                sub = sentence[r.start() - offset:r.end() - offset]
+                sub = sub.split(',')[0] + ')]'.join(sub.split(')]')[1:])
+                sub = sub[6:]
 
-            sentence = sentence[:res.start()] + sub + sentence[res.end():]
+                sentence = sentence[:r.start()- offset] + sub + sentence[r.end() - offset:]
+                offset += (r.end() - r.start()) - len(sub)
+
+            res = ruby_p.search(sentence)
 
         # 주석 내용 꺼내기
         # 구분할 수 있게 해야한다 (\n)
@@ -122,28 +214,28 @@ def get_namuwiki_text(sentence) :
             sentence = sentence[:r.start() - offset] + sentence[r.end() - offset:] + sub
             offset += (r.end() - r.start()) - len(sub)
 
-        ### 내용 삭제 파트 ###
-        # 취소선 내용은 삭제한다
-        res = cancel_p.finditer(sentence)
-        for r in res :
-            sentence = sentence[:r.start()] + sentence[r.end():]
+        # 표 내용 꺼내기
+        offset = 0
+        res = table_p.finditer(sentence)
+        for r in res:
+            sub = sentence[r.start() - offset:r.end() - offset]
+            sub = sub.replace("||", '')
+            sub = '\n' + sub
 
-        # 리스트는 리스트 표시를 삭제한다
-        res = list_p.search(sentence)
-        if res is not None :
-            sentence = sentence[2:]
+            sentence = sentence[:r.start() - offset] + sub + sentence[r.end() - offset:]
+            offset += (r.end() - r.start()) - len(sub)
 
-        # html 태그는 모두 삭제야!
-        res = tag_p.finditer(sentence)
-        for r in res :
-            sentence = sentence[:r.start()] + sentence[r.end():]
+        # / 대체
+        sentence = root_p.sub(' ', sentence)
+
+        sentence = br_p.sub('\n', sentence)
 
 
         return sentence.strip()
 
 
 def train_spm() :
-    spm.SentencePieceTrainer.train('--model_prefix=m --input=namu_sentences.txt --vocab_size=100000'
+    spm.SentencePieceTrainer.train('--model_prefix=m --input=namu_sentences.txt --vocab_size=50000'
                                    ' --input_sentence_size=1000000 --shuffle_input_sentence=true')
 
 def tokenize_spm(sentence) :
