@@ -126,6 +126,8 @@ def renew_datas(storer, g, bc, bs) :
     bc.set_real_dist(storer.get_ordinary_books())
     bs.init_word_index(storer.get_ordinary_books())
 
+
+
 def crawl_search_sample() :
     book = book_data.BookData()
     sr = exins.get_instance().get_searcher_naver_instance()
@@ -726,5 +728,5 @@ if __name__ == "__main__" :
         print("An error occured during ori_title_searcher initiation")
 
 
-    cui_main(v, g, bc, bs, otbs, storer)
-    #gui_main(v, g, bc, bs, otbs, storer)
+    #cui_main(v, g, bc, bs, otbs, storer)
+    gui_main(v, g, bc, bs, otbs, storer)
