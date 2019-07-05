@@ -1,6 +1,8 @@
 from konlpy.tag import Kkma, Okt
+import MeCab
 import sentencepiece as spm
-import re, ijson, pathlib
+
+import re, ijson
 
 dll_path = ""
 
@@ -233,19 +235,17 @@ def get_namuwiki_text(sentence) :
 
         return sentence.strip()
 
-
 def train_spm() :
-    spm.SentencePieceTrainer.train('--model_prefix=m --input=namu_sentences.txt --vocab_size=50000'
+    spm.SentencePieceTrainer.train('--model_prefix=namuwiki_sp --input=namu_sentences.txt --vocab_size=5000'
                                    ' --input_sentence_size=1000000 --shuffle_input_sentence=true')
 
 def tokenize_spm(sentence) :
     sp = spm.SentencePieceProcessor()
-    sp.load('m.model')
+    sp.load('namuwiki_sp.model')
 
     tokens = sp.encode_as_pieces(sentence)
 
     return tokens
-
 
 def preprocess_lnv_description(book_list) :
     proccessed_doc = []
@@ -317,6 +317,21 @@ def pos_Kkma(sentence) :
     result = nlp.pos(sentence)
 
     return result
+
+def pos_mecab(sentence) :
+    """
+
+    :param sentence:
+    :return:
+    """
+    m = MeCab.Tagger()
+
+    out = m.parse(sentence)
+
+    sentences = out.split('\n')
+    sentences = [re.compile('[\t]|,').split(s) for s in sentences]
+
+    return [(s[0], s[1]) for s in sentences if len(s) > 1]
 
 def get_accuracy(title_list, ori_list) :
     """

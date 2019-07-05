@@ -86,8 +86,6 @@ def show_search_accuracy(storer, renew = False) :
                ["range:{}".format(x) for x in histogram.keys()])
     plt.show()
 
-
-
 class WordFrequencyVisualizer :
     def __init__(self) :
         self.counts = None

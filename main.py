@@ -1,4 +1,4 @@
-import random, sys, subprocess, os, nlp_module, pathlib
+import random, sys, subprocess, os, nlp_module
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import book_data, book_storer, visualization, book_cluster, bookdata_searcher
@@ -227,7 +227,8 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             nlp_module.train_spm()
         elif choice == '15' :
             s = input("문장을 입력하세요: ")
-            print(nlp_module.get_namuwiki_text(s))
+            print(nlp_module.tokenize_spm(s))
+            print(nlp_module.pos_mecab(s))
 
 
 
