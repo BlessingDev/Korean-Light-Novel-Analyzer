@@ -14,11 +14,11 @@ class BookStorer :
         self.curt = datetime.datetime.now()
 
 
-    def import_data(self) :
+    def import_data(self, file_path='') :
         self.book_list = list()
         self.date_to_book = defaultdict(list)
 
-        book_path = pathlib.Path('book_data.json')
+        book_path = pathlib.Path(file_path + 'book_data.json')
         if book_path.exists() :
             temp = book_path.read_text(encoding='utf-16')
             book_list = json.loads(temp, encoding='utf-16', strict=False)
@@ -28,7 +28,7 @@ class BookStorer :
                 new_book.from_json_dict(book)
                 self.book_list.append(new_book)
 
-        book_path = pathlib.Path('date_to_book.json')
+        book_path = pathlib.Path(file_path + 'date_to_book.json')
         if book_path.exists() :
             temp = book_path.read_text(encoding='utf-16')
             book_dict = json.loads(temp, encoding='utf-16', strict=False)
@@ -75,7 +75,7 @@ class BookStorer :
 
         self.searcher.search_finished()
 
-    def export_data(self) :
+    def export_data(self, file_path='data/') :
         book_p = pathlib.Path('book_data.json')
         book_json = json.dumps(json_file.list_to_json(self.book_list, json_file.data_to_json))
         try:

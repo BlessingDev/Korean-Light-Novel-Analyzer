@@ -12,7 +12,7 @@ class BSParser :
         """
 
         :param tag: 검색할 태그(str)
-        :param attribute: (속성이름, 속성값)
+        :param attribute: (속성이름, 속성 리스트)
         :param node: 검색을 시작할 노드 기본값은 전체
         :return: 찾은 노드
         """
@@ -21,7 +21,9 @@ class BSParser :
 
         for t in node(tag) :
             if attribute[0] in t.attrs \
-                and attribute[1] in t[attribute[0]] :
+                and all(a in t[attribute[0]] for a in attribute[1]) :
+                # attribute 안에 있는 모든 요소가 t의 속성 중에도 있는지 확인하는
+                # all 함수
                 return t
 
         return None
@@ -30,7 +32,7 @@ class BSParser :
         """
 
         :param tag: 검색할 태그(str)
-        :param attribute: (속성이름, 속성값)
+        :param attribute: (속성이름, 속성 리스트)
         :param node: 검색을 시작할 노드 기본값은 전체
         :return: 찾은 노드의 리스트
         """
@@ -40,8 +42,7 @@ class BSParser :
         node_list = []
         for t in node(tag) :
             if attribute[0] in t.attrs \
-                and attribute[1] in t[attribute[0]] :
-
+                and all(a in t[attribute[0]] for a in attribute[1]) :
                 node_list.append(t)
 
         if len(node_list) == 0 :
@@ -63,7 +64,7 @@ class BSParser :
 
         for t in node(tag) :
             if attribute[0] in t.attrs \
-                and attribute[1] in t[attribute[0]] :
+                and all(a in t[attribute[0]] for a in attribute[1]) :
                 return t.get_text()
 
         return ""

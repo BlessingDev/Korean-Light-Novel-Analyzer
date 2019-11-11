@@ -1,7 +1,7 @@
 from abc import *
 from book_data import BookData
 
-class searcher :
+class Searcher :
     '''
     this is an abstract base class for all searcher
     '''

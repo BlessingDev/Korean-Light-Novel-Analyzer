@@ -119,8 +119,8 @@ class BookCluster :
         self.coords = loc
         return loc
 
-    def export_data(self) :
-        coordpath = pathlib.Path('coordinates.json')
+    def export_data(self, file_path='datas/') :
+        coordpath = pathlib.Path(file_path + 'coordinates.json')
         coord_json = json.dumps(json_file.list_to_json(self.coords, json_file.data_to_json))
         if coordpath.exists():
             file_data = coordpath.read_text(encoding='utf-8')
@@ -138,11 +138,11 @@ class BookCluster :
         else:
             distpath.write_text(dist_json, encoding='utf-8')
 
-    def import_data(self) :
-        coordpath = pathlib.Path('coordinates.json')
+    def import_data(self, file_path='') :
+        coordpath = pathlib.Path(file_path + 'coordinates.json')
         if coordpath.exists() :
             self.coords = json.loads(coordpath.read_text('utf-8'), encoding='utf-8', strict=False)
-        distpath = pathlib.Path('dist.json')
+        distpath = pathlib.Path(file_path + 'dist.json')
         if distpath.exists() :
             self.real_dist = json.loads(distpath.read_text('utf-8'), encoding='utf=8', strict=False)
 

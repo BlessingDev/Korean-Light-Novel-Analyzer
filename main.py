@@ -126,8 +126,6 @@ def renew_datas(storer, g, bc, bs) :
     bc.set_real_dist(storer.get_ordinary_books())
     bs.init_word_index(storer.get_ordinary_books())
 
-
-
 def crawl_search_sample() :
     book = book_data.BookData()
     sr = exins.get_instance().get_searcher_naver_instance()
@@ -231,8 +229,6 @@ def cui_main(v, g, bc, bs, otbs, storer) :
             s = input("문장을 입력하세요: ")
             print(nlp_module.tokenize_spm(s))
             print(nlp_module.pos_mecab(s))
-
-
 
 def gui_main(v, g, bc, bs, otbs, storer) :
     mainui = None
@@ -706,7 +702,7 @@ if __name__ == "__main__" :
     otbs = bookdata_searcher.ori_title_searcher()
 
     try :
-        storer.import_data()
+        storer.import_data(file_path='datas/')
     except:
         print("An error occured during BookStorer initiation")
         #v.initialize(storer.training_set)
@@ -715,7 +711,7 @@ if __name__ == "__main__" :
     except:
         print("An error occured during GenreClassifier initiation")
     try:
-        bc.import_data()
+        bc.import_data(file_path='datas/')
     except:
         print("An error occured during BookCluster initiation")
     try:
@@ -728,5 +724,5 @@ if __name__ == "__main__" :
         print("An error occured during ori_title_searcher initiation")
 
 
-    #cui_main(v, g, bc, bs, otbs, storer)
-    gui_main(v, g, bc, bs, otbs, storer)
+    cui_main(v, g, bc, bs, otbs, storer)
+    #gui_main(v, g, bc, bs, otbs, storer)

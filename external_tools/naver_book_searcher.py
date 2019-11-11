@@ -7,11 +7,11 @@ from external_tools import crawler, searcher
 from book_data import BookData
 
 
-class NaverBookSearcher(searcher.searcher) :
+class NaverBookSearcher(searcher.Searcher) :
     def __init__(self) :
         # 기본 BookData 객체로 생성
         # 사용하기 전에 반드시 book 멤버를 assign할 것
-        searcher.searcher.__init__(self)
+        searcher.Searcher.__init__(self)
         self.f = None
 
     def _search_for_book(self, title, category=True) :

@@ -104,3 +104,5 @@ images/
 *.png
 logs/
 clog/
+*.txt
+문제가 있는 셋.hwp
