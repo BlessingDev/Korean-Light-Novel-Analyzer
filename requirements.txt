@@ -85,7 +85,7 @@ soynlp==0.0.492
 tensorboard==1.10.0
 tensorflow==1.10.0
 tensorflow-estimator==1.13.0
-tensorflow-gpu==1.10.0
+tensorflow-gpu==1.15.2
 termcolor==1.1.0
 tf-sentencepiece==0.1.3
 tqdm==4.24.0
