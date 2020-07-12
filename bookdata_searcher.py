@@ -28,7 +28,7 @@ class BookDataSearcher :
         print("index init finished")
 
     def search_book_by_title(self, title, n = 10) :
-        words = nlp_module.pos_Kkma(title)
+        words = nlp_module.pos_mecab(title)
 
         words = set(words)
         appearance_list = []

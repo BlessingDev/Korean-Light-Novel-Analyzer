@@ -724,5 +724,5 @@ if __name__ == "__main__" :
         print("An error occured during ori_title_searcher initiation")
 
 
-    cui_main(v, g, bc, bs, otbs, storer)
-    #gui_main(v, g, bc, bs, otbs, storer)
+    #cui_main(v, g, bc, bs, otbs, storer)
+    gui_main(v, g, bc, bs, otbs, storer)

@@ -26,7 +26,7 @@ else:
 
 
 def tokenize(sentences) :
-    sen_nlp = nlp_module.pos_Kkma(sentences)
+    sen_nlp = nlp_module.pos_mecab(sentences)
     result = []
 
     ignore_word = [

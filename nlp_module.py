@@ -1,8 +1,7 @@
-from konlpy.tag import Kkma, Okt
 import MeCab
 import sentencepiece as spm
 
-import re, ijson
+import re
 
 dll_path = ""
 
