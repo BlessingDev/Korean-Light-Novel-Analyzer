@@ -83,7 +83,7 @@ smart-open==1.8.4
 soupsieve==1.9
 soynlp==0.0.492
 tensorboard==1.10.0
-tensorflow==1.10.0
+tensorflow==2.5.0
 tensorflow-estimator==1.13.0
 tensorflow-gpu==1.10.0
 termcolor==1.1.0
