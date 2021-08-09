@@ -68,7 +68,7 @@ python-mecab-ko==1.0.7
 pytools==2018.5.2
 PyTweening==1.0.3
 pytz==2018.7
-pywin32==224
+pywin32==301
 requests==2.21.0
 requests-toolbelt==0.8.0
 rope==0.14.0
