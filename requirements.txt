@@ -44,7 +44,7 @@ mccabe==0.6.1
 mecab-python===0.996-ko-0.9.2-msvc
 mock==3.0.5
 more-itertools==7.0.0
-numpy==1.16.4
+numpy==1.22.0
 pandas==0.24.2
 pbr==5.3.1
 Pillow==6.0.0
